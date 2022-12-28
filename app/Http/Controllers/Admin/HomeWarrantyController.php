@@ -34,9 +34,10 @@ class HomeWarrantyController extends Controller
 		if (!in_array($roleid, array(11,12,1,18,17))) {
 			return redirect()->route('home-warranties.create')->with('error',"Access Denied");
 		}
+		$this->authorize('home-warranties.index'); 
 		
         $query = new HomeWarranty;
-        if ($request->has('start_date')) {
+        if ($request->has('start_date') || $request->has('end_date')) {
             if (!empty($request->start_date) && !empty($request->end_date)) {
                 $query = $query->whereDate('created_at', '>=', $request->start_date);
                 $query = $query->whereDate('created_at', '<=', $request->end_date);
@@ -51,7 +52,14 @@ class HomeWarrantyController extends Controller
             }
             $home_warranties = $query->paginate(100);
         }
-        $home_warranties = $query->latest()->paginate(100);
+        else{
+			$query = $query->whereDate('created_at', '=', date('Y-m-d'));
+		}
+        $home_warranties = $query->with('project','client')->latest()->paginate(100);
+
+        // if(auth()->user()->hasRole('Super Admin')){
+        //     return $home_warranties;
+        // }
         return view('admin.home-warranties.index',compact('home_warranties'));
     }
 
@@ -77,6 +85,9 @@ class HomeWarrantyController extends Controller
         $check = HomeWarranty::where('phone',$request->phone)->where('status',"!=","Unsuccessful Transfer")->first();
         if($check){
             return redirect()->route('home-warranties.create')->with('error','This Phone No is already used.');
+        }
+        if($request->record_id<=0){
+            return redirect()->route('solars.create')->with('error',"RecordID Required");
         }
         $data["First_Name"]  = $request->first_name;
         $data["Last_Name"]   = $request->last_name;

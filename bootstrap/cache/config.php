@@ -1,10 +1,10 @@
 <?php return array (
   'app' => 
   array (
-    'name' => 'CRM',
+    'name' => 'Laravel',
     'env' => 'local',
     'debug' => true,
-    'url' => 'http://localhost/crm/',
+    'url' => 'https://crm.touchstone-communications.com/',
     'asset_url' => NULL,
     'timezone' => 'America/Los_Angeles',
     'locale' => 'en',
@@ -203,7 +203,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\xampp\\htdocs\\crm\\storage\\framework/cache/data',
+        'path' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/storage/framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -242,7 +242,7 @@
         'endpoint' => NULL,
       ),
     ),
-    'prefix' => 'crm_cache',
+    'prefix' => 'laravel_cache',
   ),
   'cors' => 
   array (
@@ -280,7 +280,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'crm',
+        'database' => 'ts_crm',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -288,11 +288,11 @@
       array (
         'driver' => 'mysql',
         'url' => NULL,
-        'host' => 'localhost',
+        'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'crm',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'ts_crm',
+        'username' => 'mustfeez',
+        'password' => 'Zeeftsum!$#',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -308,11 +308,11 @@
       array (
         'driver' => 'pgsql',
         'url' => NULL,
-        'host' => 'localhost',
+        'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'crm',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'ts_crm',
+        'username' => 'mustfeez',
+        'password' => 'Zeeftsum!$#',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -323,11 +323,11 @@
       array (
         'driver' => 'sqlsrv',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => '10.10.110.39',
         'port' => '1433',
-        'database' => 'forge',
-        'username' => 'forge',
-        'password' => '',
+        'database' => 'ts_crm',
+        'username' => 'ts_crm',
+        'password' => 's^fC173p2',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -340,7 +340,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'crm_database_',
+        'prefix' => 'laravel_database_',
       ),
       'default' => 
       array (
@@ -465,7 +465,7 @@
     ),
     'temporary_files' => 
     array (
-      'local_path' => 'C:\\xampp\\htdocs\\crm\\storage\\framework/cache/laravel-excel',
+      'local_path' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/storage/framework/cache/laravel-excel',
       'remote_disk' => NULL,
       'remote_prefix' => NULL,
       'force_resync_remote' => NULL,
@@ -480,20 +480,20 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\crm\\storage\\app',
+        'root' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/storage/app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\crm\\storage\\app/public',
-        'url' => 'http://localhost/crm//storage',
+        'root' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/storage/app/public',
+        'url' => 'https://crm.touchstone-communications.com//storage',
         'visibility' => 'public',
       ),
       'uploads' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\crm\\public\\uploads',
-        'url' => 'http://localhost/crm//uploads',
+        'root' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/public/uploads',
+        'url' => 'https://crm.touchstone-communications.com//uploads',
         'visibility' => 'public',
       ),
       's3' => 
@@ -508,7 +508,7 @@
     ),
     'links' => 
     array (
-      'C:\\xampp\\htdocs\\crm\\public\\storage' => 'C:\\xampp\\htdocs\\crm\\storage\\app/public',
+      '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/public/storage' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/storage/app/public',
     ),
   ),
   'hashing' => 
@@ -542,13 +542,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\xampp\\htdocs\\crm\\storage\\logs/laravel.log',
+        'path' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/storage/logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\xampp\\htdocs\\crm\\storage\\logs/laravel.log',
+        'path' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -598,7 +598,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\xampp\\htdocs\\crm\\storage\\logs/laravel.log',
+        'path' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/storage/logs/laravel.log',
       ),
     ),
   ),
@@ -624,7 +624,7 @@
     'stubs' => 
     array (
       'enabled' => false,
-      'path' => 'C:\\xampp\\htdocs\\crm/vendor/nwidart/laravel-modules/src/Commands/stubs',
+      'path' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/vendor/nwidart/laravel-modules/src/Commands/stubs',
       'files' => 
       array (
         'routes/web' => 'Routes/web.php',
@@ -688,9 +688,9 @@
     ),
     'paths' => 
     array (
-      'modules' => 'C:\\xampp\\htdocs\\crm\\Modules',
-      'assets' => 'C:\\xampp\\htdocs\\crm\\public\\modules',
-      'migration' => 'C:\\xampp\\htdocs\\crm\\database/migrations',
+      'modules' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/Modules',
+      'assets' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/public/modules',
+      'migration' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/database/migrations',
       'generator' => 
       array (
         'config' => 
@@ -879,7 +879,7 @@
       'enabled' => false,
       'paths' => 
       array (
-        0 => 'C:\\xampp\\htdocs\\crm\\vendor/*/*',
+        0 => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/vendor/*/*',
       ),
     ),
     'composer' => 
@@ -907,7 +907,7 @@
       'file' => 
       array (
         'class' => 'FileActivator',
-        'statuses-file' => 'C:\\xampp\\htdocs\\crm\\modules_statuses.json',
+        'statuses-file' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/modules_statuses.json',
         'cache-key' => 'activator.installed',
         'cache-lifetime' => 604800,
       ),
@@ -965,7 +965,7 @@
   ),
   'queue' => 
   array (
-    'default' => 'sync',
+    'default' => 'database',
     'connections' => 
     array (
       'sync' => 
@@ -1022,7 +1022,7 @@
       2 => '127.0.0.1',
       3 => '127.0.0.1:8000',
       4 => '::1',
-      5 => 'localhost',
+      5 => 'crm.touchstone-communications.com',
     ),
     'guard' => 
     array (
@@ -1060,7 +1060,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\xampp\\htdocs\\crm\\storage\\framework/sessions',
+    'files' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/storage/framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -1069,7 +1069,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'crm_session',
+    'cookie' => 'laravel_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => false,
@@ -1080,9 +1080,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\crm\\resources\\views',
+      0 => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/resources/views',
     ),
-    'compiled' => 'C:\\xampp\\htdocs\\crm\\storage\\framework\\views',
+    'compiled' => '/var/www/vhosts/crm.touchstone-communications.com/httpdocs/storage/framework/views',
   ),
   'flare' => 
   array (

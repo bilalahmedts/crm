@@ -12,12 +12,13 @@ trait SolarPosting{
     public function lgPost($data,$id,$url){
 
         $postData = array(); 
-        $postData['camp_id'] = "4087";
-        $postData['camp_key'] = "PcxTeTenr0";
+        $postData['camp_id'] ="4087";
+        $postData['camp_key'] ="PcxTeTenr0";
+        $postData['electric_provider'] ="Other"; 
         $postData['xxTrustedFormToken'] = $data['xxTrustedFormToken'];
-        $postData['xxTrustedFormCertUrl'] = $data['xxTrustedFormCertUrl'];
-        $postData['xxTrustedFormPingUrl'] = $data['xxTrustedFormPingUrl'];
-        $postData['leadid_token']=$data['leadid_token'];
+         $postData['xxTrustedFormCertUrl'] = $data['xxTrustedFormCertUrl'];
+         $postData['xxTrustedFormPingUrl'] = $data['xxTrustedFormPingUrl'];
+        $postData['leadid_token']=$data['lead_id'];
         $postData['optin_cert']=$data['optin_cert'];
         $postData['first_name'] = $data['first_name'];
         $postData['last_name'] = $data['last_name'];
@@ -25,8 +26,8 @@ trait SolarPosting{
         $postData['street_address'] = $data['address'];  
         $postData['zip_code'] = $data['zip_code'];
         $postData['email_address'] = $data['email']; 
-        $postData['electric_provider'] = $data['electric_provider']; 
-        $postData['electric_bill_monthly'] = $data['electric_bill_monthly']; 
+        // $postData['electric_provider'] = $data['electric_provider']; 
+        $postData['electric_bill_monthly'] = $data['electric_bill']; 
         $postData['roof_shade'] = $data['roof_shade']; 
         $postData['homeowner'] = $data['homeowner']; 
         $postData['credit_score'] = $data['credit_score']; 
@@ -279,6 +280,34 @@ trait SolarPosting{
         $this->posting($postData,$data['clients'],$id,$result);
          
     }
+
+    public function LB_2411($data,$id,$url)
+    {
+        $postData = array();
+        $postData['CODE']="47532489";
+        $postData['LEAD_TYPE']="SOLAR";
+        $postData['form_tools_form_id']="2";
+        $postData['r_TRANSFERRED_TO']="092922LB183";
+        $postData['RECEIVING_REP']="Sophia";
+        $postData['r_CALL_TRANSFER_STATUS']= "Call-Verified Lead";
+        $postData['r_FIRST_NAME']= $data['first_name'];
+        $postData['r_LAST_NAME']= $data['last_name'];
+        $postData['PHONE_1']= $data['phone'];
+        $postData['r_ADDRESS']= $data['address'];
+        $postData['r_CITY']= $data['city'];
+        $postData['r_STATE']= $data['state'];
+        $postData['r_ZIP']= $data['zip_code'];
+        $postData['r_CREDIT_RATING']= $data['credit_rating'];
+        $postData['SHADE_INTERFERENCE']= $data['roof_shade'];
+        $postData['MONTHLY_PAYMENT']= $data['monthly_payment'];
+        $postData['ELECTRIC_PROVIDER']= $data['electric_provider'];
+        $postData['r_INCOME']= $data['income'];
+        $postData['CALL_NOTES']= $data['notes'];
+        $postData['r_TRANSFERRED_BY']= $data['agent_name'];
+        $result = $this->curl($postData,$url);
+        $this->posting($postData,$data['clients'],$id,$result);
+        
+    }
      
     public function PSRPost($data,$id,$url){
         $postData = array();
@@ -332,12 +361,64 @@ trait SolarPosting{
         $this->posting($postData,$data['clients'],$id,$result);       
          
     }
+    public function solar_fam($data,$id,$url){
+        $postData = array();
+        $postData['SRC'] = "PAK_Solar_Fam";
+        $postData['Key'] = "02ceff3124855a695b4810f3806a9b24586390c2ba976e4351c7b331149acf97";
+        $postData['API_Action'] = "pingPostLead";
+        $postData['Average_Utility_Bill_2'] = "$151-200";
+        $postData['Credit'] = "Good";
+        $postData['Credit_2'] = "680-700";
+        $postData['TYPE'] = "107";
+        $postData['Mode'] = "full";
+        $postData['Force_IPR_Buyer'] = "1";
+        $postData['Landing_Page'] = "landing";
+        $postData['IP_Address'] = "160.84.125.140";     
+        $postData['First_Name'] = $data['first_name'];
+        $postData['Last_Name'] = $data['last_name'];
+        $postData['Phone'] = $data['phone']; 
+        $postData['Address'] = $data['address'];  
+        $postData['City'] = $data['city'];  
+        $postData['State'] = $data['state'];  
+        $postData['Zip'] = $data['zip_code'];  
+        $postData['Phone'] = $data['phone'];  
+               
+        $result = $this->curl($postData,$url);
+        $this->posting($postData,$data['clients'],$id,$result);       
+         
+    }
     public function PSTPost($data,$id,$url){
         $postData = array();
         $postData['SRC'] = "PAK_Solar_Tech";
         $postData['Key'] = "02ceff3124855a695b4810f3806a9b24586390c2ba976e4351c7b331149acf97";
         $postData['API_Action'] = "pingPostLead";
         $postData['Average_Utility_Bill_2'] = "$151-200";
+        $postData['Credit'] = "Good";
+        $postData['Credit_2'] = "680-700";
+        $postData['TYPE'] = "107";
+        $postData['Mode'] = "full";
+        //$postData['Force_IPR_Buyer'] = "1";
+        $postData['Landing_Page'] = "landing";
+        $postData['IP_Address'] = "160.84.125.140";     
+        $postData['First_Name'] = $data['first_name'];
+        $postData['Last_Name'] = $data['last_name'];
+        $postData['Phone'] = $data['phone']; 
+        $postData['Address'] = $data['address'];  
+        $postData['City'] = $data['city'];  
+        $postData['State'] = $data['state'];  
+        $postData['Zip'] = $data['zip_code'];  
+        $postData['Phone'] = $data['phone'];  
+               
+        $result = $this->curl($postData,$url);
+        $this->posting($postData,$data['clients'],$id,$result);       
+         
+    }
+    public function solarTA($data,$id,$url){
+        $postData = array();
+        $postData['SRC'] = "PAK_Solar_TA";
+        $postData['Key'] = "f2e506b987345f7e610e7756563d5c275277473f752ba45c43b70542f1fd079a";
+        $postData['API_Action'] = "pingPostLead";
+        $postData['Average_Utility_Bill_2'] = "=$151-200";
         $postData['Credit'] = "Good";
         $postData['Credit_2'] = "680-700";
         $postData['TYPE'] = "107";
@@ -372,7 +453,7 @@ trait SolarPosting{
         $postData['avgsummerbill'] = $data['electric_bill_monthly'];   
         $postData['prjrooftype'] = $data['roof_shade'];   
         $postData['creditscore'] = $data['credit_score'];   
-        $postData['creditscore'] = $data['credit_score'];   
+       
                
         $result = $this->curl($postData,$url);
         $this->posting($postData,$data['clients'],$id,$result);       
@@ -382,18 +463,38 @@ trait SolarPosting{
         $postData = array();   
         $postData['lp_campaign_id'] = "6357e78394577";
         $postData['lp_campaign_key'] = "njmzFC9QMfcPv8y2pxqk";
+        //$postData['vendor_lead_id']=$data['vendor_lead_id'];
         // $postData['lp_test']= "1";  
         $postData['first_name'] = $data['first_name'];
         $postData['lp_caller_id'] = $data['phone'];
         $postData['last_name'] = $data['last_name'];
         $postData['email_address'] = $data['email']; 
-        $postData['phone_home'] = $data['phone']; 
+        $postData['phone_home'] = $data['phone'];  
         $postData['address'] = $data['address'];  
         $postData['city'] = $data['city'];  
         $postData['state'] = $data['state'];  
         $postData['zip_code'] = $data['zip_code'];      
         $postData['vendor_lead_id'] = $data['JornayaIDSolarT'];   
         $postData['creditscore'] = $data['credit_score'];   
+               
+        $result = $this->curl($postData,$url);
+        $this->posting($postData,$data['clients'],$id,$result);       
+         
+    }
+    public function SolarGMS($data,$id,$url){
+        $postData = array();   
+       
+        $postData['FirstName'] = $data['first_name'];
+        $postData['LastName'] = $data['last_name'];
+        $postData['Email'] = $data['email']; 
+        $postData['HomePhone'] = $data['phone']; 
+        $postData['Mail_Address'] = $data['address'];  
+        $postData['Mail_City'] = $data['city'];  
+        $postData['Mail_State'] = $data['state'];  
+        $postData['Mail_Zip'] = $data['zip_code'];      
+        $postData['Field_051'] = $data['electric_bill'];   
+        $postData['Field_052'] = $data['electric_provider']; 
+        $postData['Field_053'] = $data['credit_score'];   
                
         $result = $this->curl($postData,$url);
         $this->posting($postData,$data['clients'],$id,$result);       
@@ -426,6 +527,7 @@ trait SolarPosting{
         $cleintPost = new ClientPosting();
         $cleintPost->sale_id = $id;
         $cleintPost->client_id = $project->client->id;
+		$cleintPost->campaign_id = $project->client->campaign_id;
         $cleintPost->post_data = json_encode($postData);
         $cleintPost->post_response = $result; 
         $cleintPost->save();

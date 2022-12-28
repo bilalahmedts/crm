@@ -23,13 +23,16 @@
                         </div>
 
                         <div class="row" id="searchForm">
-                            <div class="col-5">
+                           <!-- <div class="col-3">
                                 <h3 class="mb-0">Home Warranty Submission</h3>
-                            </div>
+                            </div> -->
                             <div class="col-2">
                                 <h3 class="mb-0 text text-danger" id="recordNotFoundLabel" style="display: none; color:white">Record Not
                                     Found</h3>
                             </div>
+                            <div class="col-2">
+                                <h3 class="mb-0 text text-danger" id="alreadyASaleLabel" style="display: none; color:white">Already a Sale</h3>
+                            </div>							
                             <div class="col-3 ">
                                 <input style="color: black" style="border: 2px solid;" type="text" id="search"
                                     name="search" class="form-control" placeholder="Record ID">
@@ -185,8 +188,17 @@
                     success: function(res) {
                         $('#loader').hide();
                         $('#searchForm').show();
-                        $('#webform').show();
+						if(res.status==204){
+							$('#webform').hide();
+							$('#alreadyASaleLabel').show();
+						}
+						if(res.status==200){
+							$('#webform').show();
+							$('#alreadyASaleLabel').hide();
+						}						
+
                         if (res.data) {
+
                             // alert(res.data.ID);
                             document.getElementById('record_id').value = res.data.ID;
                             document.querySelector("input[name=first_name]").value = res.data.FirstName;

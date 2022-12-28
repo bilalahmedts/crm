@@ -7,6 +7,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
+					<th>Record ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Phone</th>
@@ -15,7 +16,10 @@
                     <th>Zip</th>
                     <th>City</th>
                     <th>State</th>
-                    <th>Client</th>
+					<th>QA Status</th>
+					<th>Client Status</th>
+                   <th>Project</th>
+                    <th>ReportingTo</th>
                     <th>Agent Name</th>
                     <th>Agent HRMSID</th>
                     <th>Created At</th>
@@ -27,6 +31,7 @@
                 @foreach($saleMortgages as $row)
                     <tr>
                         <td>{{$cout++}}</td>
+						<td>{{$row->record_id ?? ''}}</td>
                         <td>{{$row->first_name ?? ''}}</td>
                         <td>{{$row->last_name ?? ''}}</td>
                         <td>{{$row->phone ?? ''}}</td>
@@ -35,7 +40,10 @@
                         <td>{{$row->zipcode ?? ''}}</td>
                         <td>{{$row->city ?? ''}}</td>
                         <td>{{$row->state ?? ''}}</td>
-                        <td>{{@$row->client->name ?? ''}}</td>
+						<td>{{strtoupper($row->qa_status) ?? ''}}</td>
+						<td>{{strtoupper($row->client_status) ?? ''}}</td>
+                        <td>{{($row->project) ? $row->project->name:'' }}</td>
+                        <td>{{ $row->user->reporting_to_name->name ?? '' }}</td>
                         <td>{{@$row->user->name ?? ''}}</td>
                         <td>{{@$row->user->HRMSID ?? ''}}</td>
                         <td>{{$row->created_at ?? ''}}</td>

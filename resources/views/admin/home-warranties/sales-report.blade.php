@@ -1,6 +1,9 @@
 <table class="table align-items-center table-flush">
     <thead class="thead-light">
         <tr>
+           <th scope="col">No</th>
+            
+            <th scope="col">Created Date</th>
             <th scope="col">HRMS ID</th>
 			 <th scope="col">Pseudonym</th>
             <!--<th scope="col">Agent Name</th>-->
@@ -10,9 +13,13 @@
             <th scope="col">State</th>
             <th scope="col">Closers</th>
             <th scope="col">Other Closers</th>
+            <th scope="col">QA-status</th>
+            <th scope="col">Client-status</th>
+            <th scope="col">ReportingTo</th>
             <th scope="col">Remarks</th>
             <th scope="col">Client</th>
-            <th scope="col">Created Date</th>
+            <th scope="col">Project</th>
+            
             <th scope="col">Status</th>
 			@if(auth()->user()->hasRole('MortgageClient') || auth()->user()->hasRole('Super Admin'))
 			<th scope="col" width="10%">Client Status</th>		 
@@ -24,18 +31,25 @@
         @if (count($home_warranties) > 0)
             @foreach ($home_warranties as $home_warranty)
                 <tr>
+                    <!-- {{ ($home_warranty->reporting ) }} -->
+                    <td>{{$loop->iteration}}</td>
+                    <td width="3%">{{ $home_warranty->created_at ?? '' }}</td>
                     <td width="3%">{{ $home_warranty->hrms_id ?? '' }}</td>
 					<td width="3%">{{ $home_warranty->agent_detail->pseudo_name ?? '' }}</td>
-                    <!--<td>{{ $home_warranty->agent_detail->name ?? '' }}</td>-->
+                    {{-- <!--<td>{{ $home_warranty->agent_detail->name ?? '' }}</td>--> --}}
                     <td width="3%">{{ $home_warranty->first_name ?? '' }}</td>
                     <td width="3%">{{ $home_warranty->last_name ?? '' }}</td>
                     <td width="3%">{{ $home_warranty->phone ?? '' }}</td>
                     <td width="3%">{{ $home_warranty->state ?? '' }}</td>
                     <td width="3%">{{ $home_warranty->closers ?? '' }}</td>
                     <td width="3%">{{ $home_warranty->other_closers ?? '' }}</td>
+                    <td width="3%">{{ $home_warranty->qa_status ?? '' }}</td>
+                    <td width="3%">{{ $home_warranty->client_status ?? '' }}</td>
+                    <td width="3%">{{ $home_warranty->user->reporting->name ?? '' }}</td>
                     <td width="3%">{{ $home_warranty->remarks ?? '' }}</td>
-                    <td width="3%">{{ $home_warranty->client ?? '' }}</td>
-                    <td width="3%">{{ $home_warranty->created_at ?? '' }}</td>
+                    <td width="3%">{{ $home_warranty->client->name ?? '' }}</td>
+                    <td width="3%">{{ $home_warranty->project->name ?? '' }}</td>
+                    
                     <td width="3%">{{ $home_warranty->status ?? '' }}</td>
 					
 					

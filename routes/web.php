@@ -1,11 +1,15 @@
 <?php
 
-use App\Http\Controllers\Admin\CMUSaleController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\DssController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HomeWarrantyController;
+use App\Http\Controllers\Admin\CallAnalyticController;
+use App\Http\Controllers\Admin\CMUSaleController;
+use App\Http\Controllers\Admin\EddyController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\HomeController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -143,6 +147,8 @@ Route::group(['namespace' => 'Admin', 'prefix'	 => 'admin'], function () {
 		Route::resource('campaigns', 'CampaignController');
 		Route::resource('clients', 'ClientController');
 
+
+		
 		Route::post('tickets/reply/{ticket}', ['as' => 'tickets.add_reply', 'uses' => 'TicketController@addReply']);
 		Route::get('tickets/close-ticket/{ticket}', ['as' => 'tickets.close_ticket', 'uses' => 'TicketController@closeTicket']);
 		Route::get('tickets/reopen-ticket/{ticket}', ['as' => 'tickets.reopen_ticket', 'uses' => 'TicketController@reOpenTicket']);
@@ -209,6 +215,7 @@ Route::group(['namespace' => 'Admin', 'prefix'	 => 'admin'], function () {
 			Route::get('/delete/{home_warranty}', [HomeWarrantyController::class, 'destroy'])->name('home-warranties.delete');
 			Route::get('/export-home-warranty-sales-report', [HomeWarrantyController::class, 'exportHomeWarrantySalesReport'])->name('home-warranties.sales-report');
 		});
+
 		Route::get('solarExport', 'SolarController@export');
 		Route::get('solar_client', 'SolarController@client')->name('solars.client');
 		Route::resource('mortgages', 'MortgageController');
@@ -218,11 +225,32 @@ Route::group(['namespace' => 'Admin', 'prefix'	 => 'admin'], function () {
         Route::post('/date-range',[DssController::class,'searchdate']);
         Route::get('/export-dss-sales-report', [DssController::class, 'exportDSSSalesReport'])->name('dss.sales-report');
 		Route::resource('projects', 'ProjectController');
+		
+		Route::prefix('cmu-sales')->group(function () {
+			Route::get('/import-cmu-sales-form', [CMUSaleController::class, 'importForm'])->name('cmu-sales.import-form');
+			Route::post('/import-cmu-sales', [CMUSaleController::class, 'import'])->name('cmu-sales.import');
+			Route::get('/cmu-sales-delete', [CMUSaleController::class, 'delete'])->name('cmu-sales-delete');
+		});
+		Route::prefix('call-analytic-sales')->group(function () {
+			Route::get('/call-analytic-sales-form', [CallAnalyticController::class, 'importForm'])->name('call-analytic-sales.import-form');
+			Route::post('/call-analytic-sales', [CallAnalyticController::class, 'import'])->name('call-analytic-sales.import');
+			Route::get('/call-analytic-sales-stats',[CallAnalyticController::class, 'stats'])->name('call-analytic-sales.stats');
+			Route::get('/call-analytic-sales-delete/{id}', [CallAnalyticController::class, 'delete'])->name('call-analytic-sales-delete');
+		});
+			Route::prefix('eddy-sales')->group(function () {
+			Route::get('/eddy-sales-form', [EddyController::class, 'importForm'])->name('eddy-sales.import-form');
+			Route::post('/eddy-sales', [EddyController::class, 'import'])->name('eddy-sales.import');
+			Route::get('/eddy-sales-report', [EddyController::class, 'exportEddyReport'])->name('eddy-sales.eddy-export');
+		});
+
+		Route::get('/eddyusers', [EddyController::class, 'eddyusers'])->name('eddyusers');
+		Route::get('/eddyuserCreate', [EddyController::class, 'eddyuserCreate'])->name('eddyuserCreate');
+		Route::post('/eddyuserCreate', [EddyController::class, 'eddyuserCreate']);
+		Route::get('/eddyuserDelete/{id?}', [EddyController::class, 'eddyuserDelete'])->name('eddyuserDelete');
+		Route::get('/devsolar', 'SolarController@devsolar')->name('devsolar');
+		
 	});
-    Route::prefix('cmu-sales')->group(function () {
-        Route::get('/import-cmu-sales-form', [CMUSaleController::class, 'importForm'])->name('cmu-sales.import-form');
-        Route::post('/import-cmu-sales', [CMUSaleController::class, 'import'])->name('cmu-sales.import');
-    });
+
 });
 
 

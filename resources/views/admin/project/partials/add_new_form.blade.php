@@ -12,8 +12,8 @@
             @csrf
             @method('post')
 
-            <div class="pl-lg-4">
-                <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
+            <div class="pl-lg-4 row">
+                <div class="col-md-4 form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-name">{{ __('labels.name') }}</label>
                     <input type="text" name="name" id="input-name" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Name') }}" value="{{ old('name') }}" required autofocus>
 
@@ -24,7 +24,7 @@
                     @endif
                 </div>
 
-                <div class="form-group{{ $errors->has('project_code') ? ' has-danger' : '' }}">
+                <div class="col-md-4 form-group{{ $errors->has('project_code') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-name">Project Code</label>
                     <input type="text" name="project_code" id="project_code" class="form-control {{ $errors->has('project_code') ? ' is-invalid' : '' }}" placeholder="Project Code" value="{{ old('project_code') }}" required autofocus>
 
@@ -35,7 +35,7 @@
                     @endif
                 </div>
 
-                <div class="form-group{{ $errors->has('client') ? ' has-danger' : '' }}">
+                <div class="col-md-4 form-group{{ $errors->has('client') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-client">client</label>
                     <select name="client_id" id="input-client" class="form-control" data-toggle="select"  required>
                         <option value="">Select client</option>
@@ -51,8 +51,8 @@
                     <!-- <span class="help-text text-muted" style="font-size: .8rem; font-style: italic;">{{ __('labels.future_tickets_message') }}</span> -->
                 </div>
 
-                <div class="text-left">
-                    <button type="submit" class="btn btn-info mt-4">{{ __('labels.submit') }}</button>
+                <div class="col-md-4 form-group text-left">
+                    <button type="submit" class="btn btn-info mt-4 form-control">{{ __('labels.submit') }}</button>
                 </div>
             </div>
 

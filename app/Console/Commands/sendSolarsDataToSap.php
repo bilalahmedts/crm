@@ -44,6 +44,7 @@ class sendSolarsDataToSap extends Command
 		exit;
         set_time_limit(0);$test =array();
         $clients = Client::where('campaign_id',2)->get(); $arrayData=array();$arrayData=array();
+        $projectCodes = Project::where('isFixed',1)->pluck('project_code');
         foreach($clients as $row){
                 $sales = DB::table('sale_records')
                 ->select('client_code as CardCode','project_code as ItemCode')
@@ -58,8 +59,9 @@ class sendSolarsDataToSap extends Command
                         ")
                 ->where('client_code',$row->client_code) 
                 ->where('campaign_id',2)        
+                ->whereNotIn('project_code',$projectCodes)        
                 ->whereNull('sap_id')     
-                ->groupBy('user_id','created_at')->get();      
+                ->groupBy('user_id','created_at','project_code')->get();      
             $userIds=array();      
             foreach($sales as $sale){
                 if($sale->Quantity<=0){
@@ -102,7 +104,7 @@ class sendSolarsDataToSap extends Command
                 $result = curl_exec ($ch);
                 curl_close($ch);
                 $result = json_decode ($result);
-                // if($result->status == "Success"){
+                if($result->status == "Success"){
                     foreach($value as $rw){  
                         $ids =  DB::table("sale_records")->where('user_id',$rw['SalesEmployee'])
                                 ->whereNull('sap_id')->where('client_status',"billable")->where('client_code',$row->client_code)
@@ -115,7 +117,7 @@ class sendSolarsDataToSap extends Command
                         ]);
                     }
                     
-                // }  
+                }  
             } 
         }         
         return response()->json(['status'=>200,'message'=>"success"]);

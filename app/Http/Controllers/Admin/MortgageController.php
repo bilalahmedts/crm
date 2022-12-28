@@ -29,29 +29,30 @@ class MortgageController extends Controller
      */
     public function index(Request $request)
     {
-
-		$user = auth()->user();
-		$raw_result = DB::select( DB::raw("SELECT * FROM model_has_roles WHERE model_id = '$user->id'") );
-		$roleid = $raw_result[0]->role_id;
-		
-		if (!in_array($roleid, array(13,14,1,18,17))) {
-    		return redirect()->route('mortgages.create')->with('error',"Access Denied");
-		}
-		
-        if($request->export){
-          return Excel::download(new ExportMortgage(@$request->start_date,@$request->end_date,@$request->search,@$request->client_id), 'ExportMortgage.xlsx');
+ 
+		$userIds = SaleMortgage::pluck('user_id');
+        $users = DB::table('users')->whereIn('HRMSID',$userIds)->where('HRMSID',">",0)->get();
+        if($request->export){ 
+          return Excel::download(new ExportMortgage(@$request->start_date,@$request->end_date,
+          @$request->search,@$request->client_id,@$request->project_id), 'ExportMortgage.xlsx');
         }
-        $clientid = Client::where('campaign_id',3)->pluck('id'); $clients  = Client::where('campaign_id',3)->get();         
-        $this->authorize('mortgages.index');$projects = Project::whereIn('client_id',$clientid)->get();   
-
+        $clientid = Client::where('campaign_id',3)->pluck('id');$clients  = Client::where('campaign_id',3)->get();                 
+        $this->authorize('mortgages.index');
+        $projects = Project::whereIn('client_id',$clientid)->get();   
+        $mortgages  =   SaleMortgage::with('user','client');
         if(Auth::user()->hasRole('MortgageClient')){
-            $project_codes = User::with('projects')->where('id',Auth::user()->id)->get()->pluck('projects')->flatten()->pluck('project_code');
-            $mortgages  =   SaleMortgage::with('user','client')->where('campaign_id',"3")->whereIn('project_code',$project_codes);
-        }else{
-            $mortgages  =   SaleMortgage::with('user','client')->where('campaign_id',3);
-        }
-        $mortgages = $mortgages->search($request->search,@$request->start_date,@$request->end_date,@$request->client_id,@$request->project_id)->orderby('id','DESC' )->paginate(100);
-        return view('admin.mortgage.index',compact('mortgages','clients','projects'));
+            $project_codes = User::with('projects')
+			->where('id',Auth::user()->id)->get()->pluck('projects')->flatten()->pluck('project_code');
+            $mortgages  =   $mortgages->where('campaign_id',"3")->whereIn('project_code',$project_codes);
+        } 
+        if(($request->search) || ($request->start_date) || ($request->end_date) || ($request->client_id) || ($request->project_id) || (@$request->user_id))
+        {
+            $mortgages = $mortgages->search($request->search,@$request->start_date,@$request->end_date,@$request
+			->client_id,@$request->project_id,@$request->user_id);
+        } 
+        $mortgages = $mortgages->orderby('id','DESC' )->paginate(100); 
+
+        return view('admin.mortgage.index',compact('mortgages','clients','projects','users'));
     }
 
     /**
@@ -76,9 +77,14 @@ class MortgageController extends Controller
     public function store(Request $request)
     {
         //dd($request);
+		//$this->authorize('mortgages.store'); 
+        if($request->record_id<=0){
+            return redirect()->route('solars.create')->with('error',"RecordID Required");
+        }
         DB::connection('mysql')->beginTransaction();
         try{
-            $last_three_month = \Carbon\Carbon::now()->startOfMonth()->subMonth(4);$this_month = \Carbon\Carbon::now()->startOfMonth();         
+            $last_three_month = \Carbon\Carbon::now()->subMonth(4);
+            $this_month = \Carbon\Carbon::now();         
             $check = SaleMortgage::where('phone',$request->phone)->whereBetween('created_at',[$last_three_month,$this_month])->first();         		 
              $checkOld = DB::table('phone_numbers')->where('phone',$request->phone)->first();
             if($check || $checkOld){ 
@@ -109,7 +115,11 @@ class MortgageController extends Controller
             return redirect()->route('mortgages.create')->with('success',"Post Successfully");
         }catch(\Exception $e){
             DB::connection('mysql')->rollback(); 
-            return redirect()->route('mortgages.create')->with('error',$e->getMessage());
+			if(Auth::user()->hasRole('Super Admin')){
+				//return redirect()->route('mortgages.create')->with('error',$e->getMessage());
+			}
+            
+            return redirect()->route('mortgages.create')->with('error',"internal server error");
         }
         
     }
@@ -122,6 +132,7 @@ class MortgageController extends Controller
      */
     public function show($id)
     {
+		$this->authorize('mortgages.show'); 
         $data = SaleMortgage::where('id',$id)->first();
         return view('admin.mortgage.view',compact('data'));
     }
@@ -135,6 +146,7 @@ class MortgageController extends Controller
     public function edit($id)
     {
         //
+		$this->authorize('mortgages.edit'); 
     }
 
     /**
@@ -147,6 +159,7 @@ class MortgageController extends Controller
     public function update(Request $request, $id)
     {
         //
+		$this->authorize('mortgages.update'); 
     }
 
     /**
@@ -157,6 +170,7 @@ class MortgageController extends Controller
      */
     public function destroy($id)
     {
+		$this->authorize('mortgages.destroy'); 
         SaleMortgage::where('id',$id)->delete();
         return redirect()->back()->with("success","Disabled successfully");
     }

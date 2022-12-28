@@ -20,7 +20,7 @@
     @endpush
 
     @include('admin.layouts.headers.cards', ['title' => __('labels.users') ])
-
+    
     <div class="container-fluid mt--6">
         <div class="row">
             <div class="col">
@@ -44,7 +44,7 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                </div>
+                                </div>  
                             @endif
 
                             <div class="pl-lg-4">
@@ -71,16 +71,16 @@
                                         </span>
                                     @endif
                                 </div>
-
-
+								
+								
 								<div class="form-group">
                                     <label class="form-control-label" for="input-password-confirmation">HRMSID</label>
                                     <input type="text" name="HRMSID" id="HRMSID" class="form-control " placeholder="HRMSID" value="{{ old('HRMSID') }}" required>
-                                </div>
+                                </div> 
 								<div class="form-group">
                                     <label class="form-control-label" for="input-password-confirmation">Reporting HRMSID</label>
                                     <input type="text" name="reporting_to_id" id="reporting_to_id" class="form-control " placeholder="Reporting HRMSID" value="{{ old('HRMSID') }}" required>
-                                </div>
+                                </div> 
 
                                 <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-email">{{ __('labels.email') }}</label>
@@ -107,7 +107,7 @@
                                     <label class="form-control-label" for="input-password-confirmation">{{ __('labels.confirm_password') }}</label>
                                     <input type="password" name="password_confirmation" id="input-password-confirmation" class="form-control " placeholder="{{ __('labels.confirm_password') }}" value="" required>
                                 </div>
-
+								
 
                                 <div class="form-group">
                                     <label class="form-control-label" for="upload_image">{{ __('labels.profile_image') }}</label>
@@ -116,9 +116,11 @@
                                         <label class="custom-file-label text-left" for="upload_image"><i data-feather="upload" width="15"></i> {{ __('labels.select_file') }}</label>
                                     </div>
                                 </div>
+
                                 <div class="form-group mt-3">
                                     <img src="{{ asset('uploads/user/default.png') }}" width="100" id="preview-image" class="rounded-circle" alt="" />
                                 </div>
+
                                 <div class="text-left">
                                     <button type="submit" class="btn btn-info mt-4">{{ __('labels.submit') }}</button>
                                 </div>
@@ -126,7 +128,7 @@
                         </form>
                     </div>
 
-
+                    
                 </div>
             </div>
         </div>

@@ -1,6 +1,9 @@
 <table class="table align-items-center table-flush">
     <thead class="thead-light">
         <tr>
+           <th scope="col">No</th>
+            
+            <th scope="col">Created Date</th>
             <th scope="col">HRMS ID</th>
 			 <th scope="col">Pseudonym</th>
             <!--<th scope="col">Agent Name</th>-->
@@ -10,9 +13,13 @@
             <th scope="col">State</th>
             <th scope="col">Closers</th>
             <th scope="col">Other Closers</th>
+            <th scope="col">QA-status</th>
+            <th scope="col">Client-status</th>
+            <th scope="col">ReportingTo</th>
             <th scope="col">Remarks</th>
             <th scope="col">Client</th>
-            <th scope="col">Created Date</th>
+            <th scope="col">Project</th>
+            
             <th scope="col">Status</th>
 			<?php if(auth()->user()->hasRole('MortgageClient') || auth()->user()->hasRole('Super Admin')): ?>
 			<th scope="col" width="10%">Client Status</th>		 
@@ -24,18 +31,25 @@
         <?php if(count($home_warranties) > 0): ?>
             <?php $__currentLoopData = $home_warranties; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $home_warranty): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
+                    <!-- <?php echo e(($home_warranty->reporting )); ?> -->
+                    <td><?php echo e($loop->iteration); ?></td>
+                    <td width="3%"><?php echo e($home_warranty->created_at ?? ''); ?></td>
                     <td width="3%"><?php echo e($home_warranty->hrms_id ?? ''); ?></td>
 					<td width="3%"><?php echo e($home_warranty->agent_detail->pseudo_name ?? ''); ?></td>
-                    <!--<td><?php echo e($home_warranty->agent_detail->name ?? ''); ?></td>-->
+                    
                     <td width="3%"><?php echo e($home_warranty->first_name ?? ''); ?></td>
                     <td width="3%"><?php echo e($home_warranty->last_name ?? ''); ?></td>
                     <td width="3%"><?php echo e($home_warranty->phone ?? ''); ?></td>
                     <td width="3%"><?php echo e($home_warranty->state ?? ''); ?></td>
                     <td width="3%"><?php echo e($home_warranty->closers ?? ''); ?></td>
                     <td width="3%"><?php echo e($home_warranty->other_closers ?? ''); ?></td>
+                    <td width="3%"><?php echo e($home_warranty->qa_status ?? ''); ?></td>
+                    <td width="3%"><?php echo e($home_warranty->client_status ?? ''); ?></td>
+                    <td width="3%"><?php echo e($home_warranty->user->reporting->name ?? ''); ?></td>
                     <td width="3%"><?php echo e($home_warranty->remarks ?? ''); ?></td>
-                    <td width="3%"><?php echo e($home_warranty->client ?? ''); ?></td>
-                    <td width="3%"><?php echo e($home_warranty->created_at ?? ''); ?></td>
+                    <td width="3%"><?php echo e($home_warranty->client->name ?? ''); ?></td>
+                    <td width="3%"><?php echo e($home_warranty->project->name ?? ''); ?></td>
+                    
                     <td width="3%"><?php echo e($home_warranty->status ?? ''); ?></td>
 					
 					

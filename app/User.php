@@ -54,6 +54,12 @@ class User extends Authenticatable
      {
         return $this->hasOne('App\User','HRMSID','reporting_to_id');
     }
+    public function reporting()
+    {
+        return $this->hasOne('App\User','HRMSID','reporting_to_id');
+    }
+
+ 
 
 
 }

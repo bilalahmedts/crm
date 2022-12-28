@@ -16,8 +16,10 @@
                     <th>City</th>
                     <th>State</th>
                     <th>Client</th>
+                    <th>Project</th>
                     <th>Agent Name</th>
                     <th>Agent HRMSID</th>
+					<th>Reporting to</th>
                     <th>Created At</th>
                 </tr>
                 
@@ -35,9 +37,11 @@
                         <td><?php echo e($row->zipcode ?? ''); ?></td>
                         <td><?php echo e($row->city ?? ''); ?></td>
                         <td><?php echo e($row->state ?? ''); ?></td>
-                        <td><?php echo e(@$row->client->name ?? ''); ?></td>
+                        <td><?php echo e(@$row->client->name ?? ''); ?> </td>
+                        <td><?php echo e(@$row->project->name ?? ''); ?> </td>
                         <td><?php echo e(@$row->user->name ?? ''); ?></td>
                         <td><?php echo e(@$row->user->HRMSID ?? ''); ?></td>
+						<td><?php echo e($row->user->reporting_to_name->name ?? ''); ?></td>
                         <td><?php echo e($row->created_at ?? ''); ?></td>
                     </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

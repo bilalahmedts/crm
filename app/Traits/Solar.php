@@ -21,23 +21,26 @@ trait Solar {
         $Create->phone = $data['phone']; 
         $Create->address = $data['address'];  
         $Create->zipcode = $data['zip_code'];
+        $Create->housetype = $data['housetype'];
+        $Create->income = $data['income'];
+        $Create->monthly_payment = $data['monthly_payment'];
         $Create->age = $data['age'];
         $Create->city = $data['city'];
         $Create->state = $data['state'];
         $Create->email = $data['email']; 
-
-        if($data['clients'] == "PRO0033")
-            $Create->lead_id = $data['leadid_token'];
-
         $Create->electric_provider = $data['electric_provider']; 
-        $Create->electric_bill = $data['electric_bill_monthly']; 
+        $Create->electric_bill = $data['electric_bill']; 
         $Create->roof_shade = $data['roof_shade']; 
         $Create->home_owner = $data['homeowner']; 
         $Create->credit_score = $data['credit_score']; 
         $Create->credit_rating = $data['credit_rating']; 
         $Create->app_date_time = $data['app_date_time']; 
         $Create->notes = $data['notes']; 
-        $Create->user_id = Auth::user()->HRMSID;         
+        $Create->user_id = Auth::user()->HRMSID; 
+        if($data['clients'] == "PRO0033")
+            $Create->lead_id = $data['lead_id'];
+
+              
         if($Create->save()){
             return $Create;
         }else{
@@ -126,11 +129,31 @@ trait Solar {
         elseif($clients == 'PRO0098'){   
             if($res){
                 $this->SolarT($data,$res->id,"https://trinitysolar.leadspediatrack.com/post.do");
-            }
+            } 
         }
         elseif($clients == 'PRO0106'){   
             if($res){
-                $this->solar_bmj($data,$res->id,"https://trinitysolar.leadspediatrack.com/post.do");
+                $this->solar_bmj($data,$res->id,"https://leadsordered.leadportal.com/new_api/api.php");
+            }
+        }
+        elseif($clients == 'PRO0109'){   
+            if($res){
+                $this->solar_fam($data,$res->id,"https://leadsordered.leadportal.com/new_api/api.php");
+            }
+        }
+        elseif($clients == 'PRO0112'){   
+            if($res){
+                $this->LB_2411($data,$res->id,"https://leadbalance.com/prospectpro/process.php");
+            }
+        }
+        elseif($clients == 'PRO0126'){   
+            if($res){
+                $this->SolarGMS($data,$res->id,"https://api.leadmailbox.com/v2/leads/add/emc50/touchstone");
+            }
+        }
+        elseif($clients == 'PRO0141'){   
+            if($res){
+                $this->SolarTA($data,$res->id,"https://leadsordered.leadportal.com/new_api/api.php");
             }
         }
 		elseif($clients == 'PRO0093'){   

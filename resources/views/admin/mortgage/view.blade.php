@@ -42,7 +42,7 @@
                                                     </tr>
                                                     <tr>
                                                         <th>Client</th>
-                                                        <td><b>{{ $data->client ? $data->client->name : '' ?? '' }}</b></td>
+                                                        <td><b>{{ @$data->client ? @$data->client->name : '' ?? '' }}</b></td>
 
                                                     </tr>
                                                     <tr>

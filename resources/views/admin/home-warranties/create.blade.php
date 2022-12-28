@@ -192,17 +192,17 @@
                     success: function(res) {
                         $('#loader').hide();
                         $('#searchForm').show();
-						/*if(res.status==204){
+						if(res.status==204){
 							$('#webform').hide();
 							$('#alreadyASaleLabel').show();
 						}
 						if(res.status==200){
 							$('#webform').show();
 							$('#alreadyASaleLabel').hide();
-						}*/						
+						}						
 
                         if (res.data) {
-							$('#webform').show();
+
                             // alert(res.data.ID);
                             document.getElementById('record_id').value = res.data.ID;
                             document.querySelector("input[name=first_name]").value = res.data.FirstName;

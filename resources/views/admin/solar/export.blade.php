@@ -16,8 +16,10 @@
                     <th>City</th>
                     <th>State</th>
                     <th>Client</th>
+                    <th>Project</th>
                     <th>Agent Name</th>
                     <th>Agent HRMSID</th>
+					<th>Reporting to</th>
                     <th>Created At</th>
                 </tr>
                 
@@ -35,9 +37,11 @@
                         <td>{{$row->zipcode ?? '' }}</td>
                         <td>{{$row->city ?? '' }}</td>
                         <td>{{$row->state ?? '' }}</td>
-                        <td>{{@$row->client->name ?? '' }}</td>
+                        <td>{{@$row->client->name ?? '' }} </td>
+                        <td>{{@$row->project->name ?? '' }} </td>
                         <td>{{@$row->user->name ?? '' }}</td>
                         <td>{{@$row->user->HRMSID ?? '' }}</td>
+						<td>{{ $row->user->reporting_to_name->name ?? '' }}</td>
                         <td>{{$row->created_at ?? '' }}</td>
                     </tr>
                 @endforeach

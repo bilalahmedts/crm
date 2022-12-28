@@ -7,7 +7,7 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title> {{-- {{ $site->title }} | {{ setting('site_title') }} --}}</title>
+        <title> Touchstone CRM  {{-- {{ $site->title }} | {{ setting('site_title') }} --}}</title>
 
         <!-- Favicon -->
         <link href="{{ asset('uploads/logo/'.setting('site_favicon')).'?'.time() }}" rel="icon" type="image/png">
@@ -238,8 +238,6 @@
 
         </script>
       <script src="{{ asset('admin') }}/vendor/datatables.net-select/js/dataTables.select.min.js"></script>
-
-
       <script src="{{ asset('admin') }}/vendor/select2/dist/js/select2.min.js"></script>
       <script src="{{ asset('admin') }}/vendor/pickr/pickr.min.js"></script>
 

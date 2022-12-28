@@ -12,44 +12,80 @@
                             <div class="col-12">
                                 <form action="<?php echo e(route('mortgages.index')); ?>" method="GET">
                                     <div class="row">
-                                        <div class="col-md-2 col-lg-2 form-group">
+                                        <div class="col-md-3 col-lg-3 form-group">
                                             <label>Phone</label>
                                             <input type="text" value="<?php echo e(@$_GET['search']); ?>" name="search" class="form-control">                                             
                                         </div>
-                                        <div class="col-md-2 col-lg-2 form-group">
+                                        <div class="col-md-3 col-lg-3 form-group">
                                             <label>From Date</label>
                                             <input type="date" value="<?php echo e(@$_GET['start_date']); ?>"  name="start_date" class="form-control">                                             
                                         </div>
-                                        <div class="col-md-2 col-lg-2 form-group">
+                                        <div class="col-md-3 col-lg-3 form-group">
                                             <label>To Date</label>
                                             <input type="date" value="<?php echo e(@$_GET['end_date']); ?>"  name="end_date" class="form-control">                                             
                                         </div>
                                         <?php if(in_array(Auth::user()->roles[0]->name, ['Super Admin','MortgageManager','AllSheet'])): ?>
-                                        <div class="col-md-2 col-lg-2 form-group">
+                                        <div class="col-md-3 col-lg-3 form-group">
                                             <label>Client</label>
-                                            <select name="client_id" id="" onchange ="selectClient(this.value)" value="<?php echo e(@$_GET['client_id']); ?>"  class="form-control">
+                                            <select name="client_id" id="" onchange ="selectClient(this.value)"    class="form-control">
                                                 <option value="">--Select--</option>
                                                 <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="<?php echo e($client->client_code); ?>"><?php echo e($client->name); ?></option>
+                                                <?php 
+                                                    $select='';
+                                                    if(@$_GET['client_id'] == $client->client_code)
+                                                        $select="selected";
+                                                    else
+                                                    $select="";
+
+                                                ?>
+                                                <option <?php echo e($select); ?> value="<?php echo e($client->client_code); ?>"><?php echo e($client->name); ?></option>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </select>                                             
                                         </div>
                                         
-                                        <div class="col-md-2 col-lg-2 form-group">
+                                        <div class="col-md-3 col-lg-3 form-group">
                                             <label>Project</label>
-                                            <select name="project_id" value="<?php echo e(@$_GET['project_id']); ?>" id="project_id"  class="form-control">
+                                            <select name="project_id" id="project_id"  class="form-control">
                                                 <option value="">--Select--</option>
                                                 <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="<?php echo e($project->project_code); ?>"><?php echo e($project->name); ?></option>
+                                                <?php 
+                                                    
+                                                    $select='';
+                                                    if(@$_GET['project_id'] == $project->project_code)
+                                                        $select="selected";
+                                                    else
+                                                    $select="";
+
+                                                ?>
+                                                <option  <?php echo e($select); ?> value="<?php echo e($project->project_code); ?>"><?php echo e($project->name); ?></option>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </select>                                             
                                         </div>
                                         <?php endif; ?>
-                                        <div class="col-md-1 col-lg-1 form-group">
+                                        <div class="col-md-3 col-lg-3 form-group">
+                                            <label>Agents</label>
+                                            <select name="user_id" id="user_id"  class="form-control">
+                                                <option value="">--Select--</option>
+                                                <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php  
+                                                if(is_int($user->HRMSID))
+                                                continue;
+                                                    $select='';
+                                                    if(@$_GET['user_id'] == $user->HRMSID)
+                                                        $select="selected";
+                                                    else
+                                                    $select="";
+
+                                                ?>
+                                                <option  <?php echo e($select); ?> value="<?php echo e($user->HRMSID); ?>"><?php echo e($user->name); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            </select>                                             
+                                        </div>
+                                        <div class="col-md-2 col-lg-2 form-group">
                                             <label>&nbsp;</label>
                                             <input type="submit" name="submit"  value="search" class="form-control btn btn-primary">                                             
                                         </div>
-                                        <div class="col-md-1 col-lg- form-group">
+                                        <div class="col-md-2 col-lg-2 form-group">
                                             <label>&nbsp;</label>
                                             <input type="submit" name="export"  value="Export" class="form-control btn btn-primary">
                                             
@@ -98,7 +134,7 @@
 									<th scope="col" width="3%">QA status</th>
                                     <th scope="col" width="3%">Client</th>
 									<th scope="col" width="3%">Project</th>	
-									<?php if(auth()->user()->hasRole('MortgageClient') || auth()->user()->hasRole('Super Admin')): ?>
+									<?php if(auth()->user()->hasRole('MortgageClient') || auth()->user()->hasRole('Super Admin') || auth()->user()->HRMSID=="854157"): ?>
 									<th scope="col" width="10%">Client Status</th> 
 									<?php endif; ?>
 
@@ -109,7 +145,7 @@
                                  
                                 <?php $__currentLoopData = $mortgages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-                                        <td><?php echo e($loop->iteration); ?></td>
+                                        <td><?php echo e($loop->iteration); ?>-<?php echo e(auth()->user()->HRMSID); ?></td>
                                         <td><?php echo e($row->record_id); ?></td>
                                         <td><?php echo e($row->first_name); ?> </td> 
 										<td><?php echo e($row->last_name); ?></td>
@@ -126,7 +162,7 @@
 										<td><?php echo e($row->qa_status); ?></td>
                                         <td><b> <?php echo e(($row->client) ? $row->client->name:''); ?> </b></td>
 										<td><b> <?php echo e(($row->project) ? $row->project->name:''); ?> </b></td>	
-										<?php if(auth()->user()->hasRole('MortgageClient') || auth()->user()->hasRole('Super Admin')): ?>
+										<?php if(auth()->user()->hasRole('MortgageClient') || auth()->user()->hasRole('Super Admin') || auth()->user()->HRMSID=="854157"): ?>
 											<?php $status = ['billable'=>"Accepeted",'not-billable'=>"Rejected" ,'pending'=>"Pending"];?>
 											<td> 
 												<select onchange="remarks(this.value,<?php echo e($row->id); ?>)" class="form-control bg bg-default">

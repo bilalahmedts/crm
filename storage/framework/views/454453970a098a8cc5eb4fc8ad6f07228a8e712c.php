@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('content'); ?>
 <?php $__env->startPush('header-buttons'); ?>
         <div class="col-lg-6 col-5 text-right">
@@ -42,7 +40,7 @@
                                                     </tr>
                                                     <tr>
                                                         <th>Client</th>
-                                                        <td><b><?php echo e($data->client ? $data->client->name : '' ?? ''); ?></b></td>
+                                                        <td><b><?php echo e(@$data->client ? @$data->client->name : '' ?? ''); ?></b></td>
 
                                                     </tr>
                                                     <tr>

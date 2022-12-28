@@ -29,8 +29,19 @@ trait Mortgage {
         $Create->email = $data['email'];  
         $Create->best_timing = ""; 
         $Create->current_amount = $data['current_amount']; 
-        $Create->current_rate = $data['current_rate']; 
+        $Create->current_rate = $data['current_rate'];
+        $Create->late_payment = $data['late_payment'];
+        $Create->employment = $data['employment'];
+        $Create->bankrupty = $data['bankrupty'];
+        $Create->debt_amt_1 = $data['debt_amt_1'];
+        $Create->house_value = $data['house_value'];
+        $Create->cash_amount = $data['cash_amount'];
+        $Create->debt_type = $data['debt_type'];
+        $Create->debt = $data['debt'];
         $Create->income = $data['income']; 
+        $Create->age_18_to_64 = $data['age_18_to_64'];
+        $Create->medicare_medicaid = $data['medicare_medicaid'];
+        $Create->annual_house = $data['annual_house'];
         $Create->property_value = $data['property_value']; 
         $Create->property_type = $data['property_type']; 
         $Create->monthly_payment = $data['monthly_payment']; 
@@ -164,11 +175,7 @@ trait Mortgage {
                 $this->Rev2344Post($data,$res->id,"www.google.com");
             }
         }
-        elseif($clients == 'LB23910015'){             
-            if($res){
-                $this->Rev2391Post($data,$res->id,"www.google.com");
-            }
-        }
+     
         elseif($clients == 'REVLB24050022'){             
             if($res){
                 $this->REVLB2405Post($data,$res->id,"https://expertmediaresults.com/leadpanel/process.php");
@@ -194,11 +201,47 @@ trait Mortgage {
                 $this->Rev2412Post($data,$res->id,"https://leadbalance.com/prospectpro/process.php");
             }
         }  
+        
         elseif($clients == 'PRO0079'){             
             if($res){
                 $this->RvQll($data,$res->id,"https://api.leadmailbox.com/v2/leads/add/qll02/touchstonelive");
             }
         } 
+        elseif($clients == 'PRO0111'){             
+            if($res){
+                $this->Rev2414($data,$res->id,"https://leadbalance.com/prospectpro/process.php");
+            }
+        } 
+		elseif($clients == 'PRO0113'){             
+            if($res){
+                $this->Rev2415($data,$res->id,"https://leadbalance.com/prospectpro/process.php");
+            }
+        }  
+        	elseif($clients == 'PRO0114'){             
+            if($res){
+                $this->CO_Debt_under_10k($data,$res->id,"https://leadsordered.leadportal.com/new_api/api.php");
+            }
+        }  
+        elseif($clients == 'PRO0115'){             
+            if($res){
+                $this->CO_Debt_over_10k($data,$res->id,"https://leadsordered.leadportal.com/new_api/api.php");
+            }
+        }  
+        elseif($clients == 'PRO0116'){             
+            if($res){
+                $this->CO_Debt_Over_18k($data,$res->id,"https://leadsordered.leadportal.com/new_api/api.php");
+            }
+        }  
+        elseif($clients == 'PRO0127'){             
+            if($res){
+                $this->Rev2416($data,$res->id,"https://leadbalance.com/prospectpro/process.php");
+            }
+        }  
+	   elseif($clients == 'PRO0080'){             
+           if($res){
+                $this->Rev2391Post($data,$res->id,"https://leadbalance.com/prospectpro/process.php");
+            }
+        }
     }  
 
     

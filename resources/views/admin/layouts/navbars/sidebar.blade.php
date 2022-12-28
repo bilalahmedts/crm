@@ -27,7 +27,7 @@
                                 aria-expanded="{{ in_array($current_page, ['mortgage', 'mortgage-submission']) ? 'true' : 'false' }}"
                                 aria-controls="nav-mortgages">
                                 <i class="fa fa-home"></i>
-                                <span class="nav-link-text">Mortgages</span>
+                                <span class="nav-link-text">Debt</span>
                             </a>
                             <div class="collapse {{ in_array($current_page, ['mortgage', 'mortgage-submission']) ? 'show' : '' }}"
                                 id="nav-mortgages">
@@ -120,8 +120,61 @@
                             </div>
                         </li>
                     @endcanany
+                    @canany(['campaigns.index', 'campaigns.create', 'campaigns.delete'])
+                        
+                        <li class="nav-item">
+                            <a class="nav-link {{ in_array($current_page, ['campaigns']) ? 'active' : '' }}"
+                                href="{{ route('campaigns.index') }}">
+                                <i class="fa fa-archive"></i> <span class="nav-link-text">Campaigns</span>
+                            </a>
+                        </li>
+                    @endcanany
+                    @canany(['clients.index', 'clients.create', 'clients.delete'])
+                        
+                        <li class="nav-item">
+                            <a class="nav-link {{ in_array($current_page, ['clients']) ? 'active' : '' }}"
+                                href="{{ route('clients.index') }}">
+                                <i class="fa fa-box"></i> <span class="nav-link-text">Clients</span>
+                            </a>
+                        </li>
+                    @endcanany
 
-
+                    @canany(['projects.index', 'projects.create', 'projects.delete'])
+                        
+                        <li class="nav-item">
+                            <a class="nav-link {{ in_array($current_page, ['projects']) ? 'active' : '' }}"
+                                href="{{ route('projects.index') }}">
+                                <i class="fa fa-list"></i> <span class="nav-link-text">Projects</span>
+                            </a>
+                        </li>
+                    @endcanany
+                    {{--                     @canany(['home-warranties.*', 'home-warranties.index', 'home-warranties.create', 'home-warranties.edit', 'home-warranties.delete'])
+                        <li class="nav-item">
+                            <a class="nav-link {{ in_array($current_page, ['home-warranties', 'home-warranties-submission']) ? 'active' : '' }}"
+                                href="#nav-homews" data-toggle="collapse" role="button"
+                                aria-expanded="{{ in_array($current_page, ['home-warranties', 'home-warranties-submission']) ? 'true' : 'false' }}"
+                                aria-controls="nav-homews">
+                                <i class="ni ni-building"></i>
+                                <span class="nav-link-text">Home Warranty</span>
+                            </a>
+                            <div class="collapse {{ in_array($current_page, ['home-warranties', 'home-warranties-submission']) ? 'show' : '' }}"
+                                id="nav-homews">
+                                <ul class="nav nav-sm flex-column">
+                                    @canany(['home-warranties.*', 'home-warranties.index', 'home-warranties.create', 'home-warranties.edit', 'home-warranties.delete'])
+                                        <li class="nav-item">
+                                            <a href="{{ route('home-warranties.create') }}"
+                                                class="nav-link {{ $current_page == 'home-warranties-submission' ? 'active' : '' }}">Submission
+                                                Form</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('home-warranties.index') }}"
+                                                class="nav-link {{ $current_page == 'home-warranties' ? 'active' : '' }}">Sales-Sheet</a>
+                                        </li>
+                                    @endcanany
+                                </ul>
+                            </div>
+                        </li>
+                    @endcanany --}}
                     <!-- Discount school supply starts -->
                     @canany(['dss.*', 'dss.index', 'dss.create', 'dss.edit', 'dss.delete'])
                         <li class="nav-item">
@@ -157,6 +210,65 @@
                         </li>
                     @endcanany
                     <!-- Discount school supply ends -->
+					 @canany(['cmu-sales.import-form'])
+                        <li class="nav-item">
+                            <a class="nav-link {{ in_array($current_page, ['cmu-sales.import-form']) ? 'active' : '' }}"
+                                href="{{ route('cmu-sales.import-form') }}">
+                                <i class="fa fa-phone"></i> <span
+                                    class="nav-link-text">CMU Sales</span>
+                            </a>
+                        </li>
+                    @endcanany
+                      <!-- Call analytics Sales Starts -->
+                      @canany(['call-analytic-sales.import-form'])
+                      <li class="nav-item">
+                          {{-- <a class="nav-link {{ in_array($current_page, ['call-analytic-sales.import-form']) ? 'active' : '' }}"
+                              href="{{ route('call-analytic-sales.import-form') }}">
+                              <i class="ni ni-chart-bar-32"></i> <span
+                                  class="nav-link-text">Call Analytics</span>
+                          </a> --}}
+
+                          <a class="nav-link {{ in_array($current_page, ['call-analytic-sales.import-form']) ? 'active' : '' }}"
+                          href="#nav-cax" data-toggle="collapse" role="button"
+                          aria-expanded="{{ in_array($current_page, ['call-analytic-sales.import-form']) ? 'true' : 'false' }}"
+                          aria-controls="nav-cax">
+                          <i class="fa fa-graduation-cap"></i>
+                          <span class="nav-link-text">Call Analytics</span>
+                      </a>
+                      <div class="collapse {{ in_array($current_page, ['call-analytic-sales.import-form']) ? 'show' : '' }}"
+                      id="nav-cax">
+                      <ul class="nav nav-sm flex-column">
+                              <li class="nav-item">
+                                  <a href="{{ route('call-analytic-sales.import-form') }}"
+                                      class="nav-link {{ $current_page == 'call-analytic-sales.import-form' ? 'active' : '' }}">Upload and View Data</a>
+                              </li>
+                      </ul>
+                      <ul class="nav nav-sm flex-column">
+                          <li class="nav-item">
+                              <a href="{{ route('call-analytic-sales.stats') }}"
+                                  class="nav-link {{ $current_page == 'call-analytic-sales.stats' ? 'active' : '' }}">CAX-Stats</a>
+                          </li>
+                  </ul>
+                  </div>
+                      </li>
+                  @endcanany
+
+                  <!--Call analytics Sales ends -->
+					@canany(['eddy-sales.import-form'])
+                        <li class="nav-item">
+                            <a class="nav-link {{ in_array($current_page, ['eddy-sales.import-form']) ? 'active' : '' }}"
+                                href="{{ route('eddy-sales.import-form') }}">
+                                <i class="ni ni-chart-bar-32"></i> <span class="nav-link-text">Eddy Sales</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ in_array($current_page, ['eddyusers']) ? 'active' : '' }}"
+                                href="{{ route('eddyusers') }}">
+                                <i class="fa fa-users"></i> <span class="nav-link-text">Eddy Users</span>
+                            </a>
+                        </li>
+                    @endcanany
                     @canany(['kb.*', 'kb.index', 'kb.create', 'kb.edit', 'kb.delete', 'kb_category.*',
                         'kb_category.index', 'kb_category.create', 'kb_category.edit', 'kb_category.delete'])
 
@@ -247,15 +359,8 @@
                         </li>
 
                     @endcanany
-                    @canany(['cmu-sales.import-form'])
-                    <li class="nav-item">
-                        <a class="nav-link {{ in_array($current_page, ['cmu-sales.import-form']) ? 'active' : '' }}"
-                            href="{{ route('cmu-sales.import-form') }}">
-                            <i class="ni ni-bullet-list-67"></i> <span
-                                class="nav-link-text">{{ __('labels.cmu-sales') }}</span>
-                        </a>
-                    </li>
-                @endcanany
+                   
+
                     @canany(['department.*', 'department.index', 'department.create', 'department.edit',
                         'department.delete'])
                         <li class="nav-item">

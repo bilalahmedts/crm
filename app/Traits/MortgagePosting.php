@@ -156,6 +156,81 @@ trait MortgagePosting{
         $this->posting($postData,$data['clients'],$id,$result);       
          
     }
+    public function CO_Debt_under_10k($data,$id,$url){
+        // print_r($data);exit;
+        $postData = array();  
+        $postData['SRC'] = "TS_Debt_2x_Verified";
+        $postData['Key'] = "97f010d4b111ed9888b2fbc39c59a5f59c78c63d38cd32f4e85cc3555d3b312a";
+        $postData['API_Action'] = "pingPostLead";        
+        $postData['TYPE'] = "93"; 
+        $postData['Mode'] = "full";
+        $postData['Landing_Page'] = "landing";
+        $postData['IP_Address'] = "160.84.125.140";  
+        $postData['Lead_ID']= "1001316";     
+        $postData['First_Name'] = $data['first_name'];
+        $postData['Last_Name'] = $data['last_name'];
+        $postData['Primary_Phone'] = $data['phone']; 
+        $postData['Address'] = $data['address'];  
+        $postData['City'] = $data['city'];  
+        $postData['State'] = $data['state'];  
+        $postData['Zip'] = $data['zip'];  
+        $postData['Email'] = $data['email']; 
+        $postData['Debt'] = $data['debt']; 
+        
+        $result = $this->curl($postData,$url);        
+        $this->posting($postData,$data['clients'],$id,$result);       
+         
+    }
+    public function CO_Debt_over_10k($data,$id,$url){
+        // print_r($data);exit;
+        $postData = array();  
+        $postData['SRC'] = "TS_Debt_2x_Verified";
+        $postData['Key'] = "97f010d4b111ed9888b2fbc39c59a5f59c78c63d38cd32f4e85cc3555d3b312a";
+        $postData['API_Action'] = "pingPostLead";        
+        $postData['TYPE'] = "93"; 
+        $postData['Mode'] = "full";
+        $postData['Landing_Page'] = "landing";
+        $postData['IP_Address'] = "160.84.125.140";  
+        $postData['Lead_ID']= "1001316";     
+        $postData['First_Name'] = $data['first_name'];
+        $postData['Last_Name'] = $data['last_name'];
+        $postData['Primary_Phone'] = $data['phone']; 
+        $postData['Address'] = $data['address'];  
+        $postData['City'] = $data['city'];  
+        $postData['State'] = $data['state'];  
+        $postData['Zip'] = $data['zip'];  
+        $postData['Email'] = $data['email']; 
+        $postData['Debt'] = $data['debt']; 
+        
+        $result = $this->curl($postData,$url);        
+        $this->posting($postData,$data['clients'],$id,$result);       
+         
+    }
+    public function CO_Debt_Over_18k($data,$id,$url){
+        // print_r($data);exit;
+        $postData = array();  
+        $postData['SRC'] = "TS_Debt_2x_Verified";
+        $postData['Key'] = "97f010d4b111ed9888b2fbc39c59a5f59c78c63d38cd32f4e85cc3555d3b312a";
+        $postData['API_Action'] = "pingPostLead";        
+        $postData['TYPE'] = "93"; 
+        $postData['Mode'] = "full";
+        $postData['Landing_Page'] = "landing";
+        $postData['IP_Address'] = "160.84.125.140";  
+        $postData['Lead_ID']= "1001316";     
+        $postData['First_Name'] = $data['first_name'];
+        $postData['Last_Name'] = $data['last_name'];
+        $postData['Primary_Phone'] = $data['phone']; 
+        $postData['Address'] = $data['address'];  
+        $postData['City'] = $data['city'];  
+        $postData['State'] = $data['state'];  
+        $postData['Zip'] = $data['zip'];  
+        $postData['Email'] = $data['email']; 
+        $postData['Debt'] = $data['debt']; 
+        
+        $result = $this->curl($postData,$url);        
+        $this->posting($postData,$data['clients'],$id,$result);       
+         
+    }
 
     public function RevLgPost($data,$id,$url){
         $postData = array();   
@@ -480,9 +555,9 @@ trait MortgagePosting{
         $postData["CODE"] = "47532489";
         $postData["LEAD_TYPE"] = "MORTGAGE";
         $postData["form_tools_form_id"] = "2";
-        $postData["r_TRANSFERRED_TO"] = "060922LB140_cv";
+        $postData["r_TRANSFERRED_TO"] = "121522LB804";
         $postData["r_SVC_TYPE"] = "REVERSE MORTGAGE";
- 
+        $postData["RECEIVING_REP"] = "John";
         $postData['r_FIRST_NAME'] = $data['first_name'];
         $postData['r_LAST_NAME'] = $data['last_name']; 
         $postData['PHONE_1'] = $data['phone']; 
@@ -503,9 +578,9 @@ trait MortgagePosting{
         $postData['MONTHLY_PAYMENT'] = $data['monthly_payment'];                 
         $postData['LATE_PAYMENTS'] = $data['late_payment'];                 
         $postData['AGE'] = $data['age'];                 
-        $postData['r_INCOME'] = $data['incom'];                 
+        $postData['r_INCOME'] = $data['income'];                 
         $postData['r_TRANSFERRED_BY'] = $data['transfer_by'];                 
-        $postData['r_CALL_TRANSFER_STATUS'] = $data['call_transfer_status'];                 
+        $postData['r_CALL_TRANSFER_STATUS'] = "Call Transferred Successfully";                 
         $postData['CALL_NOTES'] = $data['notes'];                 
         $result = $this->curl($postData,$url);
         $this->posting($postData,$data['clients'],$id,$result);  
@@ -670,7 +745,6 @@ trait MortgagePosting{
         $postData["r_TRANSFERRED_TO"] = "091922LB130";
         $postData["r_SVC_TYPE"] = "REVERSE MORTGAGE";
         $postData["RECEIVING_REP"] = "Chris";
- 
         $postData['r_FIRST_NAME'] = $data['first_name'];
         $postData['r_LAST_NAME'] = $data['last_name']; 
         $postData['PHONE_1'] = $data['phone']; 
@@ -698,6 +772,125 @@ trait MortgagePosting{
         $result = $this->curl($postData,$url);
         $this->posting($postData,$data['clients'],$id,$result);  
     }
+    public function Rev2414($data,$id,$url){
+        $postData = array();   
+ 
+        $postData["CODE"] = "47532489";
+        $postData["LEAD_TYPE"] = "MORTGAGE";
+        $postData["form_tools_form_id"] = "2";
+        $postData["r_TRANSFERRED_TO"] = "111422LB100";
+        $postData["r_SVC_TYPE"] = "REVERSE MORTGAGE";
+        $postData["r_CALL_TRANSFER_STATUS"]="Call Transferred Successfully"; 
+        $postData['r_FIRST_NAME'] = $data['first_name'];
+        $postData['r_LAST_NAME'] = $data['last_name']; 
+        $postData['PHONE_1'] = $data['phone']; 
+		$postData['PHONE_2'] = $data['phone']; 
+        $postData['re_EMAIL'] = $data['email']; 
+        $postData['r_ADDRESS'] = $data['address'];  
+        $postData['r_CITY'] = $data['city'];        
+        $postData['r_STATE'] = $data['state'];        
+        $postData['r_ZIP'] = $data['zip'];         
+		$postData['DOB'] = $data['dob']; 		
+		$postData['EMPLOYED'] = $data['EMPLOYED']; 
+        $postData['rd_MTG_BAL'] = $data['mortgage_balance'];   
+        $postData['rc_PROP_VALUE'] = $data['property_value'];     
+        $postData['CASH_OUT'] = $data['cash_out'];        
+        $postData['LOAN_AMT'] = $data['loan_amount'];               
+        $postData['LTV'] = $data['ltv'];               
+        $postData['r_CREDIT_RATING'] = $data['credit_rating'];               
+        $postData['r_INTEREST_RATE'] = $data['interest_rate'];                 
+        $postData['r_RATE_TYPE'] = $data['rate_type'];                 
+        $postData['r_PROPERTY_TYPE'] = $data['property_type'];                 
+        $postData['MONTHLY_PAYMENT'] = $data['monthly_payment'];                 
+        $postData['LATE_PAYMENTS'] = $data['late_payment'];                 
+        $postData['AGE'] = $data['age'];                 
+        $postData['r_INCOME'] = @$data['incom'];                 
+        $postData['r_TRANSFERRED_BY'] = $data['transfer_by'];                                   
+        $postData['CALL_NOTES'] = $data['notes'];                 
+        $result = $this->curl($postData,$url);
+        $this->posting($postData,$data['clients'],$id,$result);  
+    }
+	public function Rev2415($data,$id,$url){
+        $postData = array();   
+ 
+        $postData["CODE"] = "47532489";
+        $postData["LEAD_TYPE"] = "MORTGAGE";
+        $postData["form_tools_form_id"] = "2";        
+		$postData["RECEIVING_REP_FIRST_NAME"] = "Steve";
+
+        $postData["r_TRANSFERRED_TO"] = "110222LB165";
+        $postData["r_SVC_TYPE"] = "REVERSE MORTGAGE";
+        $postData["r_CALL_TRANSFER_STATUS"]="Call Transferred Successfully"; 
+        $postData['r_FIRST_NAME'] = $data['first_name'];
+        $postData['r_LAST_NAME'] = $data['last_name']; 
+        $postData['PHONE_1'] = $data['phone']; 
+		$postData['PHONE_2'] = $data['phone']; 
+        $postData['re_EMAIL'] = $data['email']; 
+        $postData['r_ADDRESS'] = $data['address'];  
+        $postData['r_CITY'] = $data['city'];        
+        $postData['r_STATE'] = $data['state'];        
+        $postData['r_ZIP'] = $data['zip']; 
+		$postData['DOB'] = $data['dob']; 		
+		$postData['EMPLOYED'] = $data['EMPLOYED']; 
+        $postData['rd_MTG_BAL'] = $data['mortgage_balance'];   
+        $postData['rc_PROP_VALUE'] = $data['property_value'];     
+        $postData['CASH_OUT'] = $data['cash_out'];        
+        $postData['LOAN_AMT'] = $data['loan_amount'];               
+        $postData['LTV'] = $data['ltv'];               
+        $postData['r_CREDIT_RATING'] = $data['credit_rating'];               
+        $postData['r_INTEREST_RATE'] = $data['interest_rate'];                 
+        $postData['r_RATE_TYPE'] = $data['rate_type'];                 
+        $postData['r_PROPERTY_TYPE'] = $data['property_type'];                 
+        $postData['MONTHLY_PAYMENT'] = $data['monthly_payment'];                 
+        $postData['LATE_PAYMENTS'] = $data['late_payment'];                 
+        $postData['AGE'] = $data['age'];                 
+        $postData['r_INCOME'] = @$data['incom'];                 
+        $postData['r_TRANSFERRED_BY'] = $data['transfer_by'];                 
+        $postData['CALL_NOTES'] = $data['notes'];                 
+        $result = $this->curl($postData,$url);
+        $this->posting($postData,$data['clients'],$id,$result);  
+    }
+    public function Rev2416($data,$id,$url){
+        $postData = array();   
+ 
+        $postData["CODE"] = "47532489";
+        $postData["LEAD_TYPE"] = "MORTGAGE";
+        $postData["form_tools_form_id"] = "2";        
+		$postData["RECEIVING_REP_FIRST_NAME"] = "Jeff";
+
+        $postData["r_TRANSFERRED_TO"] = "102722LB183";
+        $postData["r_SVC_TYPE"] = "REVERSE MORTGAGE";
+        $postData["r_CALL_TRANSFER_STATUS"]="Call Transferred Successfully"; 
+        $postData['r_FIRST_NAME'] = $data['first_name'];
+        $postData['r_LAST_NAME'] = $data['last_name']; 
+        $postData['PHONE_1'] = $data['phone']; 
+		$postData['PHONE_2'] = $data['phone']; 
+        $postData['re_EMAIL'] = $data['email']; 
+        $postData['r_ADDRESS'] = $data['address'];  
+        $postData['r_CITY'] = $data['city'];        
+        $postData['r_STATE'] = $data['state'];        
+        $postData['r_ZIP'] = $data['zip']; 
+		$postData['DOB'] = $data['dob']; 		
+		$postData['EMPLOYED'] = $data['EMPLOYED']; 
+        $postData['rd_MTG_BAL'] = $data['mortgage_balance'];   
+        $postData['rc_PROP_VALUE'] = $data['property_value'];     
+        $postData['CASH_OUT'] = $data['cash_out'];        
+        $postData['LOAN_AMT'] = $data['loan_amount'];               
+        $postData['LTV'] = $data['ltv'];               
+        $postData['r_CREDIT_RATING'] = $data['credit_rating'];               
+        $postData['r_INTEREST_RATE'] = $data['interest_rate'];                 
+        $postData['r_RATE_TYPE'] = $data['rate_type'];                 
+        $postData['r_PROPERTY_TYPE'] = $data['property_type'];                 
+        $postData['MONTHLY_PAYMENT'] = $data['monthly_payment'];                 
+        $postData['LATE_PAYMENTS'] = $data['late_payment'];                 
+        $postData['AGE'] = $data['age'];                 
+        $postData['r_INCOME'] = @$data['incom'];                 
+        $postData['r_TRANSFERRED_BY'] = $data['transfer_by'];                 
+        $postData['CALL_NOTES'] = $data['notes'];                 
+        $result = $this->curl($postData,$url);
+        $this->posting($postData,$data['clients'],$id,$result);  
+    }
+	
 	
 	public function EMR_1378($data,$id,$url){
         $postData = array();   

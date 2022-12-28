@@ -37,9 +37,10 @@ class sendHomeWarrantyDataToSap extends Command
      */
     public function handle()
     {
-         set_time_limit(0);$test =array();
+        set_time_limit(0);$test =array();
 		exit;
         $arrayData=array();
+        $projectCodes = Project::where('isFixed',1)->pluck('project_code');
             $sales = DB::table('home_warranties')
                 ->select('client_code as CardCode','project_code as ItemCode')
                 ->selectRaw("
@@ -51,12 +52,18 @@ class sendHomeWarrantyDataToSap extends Command
                             hrms_id as SalesEmployee, 
                             created_at as DocDate
                         ")
-                ->where('client_code',"CUS-100019")                       
+                ->where('client_code',"CUS-100028")                       
                 ->whereNull('sap_id')    
-                ->where('project_code',"<>","PRO0075") 
-                ->where('project_code',"<>","PRO0074") 
-                ->whereNotIn('hrms_id',array(63545,121439,221077,362887,429951,455511,761335,996695,99695,238229,272401,390469,399575,424893,425300,443789,531340,567227,579785,594621,622934,59547,92749,56461,91180,119571,169948,407783,412595,502623,508705,569189,585108,684175,792120,951163,0,46326,69297,154883,171780,184384,241119,297000,330839,380029,575801,654321,852703))
-                ->groupBy('hrms_id','created_at')->get();      
+                // ->where('project_code',"<>","PRO0075") 
+                // ->where('project_code',"<>","PRO0074") 
+                ->whereNotIn('project_code',$projectCodes)  
+                ->whereNotIn('hrms_id',array(
+					63545,121439,221077,362887,429951,455511,761335,996695,99695,238229,272401,390469,399575,
+					424893,425300,443789,531340,567227,579785,594621,622934,59547,92749,56461,91180,119571,169948,
+					407783,412595,502623,508705,569189,585108,684175,792120,951163,0,46326,69297,154883,171780,
+					184384,241119,297000,330839,380029,575801,654321,852703
+				))
+                ->groupBy('hrms_id','created_at','project_code')->get();      
             $userIds=array();      
             foreach($sales as $sale){
                 if($sale->Quantity<=0){
@@ -84,7 +91,7 @@ class sendHomeWarrantyDataToSap extends Command
                 $postSapData['DocDate']=date("Y-m-d",strtotime($key));
                 $postSapData['CardCode']=$sale->CardCode;              
                 $postSapData['DocumentLines']=$value;//return $postSapData;
-                $data['CardCode']="CUS-100019"; 
+                $data['CardCode']="CUS-100028"; 
                 $data['DocumentLines']=$postSapData; 
                 $url="http://tsc.isap.pk:9001/api/Revenue";   
                 $ch = curl_init();

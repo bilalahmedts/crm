@@ -64,7 +64,7 @@
         </div>
       </div>
 
-      <div class="row"  style="position: relative; min-height: 500px;">
+      {{-- <div class="row"  style="position: relative; min-height: 500px;">
         <div class="col-xl-12">
           <div class="card">
             <div class="card-header border-0">
@@ -138,8 +138,8 @@
           </div>
         </div>
 
-      </div>
-        @include('admin.layouts.footers.auth')
+      </div> --}}
+      @include('admin.layouts.footers.auth')
     </div>
 @endsection
 

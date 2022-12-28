@@ -27,19 +27,36 @@
 										<?php if(auth()->user()->hasRole('SolarManager') || auth()->user()->hasRole('Super Admin')): ?>
                                         <div class="col-md-2 col-lg-2 form-group">
                                             <label>Client</label>
-                                            <select name="client_id" id="" onchange="selectClient(this.value)" value="<?php echo e(@$_GET['client_id']); ?>"  class="form-control">
+                                            <select name="client_id" id="" onchange ="selectClient(this.value)"    class="form-control">
                                                 <option value="">--Select--</option>
                                                 <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="<?php echo e($client->client_code); ?>"><?php echo e($client->name); ?></option>
+                                                <?php 
+                                                    $select='';
+                                                    if(@$_GET['client_id'] == $client->client_code)
+                                                        $select="selected";
+                                                    else
+                                                    $select="";
+
+                                                ?>
+                                                <option <?php echo e($select); ?> value="<?php echo e($client->client_code); ?>"><?php echo e($client->name); ?></option>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </select>                                             
                                         </div>
+                                        
                                         <div class="col-md-2 col-lg-2 form-group">
                                             <label>Project</label>
-                                            <select  id="project_id" name="project_id" value="<?php echo e(@$_GET['project_id']); ?>"  class="form-control">
+                                            <select name="project_id" id="project_id"  class="form-control">
                                                 <option value="">--Select--</option>
                                                 <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="<?php echo e($project->project_code); ?>"><?php echo e($project->name); ?></option>
+                                                <?php 
+                                                    $select='';
+                                                    if(@$_GET['project_id'] == $project->project_code)
+                                                        $select="selected";
+                                                    else
+                                                    $select="";
+
+                                                ?>
+                                                <option  <?php echo e($select); ?> value="<?php echo e($project->project_code); ?>"><?php echo e($project->name); ?></option>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </select>                                             
                                         </div>
@@ -82,16 +99,18 @@
                             <thead class="thead-light">
                                 <tr>
                                      <th scope="col" width="3%">Record ID</th>
+                                     <th scope="col" width="3%">Created At</th>
                                     <th scope="col" width="3%">First Name</th>
 									<th scope="col" width="3%">Last Name</th>
                                     <th scope="col" width="3%">Phone</th>
                                     <th scope="col" width="3%">State</th> 
                                     <th scope="col" width="3%">Agent Name</th>
                                     <th scope="col" width="3%">Agent HRMSID</th>
+									<th scope="col" width="3%">Reporting To</th>
 									<th scope="col" width="3%">Client status</th>									
 									<th scope="col" width="3%">QA status</th>
-
                                     <th scope="col" width="3%">Client</th>
+                                    <th scope="col" width="3%">Appt Date</th>
 									<th scope="col" width="3%">Project</th>
 									<?php if(auth()->user()->hasRole('SolarClient') || auth()->user()->hasRole('Super Admin')): ?>
 									<th scope="col" width="10%">Client Status</th> 
@@ -103,15 +122,18 @@
                                 <?php $__currentLoopData = $solars; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
                                         <td><?php echo e($row->record_id); ?></td>
+                                        <td><?php echo e($row->created_at); ?></td>
                                         <td><?php echo e($row->first_name); ?> </td> 
 										<td><?php echo e($row->last_name); ?></td>
                                         <td><?php echo e($row->phone); ?></td>
                                         <td><?php echo e($row->state); ?></td> 
                                         <td><?php echo e(($row->user) ? $row->user->name:''); ?></td>
                                         <td><?php echo e(($row->user) ? $row->user->HRMSID:''); ?></td>
+										 <td><?php echo e($row->user->reporting_to_name->name ?? ''); ?></td>
 										<td><?php echo e($row->client_status); ?></td>
 										<td><?php echo e($row->qa_status); ?></td>
                                         <td><b> <?php echo e(($row->client) ? $row->client->name:''); ?> </b></td>
+                                        <td><?php echo e($row->app_date_time); ?></td>
 										<td><b> <?php echo e(($row->project) ? $row->project->name:''); ?> </b></td>
 										<?php if(auth()->user()->hasRole('SolarClient') || auth()->user()->hasRole('Super Admin')): ?>
 											<?php $status = ['billable'=>"Accepeted",'not-billable'=>"Rejected" ,'pending'=>"Pending"];?>

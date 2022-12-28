@@ -26,7 +26,7 @@ class SaleMortgage extends Model
     }
     protected $dates = [ 'deleted_at' ];
 
-    public function scopeSearch($mortgages,$search,$start_date,$end_date,$client_id,$project_id){       
+    public function scopeSearch($mortgages,$search,$start_date,$end_date,$client_id,$project_id,$user_id){       
          
         if($search){        
             $mortgages =$mortgages->where(function($query)use($search){
@@ -38,8 +38,14 @@ class SaleMortgage extends Model
         if($client_id){
             $mortgages = $mortgages->where('client_code',$client_id);
         }
+        if($client_id){
+            $mortgages = $mortgages->where('client_code',$client_id);
+        }
         if($project_id){
             $mortgages = $mortgages->where('project_code',$project_id);
+        }
+        if($user_id){
+            $mortgages = $mortgages->where('user_id',$user_id);
         }
         if($start_date && $end_date){
             $mortgages = $mortgages->whereDate('created_at',">=",$start_date)->whereDate('created_at',"<=",$end_date);

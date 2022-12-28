@@ -29,19 +29,36 @@
 										@if(auth()->user()->hasRole('SolarManager') || auth()->user()->hasRole('Super Admin'))
                                         <div class="col-md-2 col-lg-2 form-group">
                                             <label>Client</label>
-                                            <select name="client_id" id="" onchange="selectClient(this.value)" value="{{@$_GET['client_id']}}"  class="form-control">
+                                            <select name="client_id" id="" onchange ="selectClient(this.value)"    class="form-control">
                                                 <option value="">--Select--</option>
                                                 @foreach($clients as $client)
-                                                <option value="{{$client->client_code}}">{{$client->name}}</option>
+                                                @php 
+                                                    $select='';
+                                                    if(@$_GET['client_id'] == $client->client_code)
+                                                        $select="selected";
+                                                    else
+                                                    $select="";
+
+                                                @endphp
+                                                <option {{$select}} value="{{$client->client_code}}">{{$client->name}}</option>
                                                 @endforeach
                                             </select>                                             
                                         </div>
+                                        
                                         <div class="col-md-2 col-lg-2 form-group">
                                             <label>Project</label>
-                                            <select  id="project_id" name="project_id" value="{{@$_GET['project_id']}}"  class="form-control">
+                                            <select name="project_id" id="project_id"  class="form-control">
                                                 <option value="">--Select--</option>
                                                 @foreach($projects as $project)
-                                                <option value="{{$project->project_code}}">{{$project->name}}</option>
+                                                @php 
+                                                    $select='';
+                                                    if(@$_GET['project_id'] == $project->project_code)
+                                                        $select="selected";
+                                                    else
+                                                    $select="";
+
+                                                @endphp
+                                                <option  {{$select}} value="{{$project->project_code}}">{{$project->name}}</option>
                                                 @endforeach
                                             </select>                                             
                                         </div>
@@ -84,16 +101,18 @@
                             <thead class="thead-light">
                                 <tr>
                                      <th scope="col" width="3%">Record ID</th>
+                                     <th scope="col" width="3%">Created At</th>
                                     <th scope="col" width="3%">First Name</th>
 									<th scope="col" width="3%">Last Name</th>
                                     <th scope="col" width="3%">Phone</th>
                                     <th scope="col" width="3%">State</th> 
                                     <th scope="col" width="3%">Agent Name</th>
                                     <th scope="col" width="3%">Agent HRMSID</th>
+									<th scope="col" width="3%">Reporting To</th>
 									<th scope="col" width="3%">Client status</th>									
 									<th scope="col" width="3%">QA status</th>
-
                                     <th scope="col" width="3%">Client</th>
+                                    <th scope="col" width="3%">Appt Date</th>
 									<th scope="col" width="3%">Project</th>
 									@if(auth()->user()->hasRole('SolarClient') || auth()->user()->hasRole('Super Admin'))
 									<th scope="col" width="10%">Client Status</th> 
@@ -105,15 +124,18 @@
                                 @foreach($solars as $row)
                                     <tr>
                                         <td>{{$row->record_id}}</td>
+                                        <td>{{$row->created_at}}</td>
                                         <td>{{$row->first_name}} </td> 
 										<td>{{$row->last_name}}</td>
                                         <td>{{$row->phone}}</td>
                                         <td>{{$row->state}}</td> 
                                         <td>{{($row->user) ? $row->user->name:'' }}</td>
                                         <td>{{($row->user) ? $row->user->HRMSID:'' }}</td>
+										 <td>{{ $row->user->reporting_to_name->name ?? '' }}</td>
 										<td>{{$row->client_status}}</td>
 										<td>{{$row->qa_status}}</td>
                                         <td><b> {{($row->client) ? $row->client->name:'' }} </b></td>
+                                        <td>{{$row->app_date_time}}</td>
 										<td><b> {{($row->project) ? $row->project->name:'' }} </b></td>
 										@if(auth()->user()->hasRole('SolarClient') || auth()->user()->hasRole('Super Admin'))
 											<?php $status = ['billable'=>"Accepeted",'not-billable'=>"Rejected" ,'pending'=>"Pending"];?>

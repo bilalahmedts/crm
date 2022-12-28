@@ -2,10 +2,12 @@
 
 @section('content')
 @push('header-buttons')
+    @if (in_array(Auth::user()->roles[0]->name, ['Super Admin','MortgageManager','AllSheet']))
         <div class="col-lg-6 col-5 text-right">
-          <a href="{{ route('mortgages.index') }}" class="btn btn-sm btn-icon btn-neutral">
+        <a href="{{ route('mortgages.index') }}" class="btn btn-sm btn-icon btn-neutral">
             <i data-feather="arrow-left" stroke-width="3" width="12"></i> Go Back</a>
         </div>
+    @endif
     @endpush
 
     @include('admin.layouts.headers.cards', ['title' => "Mortgage"])
@@ -19,7 +21,8 @@
                         <div class="row">
                             <div class="col-md-4"></div>
                             <div class="col-md-4">
-                                <img style="display: block;margin-left: auto; margin-right: auto;width: 50%; display:none" src="{{url('loader.gif')}}" id="loader">
+                                <img style="display: block;margin-left: auto; margin-right: auto;width: 50%; display:none" 
+									 src="{{url('loader.gif')}}" id="loader">
                             </div>
                         </div>
                         
@@ -34,7 +37,8 @@
                                 <h3 class="mb-0 text text-danger" id="alreadyASaleLabel" style="display: none">Already a Sale</h3>
                             </div>							
                             <div class="col-3 ">
-                                <input style="color: black" style="color: black" style="border: 2px solid;"  type="number" id="search" name="search" class="form-control" placeholder="Record ID">
+                                <input style="color: black" style="color: black" style="border: 2px solid;"  
+									   type="number" id="search" name="search" class="form-control" placeholder="Record ID">
                             </div>  
                             <div class="col-2 ">
                                 <a href="#" onclick="searchRecord()" class="btn btn-primary float-right">Search Sale Record</a>
@@ -66,7 +70,8 @@
                                 <div class="row">
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="clients">
                                         <span class="details">Select Client</span>
-                                        <select required readonly name="clients" onchange="selectClient(this.value)" class="form-control selection_style" style=" background: lightblue; color: black;">
+                                        <select required readonly name="clients" onchange="selectClient(this.value)" 
+												class="form-control selection_style" style=" background: lightblue; color: black;">
                                             <option value="">Select </option>
                                             @foreach($clients as $row)
                                                 <option value="{{$row->project_code}}">{{$row->name}}</option> 
@@ -76,6 +81,7 @@
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="recieving_rep">
                                         <strong>recieving_rep:</strong>
                                         <select name="recieving_rep" class="form-control selection_style">
+                                            <option> Select </option>
                                             <option>Ken</option>
                                             <option>Koorosh</option>
                                             <option>Lilia</option>
@@ -84,9 +90,11 @@
                                         </select>
                                     </div>
                                     <input style="color: black" type="hidden" name="record_id" id="record_id">
+
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="recieving_rep_qms_361">
                                         <strong>recieving_rep:</strong>
                                         <select name="recieving_rep" class="form-control selection_style">
+                                            <option> Select </option>
                                             <option>BRIAN</option>
                                             <option>JEFFERY</option>
                                             <option>JIM</option>
@@ -97,6 +105,15 @@
                                             <option>ROBERT</option>
                                         </select>
                                     </div>
+                                    <div class="col-md-4 col-lg-4 form-group" style="display: none" id="recieving_rep_lb_2414">
+                                        <strong>recieving_rep:</strong>
+                                        <select name="recieving_rep" class="form-control selection_style">
+                                            <option> Select </option>
+                                            <option>Jason</option>
+                                            <option>Elie</option>
+                                            
+                                        </select>
+                                    </div>
                                     
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="title">
                                         <span class="details">Title</span>
@@ -104,20 +121,24 @@
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="first_name" >
                                         <span class="details">First Name</span>
-                                        <input style="color: black" required  type="text" name="first_name" class="form-control" placeholder="First Name">
+                                        <input style="color: black" required  type="text" name="first_name" 
+											   class="form-control" placeholder="First Name">
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="last_name">
                                         <span class="details">Last Name</span>
-                                        <input style="color: black" required  type="text" name="last_name"  class="form-control" placeholder="Last Name">
+                                        <input style="color: black" required  type="text" name="last_name"  
+											   class="form-control" placeholder="Last Name">
                                     </div>
                                     
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="phone">
                                         <span class="details">Phone</span>
-                                        <input style="color: black" required readonly type="text" name="phone" id="phn" class="form-control" placeholder="Phone">
+                                        <input style="color: black" required readonly type="text" name="phone" 
+											   id="phn" class="form-control" placeholder="Phone">
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="work_phone">
                                         <span class="details">Work Phone</span>
-                                        <input style="color: black" type="text" readonly name="work_phone"  class="form-control" placeholder="Work Phone">
+                                        <input style="color: black" type="text" readonly name="work_phone"  
+											   class="form-control" placeholder="Work Phone">
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="email">
                                         <span class="details">Email</span>
@@ -125,12 +146,30 @@
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="address">
                                         <span class="details">Mail Address</span>
-                                        <input style="color: black"  type="text" name="address" id="priaddress"  class="form-control" placeholder="Address">
+                                        <input style="color: black"  type="text" name="address" id="priaddress"  
+											   class="form-control" placeholder="Address">
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="city">
                                         <span class="details">City</span>
                                         <input style="color: black"  type="text" name="city"  class="form-control" placeholder="City">
                                     </div>
+									<div class="col-md-4 col-lg-4 form-group" style="display: block" id="dob">
+                                        <span class="details">DOB</span>
+                                        <input style="color: black"  type="date" name="dob"  class="form-control" placeholder="dob">
+                                    </div>
+									<div class="col-md-4 col-lg-4 form-group" style="display: block" id="employer">
+                                        <span class="details">EMPLOYED</span>
+                                        <select name="EMPLOYED" id="emplr"  class="form-control selection_style">
+											<option>--Select--</option>											
+											<option value="W-2">W-2</option>
+											<option value="1099">1099 </option>
+											<option value="W-2/1099">W-2/1099</option>
+											<option value="Unemployed">Unemployed</option>
+											<option value="Disabled">Disabled</option>											
+											<option value="Retired">Retired</option>
+										</select>
+									</div>
+									
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="state">
                                         <span class="details">STATE</span>
                                         <select name="state" id="st"  class="form-control selection_style">
@@ -188,37 +227,44 @@
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="zip" >
                                         <span class="details">Zip Code</span>
-                                        <input style="color: black" type="number" name="zip" id="zipCode" class="form-control" placeholder="Zip Code">
+                                        <input style="color: black" type="number" name="zip" id="zipCode" class="form-control" 
+											   placeholder="Zip Code">
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="cash_amount">
                                         <span class="details">Cash Amount</span>
-                                        <input style="color: black" type="number" name="cash_amount"  class="form-control" placeholder="Cash Amount">
+                                        <input style="color: black" type="number" name="cash_amount"  class="form-control" 
+											   placeholder="Cash Amount">
                                     </div>
                 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="current_amount">
                                         <span class="details">Current Amount</span>
-                                        <input style="color: black" type="number" name="current_amount"  class="form-control" placeholder="Current Amount">
+                                        <input style="color: black" type="number" name="current_amount"  class="form-control"
+											   placeholder="Current Amount">
                                     </div>
                 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="current_rate">
                                         <span class="details">Current rate</span>
-                                        <input style="color: black" type="text" name="current_rate"  class="form-control" placeholder="Current rate">
+                                        <input style="color: black" type="text" name="current_rate"  class="form-control"
+											   placeholder="Current rate">
                                     </div>
                 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="income">
                                         <span class="details">Income</span>
-                                        <input style="color: black" type="number" name="income"  class="form-control" placeholder="Income">
+                                        <input style="color: black" type="number" name="income"  class="form-control" 
+											   placeholder="Income">
                                     </div>
                 
                 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="property_value">
                                         <span class="details">Property Value</span>
-                                        <input style="color: black" type="number" name="property_value"  class="form-control" placeholder="Property value">
+                                        <input style="color: black" type="number" name="property_value"  class="form-control"
+											   placeholder="Property value">
                                     </div>
                 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="property_type" >
                                         <span class="details">Property Type</span>
-                                        <input style="color: black" type="text" name="property_type" class="form-control" placeholder="Property Type">
+                                        <input style="color: black" type="text" name="property_type" class="form-control"
+											   placeholder="Property Type">
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="lender" >
                                         <span class="details">Lender</span>
@@ -315,6 +361,14 @@
                                         <span class="details">Age</span>
                                         <input style="color: black" type="number" name="age" class="form-control" placeholder="Age">
                                     </div>
+                                    <div class="col-md-4 col-lg-4 form-group" style="display: none" id="age_18_to_64" >
+                                        <span class="details">Age 18 to 64</span>
+                                        <select name="age_18_to_64"  class="form-control selection_style">
+                                            <option >--Select--</option>
+                                            <option >Yes</option>
+                                            <option >No</option>
+                                        </select>
+                                    </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="transfer_by" >
                                         <span class="details">Transfer By</span>
                                         <input style="color: black" type="text" name="transfer_by" class="form-control" placeholder="Transfer By">
@@ -366,6 +420,19 @@
                                             <option> No Response During Requested Call-Time</option>
                                         </select>
                                     </div>
+                                    <div class="col-md-4 col-lg-4 form-group" style="display: none" id="medicaid" >
+                                        <span class="details">Medi-care/Medic-aid/Va-Health-Care</span>
+                                            <select name="medicare_medicaid" class="form-control selection_style">
+                                                <option >--Select--</option>
+                                                <option >Yes</option>
+                                                <option>No</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 col-lg-4 form-group" style="display: none" id="annual_house">
+                                            <span class="details">Annual House Hold Income</span>
+                                            <input style="color: black" type="text" name="annual_house"  class="form-control"
+												   placeholder="Annual house hold">
+                                        </div>
 
 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="loanofficername" >
@@ -515,7 +582,8 @@
                                                     <option value="dboirum@thefederalsavingsbank.com"> Dillon Boirum </option>
                                                     <option value="dnolletti@thefederalsavingsbank.com"> Dom Nolletti </option>
                                                     <option value="dkehayias@thefederalsavingsbank.com"> Dominick Kehayias</option>
-                                                    <option value="earredondomendoza@thefederalsavingsbank.com"> Elizabeth Arrendondo-Mendoza </option>
+                                                    <option value="earredondomendoza@thefederalsavingsbank.com"> 
+														Elizabeth Arrendondo-Mendoza </option>
                                                     <option value="eannabi@thefederalsavingsbank.com"> Emaan Annabi </option>
                                                     <option value="elee@thefederalsavingsbank.com"> Eric Lee </option>
                                                     <option value="esatterwhite@thefederalsavingsbank.com"> Eric Satterwhite
@@ -795,17 +863,16 @@
                 success:function (res){
                     $('#loader').hide();
                     $('#searchForm').show();
-					/*if(res.status==204){
+					if(res.status==204){
 						$('#webform').hide();
 						$('#alreadyASaleLabel').show();
 					}
 					if(res.status==200){
 						$('#webform').show();
 						$('#alreadyASaleLabel').hide();	
-					}	*/				
+					}					
 
                     if(res.status==200){
-                        $('#webform').show();
                         document.getElementById('record_id').value = res.data.ID;
                         document.querySelector("input[name=first_name]").value = res.data.FirstName;
                         document.querySelector("input[name=last_name]").value = res.data.LastName;
@@ -845,12 +912,11 @@
 <script>
     function selectClient(val) {
         document.getElementById("phn").readOnly = true;
-
-    document.getElementById("submit").style.display = "block";
-	document.getElementById("employment").style = "display:none";
-	document.getElementById("bankrupty").style = "display:none";	
+		document.getElementById("submit").style.display = "block";
+		document.getElementById("employment").style = "display:none";
+		document.getElementById("bankrupty").style = "display:none";	
 		document.getElementById("debt").style = "display:none";
-	document.getElementById("agent").style = "display:none";	
+		document.getElementById("agent").style = "display:none";	
 		document.getElementById("lead_verification").style = "display:none";
 
 
@@ -881,7 +947,7 @@
         document.getElementById("property_value").style = "display:block";
         document.getElementById("company").style = "display:block";
         document.getElementById("credit_rating").style = "display:block";
-
+        document.getElementById("employment").style = "display:none";
         document.getElementById("mortgage_balance").style = "display:none";
         document.getElementById("loan_type").style = "display:none";
         document.getElementById("interest_rate").style = "display:none";
@@ -902,6 +968,13 @@
         document.getElementById("recieving_rep_qms_361").style = "display:none";
         document.getElementById("recieving_rep").style = "display:none";
         document.getElementById("cash_amount").style = "display:block";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
 
@@ -925,6 +998,7 @@
         document.getElementById("current_rate").style = "display:none";
         document.getElementById("income").style = "display:none";
         document.getElementById("property_value").style = "display:block";
+        document.getElementById("employment").style = "display:none";
         document.getElementById("company").style = "display:none";
         document.getElementById("credit_rating").style = "display:none";
         document.getElementById("mortgage_balance").style = "display:none";
@@ -944,6 +1018,13 @@
         document.getElementById("cash_out").style = "display:block";
         document.getElementById("property_type").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
     }
@@ -958,6 +1039,7 @@
         document.getElementById("zip").style = "display:block";
         document.getElementById("title").style = "display:none";
         document.getElementById("work_phone").style = "display:none";
+        document.getElementById("employment").style = "display:none";
         document.getElementById("email").style = "display:none";
         document.getElementById("city").style = "display:block";
 
@@ -986,6 +1068,13 @@
         document.getElementById("cash_out").style = "display:none";
         document.getElementById("property_type").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
     }
@@ -1002,7 +1091,7 @@
         document.getElementById("work_phone").style = "display:none";
         document.getElementById("email").style = "display:block";
         document.getElementById("city").style = "display:block";
-
+        document.getElementById("employment").style = "display:none";
         document.getElementById("notes").style = "display:block";
         document.getElementById("cash_amount").style = "display:block";
         document.getElementById("current_amount").style = "display:none";
@@ -1028,9 +1117,65 @@
         document.getElementById("cash_out").style = "display:none";
         document.getElementById("property_type").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
     }
     
     else if (val == "PRO0105") {
+        document.getElementById("recieving_rep").style = "display:none";
+        document.getElementById("first_name").style = "display:block";
+        document.getElementById("last_name").style = "display:block";
+        document.getElementById("phone").style = "display:block";
+        document.getElementById("address").style = "display:block";
+        document.getElementById("state").style = "display:block";
+        document.getElementById("zip").style = "display:block";
+        document.getElementById("title").style = "display:none";
+        document.getElementById("work_phone").style = "display:none";
+        document.getElementById("email").style = "display:block";
+        document.getElementById("city").style = "display:block";
+        document.getElementById("debt").style = "display:block";	
+        document.getElementById("notes").style = "display:block";
+        document.getElementById("cash_amount").style = "display:none";
+        document.getElementById("current_amount").style = "display:none";
+        document.getElementById("current_rate").style = "display:none";
+        document.getElementById("income").style = "display:none";
+        document.getElementById("property_value").style = "display:none";
+        document.getElementById("company").style = "display:none";
+        document.getElementById("credit_rating").style = "display:none";
+        document.getElementById("mortgage_balance").style = "display:none";
+        document.getElementById("interest_rate").style = "display:none";
+        document.getElementById("loan_amount").style = "display:none";
+        document.getElementById("loan_type").style = "display:none";
+        document.getElementById("purpose_of_loan").style = "display:none";
+        document.getElementById("loanofficername").style = "display:none";
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("ltv").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("age").style = "display:none";
+        document.getElementById("transfer_by").style = "display:none";
+        document.getElementById("call_transfer_status").style = "display:none";
+        document.getElementById("monthly_payment").style = "display:none";
+        document.getElementById("late_payment").style = "display:none";
+        document.getElementById("rate").style = "display:none";
+        document.getElementById("cash_out").style = "display:none";
+        document.getElementById("property_type").style = "display:none";
+        document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+
+
+    }
+    else if (val == "PRO0108") {
         document.getElementById("recieving_rep").style = "display:none";
         document.getElementById("first_name").style = "display:block";
         document.getElementById("last_name").style = "display:block";
@@ -1068,6 +1213,65 @@
         document.getElementById("cash_out").style = "display:none";
         document.getElementById("property_type").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+
+
+    }
+    else if (val == "PRO0107") {
+        document.getElementById("recieving_rep").style = "display:none";
+        document.getElementById("first_name").style = "display:block";
+        document.getElementById("last_name").style = "display:block";
+        document.getElementById("phone").style = "display:block";
+        document.getElementById("address").style = "display:block";
+        document.getElementById("state").style = "display:block";
+        document.getElementById("zip").style = "display:block";
+        document.getElementById("title").style = "display:none";
+        document.getElementById("work_phone").style = "display:none";
+        document.getElementById("email").style = "display:block";
+        document.getElementById("city").style = "display:block";
+        document.getElementById("debt").style = "display:none";	
+        document.getElementById("notes").style = "display:block";
+        document.getElementById("cash_amount").style = "display:none";
+        document.getElementById("current_amount").style = "display:none";
+        document.getElementById("current_rate").style = "display:none";
+        document.getElementById("income").style = "display:none";
+        document.getElementById("property_value").style = "display:none";
+        document.getElementById("company").style = "display:none";
+        document.getElementById("credit_rating").style = "display:none";
+        document.getElementById("mortgage_balance").style = "display:none";
+        document.getElementById("interest_rate").style = "display:none";
+        document.getElementById("loan_amount").style = "display:none";
+        document.getElementById("loan_type").style = "display:none";
+        document.getElementById("purpose_of_loan").style = "display:none";
+        document.getElementById("loanofficername").style = "display:none";
+        document.getElementById("ltv").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:block";
+        document.getElementById("medicaid").style = "display:block";
+        document.getElementById("annual_house").style = "display:block";
+        document.getElementById("transfer_by").style = "display:none";
+        document.getElementById("call_transfer_status").style = "display:none";
+        document.getElementById("monthly_payment").style = "display:none";
+        document.getElementById("late_payment").style = "display:none";
+        document.getElementById("rate").style = "display:none";
+        document.getElementById("cash_out").style = "display:none";
+        document.getElementById("property_type").style = "display:none";
+        document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
     }
@@ -1084,6 +1288,8 @@
         document.getElementById("state").style = "display:block";
         document.getElementById("zip").style = "display:block";
         document.getElementById("property_value").style = "display:block";
+        document.getElementById("medicaid").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("credit_rating").style = "display:none";
         document.getElementById("current_rate").style = "display:none";
         document.getElementById("title").style = "display:none";
@@ -1091,6 +1297,7 @@
         document.getElementById("email").style = "display:none";
         document.getElementById("loanofficername").style = "display:block";
         document.getElementById("camp8_loanofficername").style = "display:block";
+        document.getElementById("age_18_to_64").style = "display:none";
 
 
         document.getElementById("notes").style = "display:none";
@@ -1135,15 +1342,25 @@
 
         document.getElementById("ltv").style = "display:none";
         document.getElementById("rate_type").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("age").style = "display:none";
         document.getElementById("transfer_by").style = "display:none";
         document.getElementById("call_transfer_status").style = "display:none";
         document.getElementById("monthly_payment").style = "display:none";
         document.getElementById("late_payment").style = "display:none";
+        document.getElementById("employment").style = "display:none";
         document.getElementById("rate").style = "display:none";
         document.getElementById("cash_out").style = "display:none";
         document.getElementById("property_type").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
 
@@ -1158,13 +1375,15 @@
         document.getElementById("zip").style = "display:block";
         document.getElementById("city").style = "display:block";
         document.getElementById("property_value").style = "display:block";
+        document.getElementById("age_18_to_64").style = "display:none";
         document.getElementById("credit_rating").style = "display:block";
         document.getElementById("loan_type").style = "display:block";
         document.getElementById("rate").style = "display:block";
         document.getElementById("current_rate").style = "display:none";
         document.getElementById("monthly_payment").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("late_payment").style = "display:none";
-
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("title").style = "display:none";
         document.getElementById("work_phone").style = "display:none";
         document.getElementById("email").style = "display:none";
@@ -1173,7 +1392,7 @@
         document.getElementById("cash_amount").style = "display:none";
         document.getElementById("current_amount").style = "display:none";
         document.getElementById("income").style = "display:none";
-
+        document.getElementById("employment").style = "display:none";
         document.getElementById("company").style = "display:none";
         document.getElementById("mortgage_balance").style = "display:none";
         document.getElementById("interest_rate").style = "display:none";
@@ -1188,6 +1407,13 @@
         document.getElementById("cash_out").style = "display:none";
         document.getElementById("property_type").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
 
@@ -1213,6 +1439,8 @@
         document.getElementById("state").style = "display:block";
         document.getElementById("zip").style = "display:block";
         document.getElementById("mortgage_balance").style = "display:block";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("property_value").style = "display:block";
         document.getElementById("cash_out").style = "display:block";
         document.getElementById("loan_amount").style = "display:block";
@@ -1227,7 +1455,7 @@
         document.getElementById("income").style = "display:block";
         document.getElementById("transfer_by").style = "display:block";
         document.getElementById("notes").style = "display:block";
-
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("loan_type").style = "display:none";
         document.getElementById("rate").style = "display:none";
         document.getElementById("current_rate").style = "display:none";
@@ -1245,6 +1473,72 @@
         document.getElementById("loanofficername").style = "display:none";
         document.getElementById("rate_type").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+    }
+
+else if (val=="PRO0111" || val=="PRO0113" || val=="PRO0127")
+{
+        if(val=="PRO0127"){
+           
+            document.getElementById("recieving_rep").style = "display:none";
+            document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        }else{
+            document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        }
+        document.getElementById("first_name").style = "display:block";
+        document.getElementById("last_name").style = "display:block";
+        document.getElementById("phone").style = "display:block";
+        document.getElementById("address").style = "display:block";
+        document.getElementById("city").style = "display:block";
+        document.getElementById("state").style = "display:block";        
+	    document.getElementById("dob").style = "display:none";
+		document.getElementById("employer").style = "display:none";
+        document.getElementById("zip").style = "display:block";
+        document.getElementById("mortgage_balance").style = "display:block";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
+        document.getElementById("property_value").style = "display:block";
+        document.getElementById("cash_out").style = "display:block";
+        document.getElementById("loan_amount").style = "display:block";
+        document.getElementById("ltv").style = "display:block";
+        document.getElementById("credit_rating").style = "display:block";
+        document.getElementById("interest_rate").style = "display:block";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("property_type").style = "display:block";
+        document.getElementById("monthly_payment").style = "display:block";
+        document.getElementById("late_payment").style = "display:block";
+        document.getElementById("age").style = "display:block";
+        document.getElementById("income").style = "display:block";
+        document.getElementById("transfer_by").style = "display:block";
+        document.getElementById("call_transfer_status").style = "display:none"
+        document.getElementById("notes").style = "display:block";
+        document.getElementById("loan_type").style = "display:none";
+        document.getElementById("rate").style = "display:none";
+        document.getElementById("current_rate").style = "display:none";
+        document.getElementById("title").style = "display:none";
+        document.getElementById("work_phone").style = "display:none";
+        document.getElementById("email").style = "display:none";
+        document.getElementById("cash_amount").style = "display:none";
+        document.getElementById("current_amount").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
+        document.getElementById("company").style = "display:none";
+        document.getElementById("purpose_of_loan").style = "display:none";
+        document.getElementById("loanofficername").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("dob").style = "display:none";
     }
      else if(val == "PRO0102" )
      {
@@ -1256,6 +1550,8 @@
          document.getElementById("state").style = "display:block";
          document.getElementById("zip").style = "display:block";
          document.getElementById("mortgage_balance").style = "display:block";
+         document.getElementById("age_18_to_64").style = "display:none";
+         document.getElementById("medicaid").style = "display:none";
          document.getElementById("property_value").style = "display:block";
          document.getElementById("cash_out").style = "display:block";
          document.getElementById("loan_amount").style = "display:block";
@@ -1277,6 +1573,7 @@
          document.getElementById("title").style = "display:none";
          document.getElementById("work_phone").style = "display:none";
          document.getElementById("email").style = "display:none"
+         document.getElementById("annual_house").style = "display:none";
          document.getElementById("cash_amount").style = "display:none";
          document.getElementById("current_amount").style = "display:none";
          document.getElementById("company").style = "display:none";
@@ -1284,6 +1581,14 @@
          document.getElementById("loanofficername").style = "display:none";
          document.getElementById("rate_type").style = "display:none";
          document.getElementById("recieving_rep_qms_361").style = "display:none"
+         document.getElementById("recieving_rep_lb_2414").style = "display:none";
+         document.getElementById("employment").style = "display:none";
+         document.getElementById("bankrupty").style = "display:none";
+         document.getElementById("debt_amt_1").style = "display:none";
+         document.getElementById("house_value").style = "display:none";
+         document.getElementById("debt_type").style = "display:none";
+         document.getElementById("employer").style = "display:none";
+         document.getElementById("dob").style = "display:none";
      }
     
     else if(val == "PRO0096"){
@@ -1299,6 +1604,8 @@
         document.getElementById("state").style = "display:block";
         document.getElementById("zip").style = "display:block";
         document.getElementById("mortgage_balance").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("property_value").style = "display:none";
         document.getElementById("cash_out").style = "display:none";
         document.getElementById("loan_amount").style = "display:none";
@@ -1308,6 +1615,7 @@
         document.getElementById("rate_type").style = "display:none";
         document.getElementById("property_type").style = "display:none";
         document.getElementById("monthly_payment").style = "display:block";
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("late_payment").style = "display:block";
         document.getElementById("age").style = "display:none";
         document.getElementById("income").style = "display:block";
@@ -1335,7 +1643,13 @@
 	     document.getElementById("debt").style = "display:block";			
 		document.getElementById("debt_type").style = "display:block";
 		document.getElementById("creditor").style = "display:block";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("employment").style = "display:none";
          document.getElementById("phn").readOnly = false;
+         document.getElementById("bankrupty").style = "display:none";
+         document.getElementById("house_value").style = "display:none";
+         document.getElementById("employer").style = "display:none";
+         document.getElementById("dob").style = "display:none";
             
         }
 
@@ -1350,7 +1664,10 @@
         document.getElementById("state").style = "display:block";
         document.getElementById("zip").style = "display:block";
         document.getElementById("mortgage_balance").style = "display:block";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("property_value").style = "display:block";
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("cash_out").style = "display:block";
         document.getElementById("loan_amount").style = "display:block";
         document.getElementById("ltv").style = "display:block";
@@ -1387,6 +1704,14 @@
         document.getElementById("loanofficername").style = "display:none";
 
         document.getElementById("rate_type").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
 
@@ -1403,10 +1728,13 @@
         document.getElementById("title").style = "display:none";
         document.getElementById("work_phone").style = "display:none";
         document.getElementById("email").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("city").style = "display:block";
         document.getElementById("notes").style = "display:none";
         document.getElementById("current_amount").style = "display:none";
         document.getElementById("current_rate").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("income").style = "display:none"; 
 
         document.getElementById("property_value").style = "display:block";
@@ -1427,7 +1755,13 @@
         document.getElementById("property_type").style = "display:none";
         document.getElementById("purpose_of_loan").style = "display:none";
         document.getElementById("cash_amount").style = "display:block";
-
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
     }
 		
 		else if (val == "PRO0094" ) { 
@@ -1444,9 +1778,12 @@
         document.getElementById("ltv").style = "display:block";
         document.getElementById("credit_rating").style = "display:none";
         document.getElementById("interest_rate").style = "display:block";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("rate_type").style = "display:block";
         document.getElementById("lt").style = "display:block";
         document.getElementById("property_type").style = "display:block";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("house_value").style = "display:block";
         document.getElementById("loan_balance").style = "display:block";
         document.getElementById("lender").style = "display:block";
@@ -1481,6 +1818,199 @@
         document.getElementById("company").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
 		document.getElementById("camp8_loanofficername").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+        
+    }
+    else if (val == "PRO0114" ) { 
+        document.getElementById("first_name").style = "display:block";
+        document.getElementById("last_name").style = "display:block";
+        document.getElementById("phone").style = "display:block";
+        document.getElementById("address").style = "display:block";
+        document.getElementById("city").style = "display:block";
+        document.getElementById("state").style = "display:block";
+        document.getElementById("zip").style = "display:block";
+        document.getElementById("mortgage_balance").style = "display:none";
+        document.getElementById("property_value").style = "display:none";
+        document.getElementById("loan_amount").style = "display:none";
+        document.getElementById("ltv").style = "display:none";
+        document.getElementById("credit_rating").style = "display:none";
+        document.getElementById("interest_rate").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("lt").style = "display:none";
+        document.getElementById("property_type").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("loan_balance").style = "display:none";
+        document.getElementById("lender").style = "display:none";
+        document.getElementById("notes").style = "display:none";
+        document.getElementById("rate").style = "display:none";
+        document.getElementById("purpose_of_loan").style = "display:none";
+        document.getElementById("mtgr_loanofficername").style = "display:none";         
+		//document.getElementById("mtg_loanofficername").style = "display:none"; 
+		document.getElementById("loanofficername").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("credit_score").style = "display:none";
+		document.getElementById("employment").style = "display:none";
+		document.getElementById("bankrupty").style = "display:none";		
+		document.getElementById("debt").style = "display:block";
+		document.getElementById("agent").style = "display:none";
+		document.getElementById("lead_verification").style = "display:none;color:white";
+
+        document.getElementById("cash_out").style = "display:none";
+        document.getElementById("monthly_payment").style = "display:none";
+        document.getElementById("late_payment").style = "display:none";
+        document.getElementById("age").style = "display:none";
+        document.getElementById("income").style = "display:none";
+        document.getElementById("transfer_by").style = "display:none";
+        document.getElementById("loan_type").style = "display:none";
+        document.getElementById("current_rate").style = "display:none";
+        document.getElementById("call_transfer_status").style = "display:none";
+        document.getElementById("title").style = "display:none";
+        document.getElementById("work_phone").style = "display:none";
+        document.getElementById("email").style = "display:block";
+        document.getElementById("cash_amount").style = "display:none";
+        document.getElementById("current_amount").style = "display:none";
+        document.getElementById("company").style = "display:none";
+        document.getElementById("recieving_rep_qms_361").style = "display:none";
+		document.getElementById("camp8_loanofficername").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+        
+    }
+    else if (val == "PRO0115" ) { 
+        document.getElementById("first_name").style = "display:block";
+        document.getElementById("last_name").style = "display:block";
+        document.getElementById("phone").style = "display:block";
+        document.getElementById("address").style = "display:block";
+        document.getElementById("city").style = "display:block";
+        document.getElementById("state").style = "display:block";
+        document.getElementById("zip").style = "display:block";
+        document.getElementById("mortgage_balance").style = "display:none";
+        document.getElementById("property_value").style = "display:none";
+        document.getElementById("loan_amount").style = "display:none";
+        document.getElementById("ltv").style = "display:none";
+        document.getElementById("credit_rating").style = "display:none";
+        document.getElementById("interest_rate").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("lt").style = "display:none";
+        document.getElementById("property_type").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("loan_balance").style = "display:none";
+        document.getElementById("lender").style = "display:none";
+        document.getElementById("notes").style = "display:none";
+        document.getElementById("rate").style = "display:none";
+        document.getElementById("purpose_of_loan").style = "display:none";
+        document.getElementById("mtgr_loanofficername").style = "display:none";         
+		//document.getElementById("mtg_loanofficername").style = "display:none"; 
+		document.getElementById("loanofficername").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("credit_score").style = "display:none";
+		document.getElementById("employment").style = "display:none";
+		document.getElementById("bankrupty").style = "display:none";		
+		document.getElementById("debt").style = "display:block";
+		document.getElementById("agent").style = "display:none";
+		document.getElementById("lead_verification").style = "display:none;color:white";
+
+        document.getElementById("cash_out").style = "display:none";
+        document.getElementById("monthly_payment").style = "display:none";
+        document.getElementById("late_payment").style = "display:none";
+        document.getElementById("age").style = "display:none";
+        document.getElementById("income").style = "display:none";
+        document.getElementById("transfer_by").style = "display:none";
+        document.getElementById("loan_type").style = "display:none";
+        document.getElementById("current_rate").style = "display:none";
+        document.getElementById("call_transfer_status").style = "display:none";
+        document.getElementById("title").style = "display:none";
+        document.getElementById("work_phone").style = "display:none";
+        document.getElementById("email").style = "display:block";
+        document.getElementById("cash_amount").style = "display:none";
+        document.getElementById("current_amount").style = "display:none";
+        document.getElementById("company").style = "display:none";
+        document.getElementById("recieving_rep_qms_361").style = "display:none";
+		document.getElementById("camp8_loanofficername").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+        
+    }
+    else if (val == "PRO0116" ) { 
+        document.getElementById("first_name").style = "display:block";
+        document.getElementById("last_name").style = "display:block";
+        document.getElementById("phone").style = "display:block";
+        document.getElementById("address").style = "display:block";
+        document.getElementById("city").style = "display:block";
+        document.getElementById("state").style = "display:block";
+        document.getElementById("zip").style = "display:block";
+        document.getElementById("mortgage_balance").style = "display:none";
+        document.getElementById("property_value").style = "display:none";
+        document.getElementById("loan_amount").style = "display:none";
+        document.getElementById("ltv").style = "display:none";
+        document.getElementById("credit_rating").style = "display:none";
+        document.getElementById("interest_rate").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("lt").style = "display:none";
+        document.getElementById("property_type").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("loan_balance").style = "display:none";
+        document.getElementById("lender").style = "display:none";
+        document.getElementById("notes").style = "display:none";
+        document.getElementById("rate").style = "display:none";
+        document.getElementById("purpose_of_loan").style = "display:none";
+        document.getElementById("mtgr_loanofficername").style = "display:none";         
+		//document.getElementById("mtg_loanofficername").style = "display:none"; 
+		document.getElementById("loanofficername").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("credit_score").style = "display:none";
+		document.getElementById("employment").style = "display:none";
+		document.getElementById("bankrupty").style = "display:none";		
+		document.getElementById("debt").style = "display:block";
+		document.getElementById("agent").style = "display:none";
+		document.getElementById("lead_verification").style = "display:none;color:white";
+
+        document.getElementById("cash_out").style = "display:none";
+        document.getElementById("monthly_payment").style = "display:none";
+        document.getElementById("late_payment").style = "display:none";
+        document.getElementById("age").style = "display:none";
+        document.getElementById("income").style = "display:none";
+        document.getElementById("transfer_by").style = "display:none";
+        document.getElementById("loan_type").style = "display:none";
+        document.getElementById("current_rate").style = "display:none";
+        document.getElementById("call_transfer_status").style = "display:none";
+        document.getElementById("title").style = "display:none";
+        document.getElementById("work_phone").style = "display:none";
+        document.getElementById("email").style = "display:block";
+        document.getElementById("cash_amount").style = "display:none";
+        document.getElementById("current_amount").style = "display:none";
+        document.getElementById("company").style = "display:none";
+        document.getElementById("recieving_rep_qms_361").style = "display:none";
+		document.getElementById("camp8_loanofficername").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+        
     }
 }
 </script>

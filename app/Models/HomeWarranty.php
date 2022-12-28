@@ -11,11 +11,16 @@ class HomeWarranty extends Model
 {
     use  SoftDeletes;
     protected $guarded = [];
-    public function agent_detail()
-    {
-        return $this->hasOne('App\User', 'HRMSID', 'hrms_id');
+
+     public function agent_detail()
+     {
+         return $this->hasOne('App\User', 'HRMSID', 'hrms_id');
+     }
+
+    public function user(){
+        return $this->belongsTo('App\User', 'hrms_id','HRMSID');
     }
-	
+
 	public function client(){
         return $this->belongsTo('App\Models\Client', 'client_code','client_code');
     }

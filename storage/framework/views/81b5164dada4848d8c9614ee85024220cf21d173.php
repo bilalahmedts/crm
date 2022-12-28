@@ -14,6 +14,8 @@
             <th scope="col">PromoCode</th>
             <th scope="col">Area</th>
             <th scope="col">comments</th>
+            <th scope="col">Others question 1</th>
+            <th scope="col">Others question 2</th>
             <th scope="col">From which vendor do yo usually buy or supplies from?</th>
             <th scope="col">What was the reason for you to purchase your supplies from other supplies?</th>
             <th scope="col">Created at</th>
@@ -39,6 +41,8 @@
                 <td><?php echo e($row->promo_code); ?></td>
                 <td><?php echo e($row->area); ?></td>
                 <td><?php echo e($row->comments); ?></td>
+                <td><?php echo e($row->others_question_1); ?></td>
+                <td><?php echo e($row->others_question_2); ?></td>
                 <td><?php echo e($row->question_1); ?></td>
                 <td><?php echo e($row->question_2); ?></td>
                 <td><?php echo e($row->created_at); ?></td>

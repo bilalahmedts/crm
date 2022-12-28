@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         @if ($errors->any())
-                            <div class="alert alert-danger"style="color: red;">
+                            <div class="alert alert-danger" style="color: red;">
                                 <strong class="text-secondary">Oops!</strong> There were some problems with your
                                 input.<br><br>
                                 <ul style="color: red;padding-left:20px">
@@ -66,8 +66,11 @@
                         @endif
                         <form action="{{ route('solars.store') }}" method="POST" id="webform">
                             @csrf
-                            <input style="color: black" type="hidden" name="leadid_token" id="leadid_token"
-                                class="form-control" placeholder="leadid_token">
+
+
+                            <input style="color: black" type="hidden" name="lead_id" id="leadid_token" class="form-control"
+                                placeholder="leadid_token">
+
                             <input style="color: black" type="hidden" name="optin_cert" id="optin_cert"
                                 class="form-control">
                             <input style="color: black" type="hidden" name="record_id" id="record_id">
@@ -116,21 +119,78 @@
                                 </div>
                                 <div class="form-group col-md-6" style="display: block" id="state">
                                     <span class="details">state</span>
-                                    <select onchange="slectState(this)" name="state" id="st"
-                                        class="form-control">
+                                    <select required onchange="slectState(this)" name="state" id="st" class="form-control">
                                         <option value="">Select State</option>
                                         @foreach ($states as $row)
                                             <option>{{ $row->state }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6" style="display: none" id="electric_provider">
-                                    <span class="details">Electric Provider</span>
-                                    <select name="electric_provider" class="form-control" id="electric_providers">
-                                        <option>Select
-                                        <option>
+                                <!-- <div class="form-group col-md-6" style="display: block" id="state">
+                                    <span class="details">state</span>
+                                    <select required name="state" class="form-control">
+                                        <option value="">Select State</option>
+                                        <option> CT </option>
+                                        <option> FL </option>
+                                        <option> MA </option>
+                                        <option> MI </option>
+                                        <option> NJ </option>
+                                        <option> NV </option>
+                                        <option> NY </option>
+                                        <option> TX </option>
+                                    </select>
+                                </div> -->
+                                <!-- <div class="form-group col-md-6" style="display: block" id="state_solar_trinity">
+                                    <span class="details">state</span>
+                                    <select name="state"  class="form-control">
+                                    <option value="">Select </option>
+                                        <option> NJ </option>
+                                        <option> MA </option>
+                                        <option> NY </option>
+                                        <option> CT </option>
+                                        <option> MD </option>
+                                        <option> PA </option>
+                                        <option> RI </option>
                                     </select>
                                 </div>
+                                <div class="form-group col-md-6" style="display: block" id="electric_solar_trinity">
+                                    <span class="details">Electric Provider</span>
+                                    <select name="electric_provider"  class="form-control">
+                                    <option value="">Select </option>
+                                        <option> PSE&G  </option>
+                                        <option> JCP&L </option>
+                                        <option> ACE  </option>
+                                        <option> Orange and Rockland </option>
+                                        <option> Ace and Vineland- As long as it is not in a BLACKED OUT AREA </option>
+                                        <option> National Grid  </option>
+                                        <option> Eversource  - NSTAR </option>
+                                        <option> Unitil </option>
+                                        <option> WMECO </option>
+                                        <option> PSE&G LI (formerly LIPA) </option>
+                                        <option> Orange and Rockland </option>
+                                        <option> ConEdison </option>
+                                        <option> Central Hudson </option>
+                                        <option> NYSEG </option>
+                                        <option> Eversource </option>
+                                        <option> United Illuminating </option>
+                                        <option> BG&E (Baltimore Gas & Electric) </option>
+                                        <option> SMECO (Southern Maryland Electric Company) </option>
+                                        <option> Constellation (formerly PEPCO) </option>
+                                        <option> Choptank Electric Coop </option>
+                                        <option> Delmarva Power </option>
+                                        <option> Met-Ed  </option>
+                                        <option> PPL  </option>
+                                        <option> PECO  </option>
+                                        <option> Penelec  </option>
+                                        <option> Duquesne Light  </option>
+                                        <option> National Grid  </option>
+                                    </select>
+                                </div> -->
+                                 <div class="form-group col-md-6" style="display: none" id="electric_provider">
+                                    <span class="details">Electric Provider</span>
+                                    <input style="color: black" type ="Text" name="electric_provider" class="form-control"
+                                        placeholder="Electric Provider">
+                                </div> 
 
 
                                 <div class="form-group col-md-6" style="display: block" id="zip_code">
@@ -170,6 +230,16 @@
                                     <input style="color: black" type="text" name="coverage" class="form-control"
                                         placeholder="Coverage">
                                 </div>
+                                <div class="form-group col-md-6" style="display: none" id="house_type">
+                                    <span class="details">HouseType</span>
+                                    <input style="color: black" type="text" name="housetype" class="form-control"
+                                        placeholder="HouseType">
+                                </div>
+                                <div class="form-group col-md-6" style="display: none" id="state_sm">
+                                    <span class="details">State</span>
+                                    <input style="color: black" type="text" name="state_sm" class="form-control"
+                                        placeholder="state">
+                                </div>
                                 <div class="form-group col-md-6" style="display: none" id="disclaimer">
                                     <span class="details">Disclaimer</span>
                                     <select name="disclaimer" class="form-control">
@@ -189,18 +259,27 @@
                                     <input style="color: black" type="datetime-local"="" name="app_date_time"
                                         class="form-control" placeholder="Appointment Date-T-me">
                                 </div>
+                                <div class="form-group col-md-6" style="display: none" id="solar_rep">
+                                    <span class="details">Solar Rep</span>
+                                    <select name="solar_rep" id="" class="form-control">
+                                        <option>--Select--</option>
+                                        <option value="chris">Chris</option>
+                                        <option value="julius">Julius</option>
+                                        <option value="tim">Tim</option>
+
+                                    </select>
+                                </div>
 
                                 <!-- <div class="form-group col-md-6" style="display: none" id="electric_bill_monthly" >
-                                                <span class="details">Electric Bill Monthly</span>
-                                                <input style="color: black"  type="text" name="electric_bill_monthly" id="electric_bills_monthly" class="form-control" placeholder="Electric Bill Monthly">
-                                            </div> -->
+                                        <span class="details">Electric Bill Monthly</span>
+                                        <input style="color: black"  type="text" name="electric_bill_monthly" id="electric_bills_monthly" class="form-control" placeholder="Electric Bill Monthly">
+                                    </div> -->
 
                                 <div class="form-group col-md-6" style="display: none" id="electric_bill_monthly">
                                     <span class="details">Electric Bill Monthly</span>
-                                    <select name="electric_bill_monthly" id="electric_bills_monthly"
-                                        class="form-control">
-                                        <option value="$0-50">$0-50</option>
-                                        <option value="$51-100">$51-100</option>
+                                    <select name="electric_bill" class="form-control">
+                                        {{-- <option value="$0-50">$0-50</option>
+                                        <option value="$51-100">$51-100</option> --}}
                                         <option value="$101-150">$101-150</option>
                                         <option value="$151-200">$151-200</option>
                                         <option value="$201-300"> $201-300</option>
@@ -215,7 +294,7 @@
 
                                 <div class="form-group col-md-6" style="display: none" id="roof_shade">
                                     <span class="details">Roof Shade</span>
-                                    <select name="roof_shade" id="electric_bills_monthly" class="form-control">
+                                    <select name="roof_shade" class="form-control">
                                         <option value="No Shade">No Shade</option>
                                         <option value="A Little Shade">A Little Shade</option>
                                         <option value="A Lot Of Shade">A Lot Of Shade</option>
@@ -248,6 +327,18 @@
                                 <div class="form-group col-md-6" style="display: none" id="notes">
                                     <span class="details">Notes</span>
                                     <textarea name="notes" class="form-control" cols="30" rows="4"></textarea>
+                                </div>
+                                <div class="form-group col-md-6" style="display: none" id="monthly_payment">
+                                    <span class="details">Monthly-Payment</span>
+                                    <input style="color: black" type="text" name="monthly_payment"
+                                        class="form-control" placeholder="Monthly-payment">
+
+                                </div>
+                                <div class="form-group col-md-6" style="display: none" id="income">
+                                    <span class="details">Income</span>
+                                    <input style="color: black" type="text" name="income" class="form-control"
+                                        placeholder="Income">
+
                                 </div>
                                 <div class="form-group col-md-6" style="display: none" id="call_url">
                                     <span class="details">Call Recording url</span>
@@ -288,15 +379,15 @@
                 success: function(res) {
                     $('#loader').hide();
                     $('#searchForm').show();
-                    /*if(res.status==204){
-                    	$('#webform').hide();
-                    	$('#alreadyASaleLabel').show();
+                    if (res.status == 204) {
+                        $('#webform').hide();
+                        $('#alreadyASaleLabel').show();
                     }
-                    if(res.status==200){
-                    	$('#webform').show();
-                    	$('#alreadyASaleLabel').hide();
-                    }*/
-                    $('#webform').show();
+                    if (res.status == 200) {
+                        $('#webform').show();
+                        $('#alreadyASaleLabel').hide();
+                    }
+
                     if (res.status == 200) {
                         $('#webform').show();
                         document.getElementById('record_id').value = res.data.ID;
@@ -344,76 +435,72 @@
             });
 
         }
+        // function slectState(val){ 
+        // 	var ddclient = document.getElementById("ddclients").value;
+        // 	var ddstate = val.value;
+        // 	var ddoptions = "";
 
-        function slectState(val) {
-            var ddclient = document.getElementById("ddclients").value;
-            var ddstate = val.value;
-            var ddoptions = "";
-
-            if (ddclient == "PRO0098") {
-                if (ddclient == "PRO0098" && ddstate == "NJ") {
-                    ddoptions += "<option>PSE&G</option>";
-                    ddoptions += "<option>JCP&L</option>";
-                    ddoptions += "<option>ACE</option>";
-                    ddoptions += "<option>Orange and Rockland</option>";
-                    ddoptions += "<option>Ace and Vineland- As long as it is not in a BLACKED OUT AREA </option>";
-                } else if (ddclient == "PRO0098" && ddstate == "MA") {
-                    ddoptions += "<option>National Grid</option>";
-                    ddoptions += "<option>Eversource  - NSTAR</option>";
-                    ddoptions += "<option>Unitil</option>";
-                    ddoptions += "<option>WMECO</option>";
-                    ddoptions += "<option>Ace and Vineland- As long as it is not in a BLACKED OUT AREA </option>";
-                } else if (ddclient == "PRO0098" && ddstate == "NY") {
-                    ddoptions += "<option>PSE&G LI (formerly LIPA)</option>";
-                    ddoptions += "<option>Orange and Rockland  </option>";
-                    ddoptions += "<option>ConEdison  </option>";
-                    ddoptions += "<option>Central Hudson  </option>";
-                    ddoptions += "<option>NYSEG </option>";
-                } else if (ddclient == "PRO0098" && ddstate == "CT") {
-                    ddoptions += "<option>Eversource</option>";
-                    ddoptions += "<option>United Illuminating </option>";
-                } else if (ddclient == "PRO0098" && ddstate == "MD") {
-                    ddoptions += "<option>BG&E (Baltimore Gas & Electric) </option>";
-                    ddoptions += "<option>SMECO (Southern Maryland Electric Company) </option>";
-                    ddoptions += "<option>Constellation (formerly PEPCO)</option>";
-                    ddoptions += "<option>Choptank Electric Coop</option>";
-                    ddoptions += "<option>Delmarva Power</option>";
-                } else if (ddclient == "PRO0098" && ddstate == "PA") {
-                    ddoptions += "<option>Met-Ed</option>";
-                    ddoptions += "<option>PPL </option>";
-                    ddoptions += "<option>PECO </option>";
-                    ddoptions += "Penelec </option>";
-                    ddoptions += "<option>Duquesne Light</option>";
-                } else if (ddclient == "PRO0098" && ddstate == "RI") {
-                    ddoptions += "<option>National Grid </option>";
-                }
-                document.getElementById("electric_providers").innerHTML = ddoptions;
-            } else {
+        // 	if(ddclient=="PRO0098"){
+        // 	if(ddclient=="PRO0098" && ddstate=="NJ"){
+        // 		ddoptions +="<option>PSE&G</option>";
+        // 		ddoptions +="<option>JCP&L</option>";
+        // 		ddoptions +="<option>ACE</option>";
+        // 		ddoptions +="<option>Orange and Rockland</option>";
+        // 		ddoptions +="<option>Ace and Vineland- As long as it is not in a BLACKED OUT AREA </option>";			
+        // 	}else if(ddclient=="PRO0098" && ddstate=="MA"){
+        // 		ddoptions +="<option>National Grid</option>";
+        // 		ddoptions +="<option>Eversource  - NSTAR</option>";
+        // 		ddoptions +="<option>Unitil</option>";
+        // 		ddoptions +="<option>WMECO</option>";
+        // 		ddoptions +="<option>Ace and Vineland- As long as it is not in a BLACKED OUT AREA </option>";			
+        //     }else if(ddclient=="PRO0098" && ddstate=="NY"){
+        //       ddoptions +="<option>PSE&G LI (formerly LIPA)</option>";  
+        //       ddoptions +="<option>Orange and Rockland  </option>";
+        //       ddoptions +="<option>ConEdison  </option>";
+        //       ddoptions +="<option>Central Hudson  </option>";
+        //       ddoptions +="<option>NYSEG </option>";		
+        // 	}else if(ddclient=="PRO0098" && ddstate=="CT"){
+        //       ddoptions +="<option>Eversource</option>"; 
+        //       ddoptions +="<option>United Illuminating </option>"; 		
+        // 	}else if(ddclient=="PRO0098" && ddstate=="MD"){
+        // 		ddoptions +="<option>BG&E (Baltimore Gas & Electric) </option>";
+        // 		ddoptions +="<option>SMECO (Southern Maryland Electric Company) </option>";
+        // 		ddoptions +="<option>Constellation (formerly PEPCO)</option>";
+        // 		ddoptions +="<option>Choptank Electric Coop</option>";
+        // 		ddoptions +="<option>Delmarva Power</option>";		
+        // 	}else if(ddclient=="PRO0098" && ddstate=="PA"){
+        // 		ddoptions +="<option>Met-Ed</option>"; 
+        // 		ddoptions +="<option>PPL </option>";
+        // 		ddoptions +="<option>PECO </option>";
+        // 		ddoptions +="Penelec </option>";
+        // 		ddoptions +="<option>Duquesne Light</option>";  
+        // 	}else if(ddclient=="PRO0098" && ddstate=="RI"){
+        // 		ddoptions +="<option>National Grid </option>"; 		
+        // 	}
+        // 	document.getElementById("electric_providers").innerHTML=ddoptions;
+        // 	}else{
 
 
-                $.ajax({
-                    url: "{{ url('/api/select_electric') }}",
-                    type: "GET",
-                    data: {
-                        val: val.value
-                    },
-                    success: function(res) {
+        //     $.ajax({
+        //     url: "{{ url('/api/select_electric') }}",
+        //     type: "GET",
+        //     data: {val :val.value }, 
+        //     success:function (res){  
 
-                        if (res) {
-                            var options = '';
-                            for (let i = 0; i < res.length; i++) {
-                                let vr = (res[i].id);
-                                options += "<option>" + (res[i].electric_provider) + "</option>";
+        //         if(res){
+        //             var options ='';
+        //             for(let i=0; i<res.length;i++){ 
+        //                 let vr = (res[i].id); 
+        //                 options +="<option>"+(res[i].electric_provider)+"</option>"; 
 
-                            }
-                            document.getElementById("electric_providers").innerHTML = options;
+        //             }
+        //             document.getElementById("electric_providers").innerHTML=options;
 
-                        }
-                    }
-                });
-            }
-        }
-
+        //         }
+        //     }
+        //     }); 
+        // 	}
+        // }
         function selectClient(val) {
             document.getElementById('call_url').style.display = "none";
             if (val == "PRO0033") {
@@ -426,7 +513,7 @@
                 document.getElementById('address').style.display = "block";
                 document.getElementById('state').style.display = "block";
                 document.getElementById('zip_code').style.display = "block";
-                document.getElementById('electric_provider').style.display = "block";
+                document.getElementById('electric_provider').style.display = "none";
                 document.getElementById('electric_bill_monthly').style.display = "block";
                 document.getElementById('roof_shade').style.display = "block";
                 document.getElementById('homeowner').style.display = "block";
@@ -440,9 +527,12 @@
                 document.getElementById('age').style.display = "none";
                 document.getElementById('coverage').style.display = "none";
                 document.getElementById('major_health_issues').style.display = "none";
+                document.getElementById('state_solar_trinity').style.display = "none";
+                document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
             } else if (val == "CS0002" || val == "SS0003" || val == "SE0005" ||
-                val == "PRO0074" || val == "PP0008" || val == "PE0009" || val == "SW0013" || val == "PT0015" || val ==
-                "EP0016" ||
+                val == "PP0008" || val == "PE0009" || val == "SW0013" || val == "PT0015" || val == "EP0016" ||
                 val == "SB0010" || val == "TA0012" || val == "PR0014") {
 
                 document.getElementById("submit").style.display = "block";
@@ -450,17 +540,15 @@
                 document.getElementById('last_name').style.display = "block";
 
 
-                if (val == "PRO0074")
-                    document.getElementById('agent_name').style.display = "none";
-                else
-                    document.getElementById('agent_name').style.display = "none";
+
+                document.getElementById('agent_name').style.display = "none";
 
                 if (val == "PR0014")
                     document.getElementById('call_url').style.display = "block";
 
                 document.getElementById('email').style.display = "block";
                 document.getElementById('phone').style.display = "block";
-                document.getElementById('address').style.display = "block";
+                document.getElementById('address').style.display = "none";
                 document.getElementById('state').style.display = "block";
                 document.getElementById('zip_code').style.display = "block";
                 document.getElementById('electric_provider').style.display = "none";
@@ -477,7 +565,12 @@
                 document.getElementById('age').style.display = "none";
                 document.getElementById('coverage').style.display = "none";
                 document.getElementById('major_health_issues').style.display = "none";
-            } else if (val == "SN0004" || val == "PRO0093" || val == "PRO0095") {
+                document.getElementById('state_solar_trinity').style.display = "none";
+                document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
+            } else if (val == "SN0004" || val == "PRO0095" || val == "PRO0124") {
                 document.getElementById("submit").style.display = "block";
                 document.getElementById('first_name').style.display = "block";
                 document.getElementById('last_name').style.display = "block";
@@ -487,10 +580,13 @@
                 document.getElementById('address').style.display = "block";
                 document.getElementById('state').style.display = "block";
                 document.getElementById('zip_code').style.display = "block";
+                if(val=="PRO0095"){
+                    document.getElementById('roof_shade').style.display = "none";
+                    document.getElementById('homeowner').style.display = "block";
+                }
                 document.getElementById('electric_provider').style.display = "none";
                 document.getElementById('electric_bill_monthly').style.display = "block";
-                document.getElementById('roof_shade').style.display = "none";
-                document.getElementById('homeowner').style.display = "block";
+                
                 document.getElementById('credit_score').style.display = "block";
                 document.getElementById('credit_rating').style.display = "none";
                 document.getElementById('notes').style.display = "block";
@@ -501,6 +597,78 @@
                 document.getElementById('age').style.display = "none";
                 document.getElementById('coverage').style.display = "none";
                 document.getElementById('major_health_issues').style.display = "none";
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
+            } else if (val == "PRO0074" || val == "PRO0125") {
+                document.getElementById("submit").style.display = "block";
+                document.getElementById('first_name').style.display = "block";
+                document.getElementById('last_name').style.display = "block";
+                document.getElementById('agent_name').style.display = "block";
+                document.getElementById('email').style.display = "none";
+                document.getElementById('phone').style.display = "block";
+                document.getElementById('address').style.display = "none";
+                document.getElementById('state').style.display = "block";
+                document.getElementById('zip_code').style.display = "block";
+                document.getElementById('city').style.display = "none";
+                document.getElementById('state_sm').style.display = "none";
+                document.getElementById('notes').style.display = "none";
+                if(val=="PRO0074"){
+                    document.getElementById('agent_name').style.display = "none";
+                    document.getElementById('house_type').style.display = "block";
+                    document.getElementById('notes').style.display = "block";
+                }
+                
+                document.getElementById('electric_provider').style.display = "none";
+                document.getElementById('electric_bill_monthly').style.display = "none";
+                document.getElementById('roof_shade').style.display = "none";
+                document.getElementById('homeowner').style.display = "none";
+                document.getElementById('credit_score').style.display = "none";
+                document.getElementById('credit_rating').style.display = "none";
+                
+                document.getElementById('app_date_time').style.display = "none";
+                document.getElementById('solar_rep').style.display = "none";
+                document.getElementById('smoker').style.display = "none";
+                document.getElementById('beneficiary').style.display = "none";
+                document.getElementById('age').style.display = "none";
+                document.getElementById('coverage').style.display = "none";
+                document.getElementById('major_health_issues').style.display = "none";
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
+
+            } else if (val == "PRO0093") {
+                document.getElementById("submit").style.display = "block";
+                document.getElementById('first_name').style.display = "block";
+                document.getElementById('last_name').style.display = "block";
+                document.getElementById('agent_name').style.display = "none";
+                document.getElementById('email').style.display = "block";
+                document.getElementById('phone').style.display = "block";
+                document.getElementById('address').style.display = "block";
+                document.getElementById('state').style.display = "block";
+                document.getElementById('zip_code').style.display = "block";
+                document.getElementById('electric_provider').style.display = "block";
+                document.getElementById('electric_bill_monthly').style.display = "block";
+                document.getElementById('roof_shade').style.display = "none";
+                document.getElementById('homeowner').style.display = "block";
+                document.getElementById('credit_score').style.display = "block";
+                document.getElementById('credit_rating').style.display = "none";
+                document.getElementById('notes').style.display = "block";
+                document.getElementById('app_date_time').style.display = "block";
+                document.getElementById('solar_rep').style.display = "block";
+                document.getElementById('smoker').style.display = "none";
+                document.getElementById('beneficiary').style.display = "none";
+                document.getElementById('age').style.display = "none";
+                document.getElementById('coverage').style.display = "none";
+                document.getElementById('major_health_issues').style.display = "none";
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
             } else if (val == "PRO0082") {
                 document.getElementById("submit").style.display = "block";
                 document.getElementById('first_name').style.display = "block";
@@ -525,6 +693,106 @@
                 document.getElementById('age').style.display = "none";
                 document.getElementById('coverage').style.display = "none";
                 document.getElementById('major_health_issues').style.display = "none";
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
+            } 
+            else if (val == "PRO0126") {
+                document.getElementById("submit").style.display = "block";
+                document.getElementById('first_name').style.display = "block";
+                document.getElementById('last_name').style.display = "block";
+                document.getElementById('agent_name').style.display = "none";
+                document.getElementById('email').style.display = "block";
+                document.getElementById('phone').style.display = "block";
+                document.getElementById('address').style.display = "block";
+                document.getElementById('state').style.display = "block";
+                document.getElementById('zip_code').style.display = "block";
+                document.getElementById('electric_provider').style.display = "block";
+                document.getElementById('electric_bill_monthly').style.display = "block";
+                document.getElementById('roof_shade').style.display = "none";
+                document.getElementById('homeowner').style.display = "none";
+                document.getElementById('city').style.display = "block";
+                document.getElementById('credit_score').style.display = "block";
+                document.getElementById('credit_rating').style.display = "none";
+                document.getElementById('notes').style.display = "block";
+                document.getElementById('app_date_time').style.display = "none";
+
+                document.getElementById('smoker').style.display = "none";
+                document.getElementById('beneficiary').style.display = "none";
+                document.getElementById('age').style.display = "none";
+                document.getElementById('coverage').style.display = "none";
+                document.getElementById('major_health_issues').style.display = "none";
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
+            } 
+
+            else if (val == "PRO0128") {
+                document.getElementById("submit").style.display = "block";
+                document.getElementById('first_name').style.display = "block";
+                document.getElementById('last_name').style.display = "block";
+                document.getElementById('agent_name').style.display = "none";
+                document.getElementById('email').style.display = "block";
+                document.getElementById('phone').style.display = "block";
+                document.getElementById('address').style.display = "block";
+                document.getElementById('state').style.display = "block";
+                document.getElementById('zip_code').style.display = "block";
+                document.getElementById('electric_provider').style.display = "block";
+                document.getElementById('electric_bill_monthly').style.display = "block";
+                document.getElementById('roof_shade').style.display = "none";
+                document.getElementById('homeowner').style.display = "none";
+                document.getElementById('city').style.display = "block";
+                document.getElementById('credit_score').style.display = "block";
+                document.getElementById('credit_rating').style.display = "none";
+                document.getElementById('notes').style.display = "block";
+                document.getElementById('app_date_time').style.display = "none";
+
+                document.getElementById('smoker').style.display = "none";
+                document.getElementById('beneficiary').style.display = "none";
+                document.getElementById('age').style.display = "none";
+                document.getElementById('coverage').style.display = "none";
+                document.getElementById('major_health_issues').style.display = "none";
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
+            } 
+            
+           
+            else if (val == "PRO0103") {
+                document.getElementById("submit").style.display = "block";
+                document.getElementById('first_name').style.display = "block";
+                document.getElementById('last_name').style.display = "block";
+                document.getElementById('agent_name').style.display = "none";
+                document.getElementById('email').style.display = "block";
+                document.getElementById('phone').style.display = "block";
+                document.getElementById('address').style.display = "block";
+                document.getElementById('state').style.display = "block";
+                document.getElementById('zip_code').style.display = "block";
+                document.getElementById('electric_provider').style.display = "block";
+                document.getElementById('electric_bill_monthly').style.display = "block";
+                document.getElementById('roof_shade').style.display = "block";
+                document.getElementById('homeowner').style.display = "block";
+                document.getElementById('credit_score').style.display = "block";
+                document.getElementById('credit_rating').style.display = "none";
+                document.getElementById('notes').style.display = "block";
+                document.getElementById('app_date_time').style.display = "none";
+
+                document.getElementById('smoker').style.display = "none";
+                document.getElementById('beneficiary').style.display = "none";
+                document.getElementById('age').style.display = "none";
+                document.getElementById('coverage').style.display = "none";
+                document.getElementById('major_health_issues').style.display = "none";
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
             } else if (val == "PRO0104") {
                 document.getElementById("submit").style.display = "block";
                 document.getElementById('first_name').style.display = "block";
@@ -549,6 +817,42 @@
                 document.getElementById('age').style.display = "none";
                 document.getElementById('coverage').style.display = "none";
                 document.getElementById('major_health_issues').style.display = "none";
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
+            } else if (val == "PRO0112") {
+                document.getElementById("submit").style.display = "block";
+                document.getElementById('first_name').style.display = "block";
+                document.getElementById('last_name').style.display = "block";
+                document.getElementById('agent_name').style.display = "none";
+                document.getElementById('email').style.display = "block";
+                document.getElementById('phone').style.display = "block";
+                document.getElementById('address').style.display = "block";
+                document.getElementById('city').style.display = "block";
+                document.getElementById('state').style.display = "block";
+                document.getElementById('zip_code').style.display = "block";
+                document.getElementById('electric_provider').style.display = "block";
+                document.getElementById('income').style.display = "block";
+                document.getElementById('electric_bill_monthly').style.display = "block";
+                document.getElementById('monthly_payment').style.display = "block";
+                document.getElementById('roof_shade').style.display = "block";
+                document.getElementById('homeowner').style.display = "block";
+                document.getElementById('credit_score').style.display = "block";
+                document.getElementById('credit_rating').style.display = "block";
+                document.getElementById('notes').style.display = "block";
+                document.getElementById('agent_name').style.display = "block";
+                document.getElementById('app_date_time').style.display = "none";
+                document.getElementById('smoker').style.display = "none";
+                document.getElementById('beneficiary').style.display = "none";
+                document.getElementById('age').style.display = "none";
+                document.getElementById('coverage').style.display = "none";
+                document.getElementById('major_health_issues').style.display = "none";
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+
             } else if (val == "PRO0105") {
                 document.getElementById("submit").style.display = "block";
                 document.getElementById('first_name').style.display = "block";
@@ -573,6 +877,11 @@
                 document.getElementById('age').style.display = "none";
                 document.getElementById('coverage').style.display = "none";
                 document.getElementById('major_health_issues').style.display = "none";
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
             } else if (val == "PRO0106") {
                 document.getElementById("submit").style.display = "block";
                 document.getElementById('first_name').style.display = "block";
@@ -597,7 +906,74 @@
                 document.getElementById('age').style.display = "none";
                 document.getElementById('coverage').style.display = "none";
                 document.getElementById('major_health_issues').style.display = "none";
-            } else if (val == "FE0007") {
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
+            } else if (val == "PRO0109") {
+                document.getElementById("submit").style.display = "block";
+                document.getElementById('first_name').style.display = "block";
+                document.getElementById('last_name').style.display = "block";
+                document.getElementById('agent_name').style.display = "none";
+                document.getElementById('email').style.display = "block";
+                document.getElementById('phone').style.display = "block";
+                document.getElementById('address').style.display = "block";
+                document.getElementById('state').style.display = "block";
+                document.getElementById('zip_code').style.display = "block";
+                document.getElementById('electric_provider').style.display = "block";
+                document.getElementById('electric_bill_monthly').style.display = "block";
+                document.getElementById('roof_shade').style.display = "block";
+                document.getElementById('homeowner').style.display = "block";
+                document.getElementById('credit_score').style.display = "block";
+                document.getElementById('credit_rating').style.display = "none";
+                document.getElementById('notes').style.display = "block";
+                document.getElementById('app_date_time').style.display = "none";
+
+                document.getElementById('smoker').style.display = "none";
+                document.getElementById('beneficiary').style.display = "none";
+                document.getElementById('age').style.display = "none";
+                document.getElementById('coverage').style.display = "none";
+                document.getElementById('major_health_issues').style.display = "none";
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
+            }
+            else if (val == "PRO0141") {
+                document.getElementById("submit").style.display = "block";
+                document.getElementById('first_name').style.display = "block";
+                document.getElementById('last_name').style.display = "block";
+                document.getElementById('agent_name').style.display = "none";
+                document.getElementById('email').style.display = "block";
+                document.getElementById('phone').style.display = "block";
+                document.getElementById('address').style.display = "block";
+                document.getElementById('state').style.display = "block";
+                document.getElementById('zip_code').style.display = "block";
+                document.getElementById('electric_provider').style.display = "none";
+                document.getElementById('electric_bill_monthly').style.display = "none";
+                document.getElementById('roof_shade').style.display = "none";
+                document.getElementById('homeowner').style.display = "none";
+                document.getElementById('credit_score').style.display = "none";
+                document.getElementById('credit_rating').style.display = "none";
+                document.getElementById('notes').style.display = "block";
+                document.getElementById('app_date_time').style.display = "none";
+
+                document.getElementById('smoker').style.display = "none";
+                document.getElementById('beneficiary').style.display = "none";
+                document.getElementById('age').style.display = "none";
+                document.getElementById('coverage').style.display = "none";
+                document.getElementById('major_health_issues').style.display = "none";
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
+            }
+            
+            
+            else if (val == "FE0007") {
                 document.getElementById("submit").style.display = "block";
                 document.getElementById('first_name').style.display = "block";
                 document.getElementById('last_name').style.display = "block";
@@ -620,13 +996,48 @@
                 document.getElementById('credit_rating').style.display = "none";
                 document.getElementById('notes').style.display = "none";
                 document.getElementById('app_date_time').style.display = "none";
-            } else if (val == "PRO0075" || val == "PRO0097" || val == "PRO0098") {
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
+            } else if (val == "PRO0098") {
                 document.getElementById("submit").style.display = "block";
                 document.getElementById('first_name').style.display = "block";
-                if (val == "PRO0098")
-                    document.getElementById('call_url').style.display = "none";
-                else
-                    document.getElementById('call_url').style.display = "block";
+                document.getElementById('call_url').style.display = "none";
+                document.getElementById('last_name').style.display = "block";
+                document.getElementById('agent_name').style.display = "none";
+                document.getElementById('email').style.display = "block";
+                document.getElementById('phone').style.display = "block";
+                document.getElementById('address').style.display = "block";
+
+                // document.getElementById('state_solar_trinity').style.display = "block";
+                // document.getElementById('electric_solar_trinity').style.display = "block";
+
+                document.getElementById('state').style.display = "block";
+                document.getElementById('zip_code').style.display = "block";
+                document.getElementById('smoker').style.display = "none";
+                document.getElementById('beneficiary').style.display = "none";
+                document.getElementById('age').style.display = "none";
+                document.getElementById('coverage').style.display = "none";
+                document.getElementById('major_health_issues').style.display = "none";
+                document.getElementById('electric_provider').style.display = "block";
+                document.getElementById('electric_bill_monthly').style.display = "block";
+                document.getElementById('roof_shade').style.display = "block";
+                document.getElementById('homeowner').style.display = "block";
+                document.getElementById('credit_score').style.display = "block";
+                document.getElementById('credit_rating').style.display = "block";
+                document.getElementById('notes').style.display = "block";
+                document.getElementById('app_date_time').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
+            } else if (val == "PRO0075" || val == "PRO0097") {
+                document.getElementById("submit").style.display = "block";
+                document.getElementById('first_name').style.display = "block";
+
+
+                document.getElementById('call_url').style.display = "block";
 
                 document.getElementById('last_name').style.display = "block";
                 document.getElementById('agent_name').style.display = "none";
@@ -648,28 +1059,16 @@
                 document.getElementById('credit_rating').style.display = "block";
                 document.getElementById('notes').style.display = "block";
                 document.getElementById('app_date_time').style.display = "none";
+                // document.getElementById('state_solar_trinity').style.display = "none";
+                // document.getElementById('electric_solar_trinity').style.display = "none";
+                document.getElementById('house_type').style.display = "none";
+                document.getElementById('income').style.display = "none";
+                document.getElementById('monthly_payment').style.display = "none";
             }
         }
     </script>
-    <script>
-        $(document).ready(function() {
-            $('#ddclients').change(function() {
-                var client = $(this).val();
-                console.log(client);
-                if (client == "PRO0098") {
-                    $.ajax({
-                        url: 'https://trinitysolar.leadspediatrack.com/post.do',
-                        type: 'get',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                        }
-                    })
-                }
-            })
-        });
-    </script>
 
+    <!--Script for SolarLG-->
     <script id="LeadiDscript" type="text/javascript">
         (function() {
             var s = document.createElement('script');
@@ -681,6 +1080,7 @@
             LeadiDscript.parentNode.insertBefore(s, LeadiDscript);
         })();
     </script>
+
     <!-- TrustedForm -->
     <script type="text/javascript">
         (function() {
@@ -703,12 +1103,14 @@
 
 
     <script>
-        // var ip='';
-        // $.getJSON("https://api.ipify.org?format=json", function(data) {
+        // var ip='';        
+        // $.getJSON("https://api.ipify.org?format=json", function(data) {          
         //     document.getElementById('ip_address').value = data.ip;
         //     console.log(data);
         // });
     </script>
     <noscript><img
             src='//create.leadid.com/noscript.gif?lac=BF7F77BD-87EC-7538-6E77-BCB51CF20276&lck=bf7f77bd-face-feed-cafe-bcb51cf20276&snippet_version=2' /></noscript>
+
+    <!--Script for SolarLG-->
 @endpush

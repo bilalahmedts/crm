@@ -15,11 +15,12 @@ class ExportMortgage implements FromView, ShouldAutoSize
 {
     protected $start_date=''; 
     protected $end_date='';
-    public function __construct($start_date=null,$end_date=null,$search=null,$client_id=null){
+    public function __construct($start_date=null,$end_date=null,$search=null,$client_id=null,$project_id=null){
         $this->start_date = $start_date;
         $this->end_date = $end_date;
         $this->search = $search;
         $this->client_id = $client_id;
+        $this->project_id = $project_id;
     }
 
     public function view(): View
@@ -27,7 +28,7 @@ class ExportMortgage implements FromView, ShouldAutoSize
         $search= $this->search;
         $saleMortgages = SaleMortgage::with('client:id,name');
         if($this->start_date && $this->end_date ){
-            $saleMortgages = $saleMortgages->whereDate('created_at',$this->start_date)->whereDate('created_at',$this->end_date);
+            $saleMortgages = $saleMortgages->whereDate('created_at',">=",$this->start_date)->whereDate('created_at',"<=",$this->end_date);
         }
         if($this->search){        
             $saleMortgages =$saleMortgages->where(function($query)use($search){
@@ -37,7 +38,10 @@ class ExportMortgage implements FromView, ShouldAutoSize
             });
         }
         if($this->client_id){
-            $saleMortgages = $saleMortgages->where('client_id',$request->client_id);
+            $saleMortgages = $saleMortgages->where('client_code',$this->client_id);
+        }
+        if($this->project_id){
+            $saleMortgages = $saleMortgages->where('project_code',$this->project_id);
         }
         if(auth()->user()->hasRole("MortgageClient")){
 			

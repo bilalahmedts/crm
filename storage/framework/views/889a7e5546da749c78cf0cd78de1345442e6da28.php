@@ -1,9 +1,11 @@
 <?php $__env->startSection('content'); ?>
 <?php $__env->startPush('header-buttons'); ?>
+    <?php if(in_array(Auth::user()->roles[0]->name, ['Super Admin','MortgageManager','AllSheet'])): ?>
         <div class="col-lg-6 col-5 text-right">
-          <a href="<?php echo e(route('mortgages.index')); ?>" class="btn btn-sm btn-icon btn-neutral">
+        <a href="<?php echo e(route('mortgages.index')); ?>" class="btn btn-sm btn-icon btn-neutral">
             <i data-feather="arrow-left" stroke-width="3" width="12"></i> Go Back</a>
         </div>
+    <?php endif; ?>
     <?php $__env->stopPush(); ?>
 
     <?php echo $__env->make('admin.layouts.headers.cards', ['title' => "Mortgage"], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
@@ -17,19 +19,24 @@
                         <div class="row">
                             <div class="col-md-4"></div>
                             <div class="col-md-4">
-                                <img style="display: block;margin-left: auto; margin-right: auto;width: 50%; display:none" src="<?php echo e(url('loader.gif')); ?>" id="loader">
+                                <img style="display: block;margin-left: auto; margin-right: auto;width: 50%; display:none" 
+									 src="<?php echo e(url('loader.gif')); ?>" id="loader">
                             </div>
                         </div>
                         
                         <div class="row" id="searchForm">
-                            <div class="col-5">
+                            <div class="col-3">
                                 <h3 class="mb-0">Mortgage Campaigns Submission</h3>
                             </div>
                             <div class="col-2">
                                 <h3 class="mb-0 text text-danger" id="recordNotFoundLabel" style="display: none">Record Not Found</h3>
                             </div>
+                            <div class="col-2">
+                                <h3 class="mb-0 text text-danger" id="alreadyASaleLabel" style="display: none">Already a Sale</h3>
+                            </div>							
                             <div class="col-3 ">
-                                <input style="color: black" style="color: black" style="border: 2px solid;"  type="number" id="search" name="search" class="form-control" placeholder="Record ID">
+                                <input style="color: black" style="color: black" style="border: 2px solid;"  
+									   type="number" id="search" name="search" class="form-control" placeholder="Record ID">
                             </div>  
                             <div class="col-2 ">
                                 <a href="#" onclick="searchRecord()" class="btn btn-primary float-right">Search Sale Record</a>
@@ -62,7 +69,8 @@
                                 <div class="row">
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="clients">
                                         <span class="details">Select Client</span>
-                                        <select required readonly name="clients" onchange="selectClient(this.value)" class="form-control selection_style" style=" background: lightblue; color: black;">
+                                        <select required readonly name="clients" onchange="selectClient(this.value)" 
+												class="form-control selection_style" style=" background: lightblue; color: black;">
                                             <option value="">Select </option>
                                             <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <option value="<?php echo e($row->project_code); ?>"><?php echo e($row->name); ?></option> 
@@ -72,6 +80,7 @@
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="recieving_rep">
                                         <strong>recieving_rep:</strong>
                                         <select name="recieving_rep" class="form-control selection_style">
+                                            <option> Select </option>
                                             <option>Ken</option>
                                             <option>Koorosh</option>
                                             <option>Lilia</option>
@@ -80,9 +89,11 @@
                                         </select>
                                     </div>
                                     <input style="color: black" type="hidden" name="record_id" id="record_id">
+
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="recieving_rep_qms_361">
                                         <strong>recieving_rep:</strong>
                                         <select name="recieving_rep" class="form-control selection_style">
+                                            <option> Select </option>
                                             <option>BRIAN</option>
                                             <option>JEFFERY</option>
                                             <option>JIM</option>
@@ -93,6 +104,15 @@
                                             <option>ROBERT</option>
                                         </select>
                                     </div>
+                                    <div class="col-md-4 col-lg-4 form-group" style="display: none" id="recieving_rep_lb_2414">
+                                        <strong>recieving_rep:</strong>
+                                        <select name="recieving_rep" class="form-control selection_style">
+                                            <option> Select </option>
+                                            <option>Jason</option>
+                                            <option>Elie</option>
+                                            
+                                        </select>
+                                    </div>
                                     
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="title">
                                         <span class="details">Title</span>
@@ -100,20 +120,24 @@
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="first_name" >
                                         <span class="details">First Name</span>
-                                        <input style="color: black" required  type="text" name="first_name" class="form-control" placeholder="First Name">
+                                        <input style="color: black" required  type="text" name="first_name" 
+											   class="form-control" placeholder="First Name">
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="last_name">
                                         <span class="details">Last Name</span>
-                                        <input style="color: black" required  type="text" name="last_name"  class="form-control" placeholder="Last Name">
+                                        <input style="color: black" required  type="text" name="last_name"  
+											   class="form-control" placeholder="Last Name">
                                     </div>
                                     
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="phone">
                                         <span class="details">Phone</span>
-                                        <input style="color: black" required readonly type="text" name="phone" id="phn" class="form-control" placeholder="Phone">
+                                        <input style="color: black" required readonly type="text" name="phone" 
+											   id="phn" class="form-control" placeholder="Phone">
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="work_phone">
                                         <span class="details">Work Phone</span>
-                                        <input style="color: black" type="text" readonly name="work_phone"  class="form-control" placeholder="Work Phone">
+                                        <input style="color: black" type="text" readonly name="work_phone"  
+											   class="form-control" placeholder="Work Phone">
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="email">
                                         <span class="details">Email</span>
@@ -121,12 +145,30 @@
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="address">
                                         <span class="details">Mail Address</span>
-                                        <input style="color: black"  type="text" name="address" id="priaddress"  class="form-control" placeholder="Address">
+                                        <input style="color: black"  type="text" name="address" id="priaddress"  
+											   class="form-control" placeholder="Address">
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="city">
                                         <span class="details">City</span>
                                         <input style="color: black"  type="text" name="city"  class="form-control" placeholder="City">
                                     </div>
+									<div class="col-md-4 col-lg-4 form-group" style="display: block" id="dob">
+                                        <span class="details">DOB</span>
+                                        <input style="color: black"  type="date" name="dob"  class="form-control" placeholder="dob">
+                                    </div>
+									<div class="col-md-4 col-lg-4 form-group" style="display: block" id="employer">
+                                        <span class="details">EMPLOYED</span>
+                                        <select name="EMPLOYED" id="emplr"  class="form-control selection_style">
+											<option>--Select--</option>											
+											<option value="W-2">W-2</option>
+											<option value="1099">1099 </option>
+											<option value="W-2/1099">W-2/1099</option>
+											<option value="Unemployed">Unemployed</option>
+											<option value="Disabled">Disabled</option>											
+											<option value="Retired">Retired</option>
+										</select>
+									</div>
+									
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="state">
                                         <span class="details">STATE</span>
                                         <select name="state" id="st"  class="form-control selection_style">
@@ -184,37 +226,44 @@
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: block" id="zip" >
                                         <span class="details">Zip Code</span>
-                                        <input style="color: black" type="number" name="zip" id="zipCode" class="form-control" placeholder="Zip Code">
+                                        <input style="color: black" type="number" name="zip" id="zipCode" class="form-control" 
+											   placeholder="Zip Code">
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="cash_amount">
                                         <span class="details">Cash Amount</span>
-                                        <input style="color: black" type="number" name="cash_amount"  class="form-control" placeholder="Cash Amount">
+                                        <input style="color: black" type="number" name="cash_amount"  class="form-control" 
+											   placeholder="Cash Amount">
                                     </div>
                 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="current_amount">
                                         <span class="details">Current Amount</span>
-                                        <input style="color: black" type="number" name="current_amount"  class="form-control" placeholder="Current Amount">
+                                        <input style="color: black" type="number" name="current_amount"  class="form-control"
+											   placeholder="Current Amount">
                                     </div>
                 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="current_rate">
                                         <span class="details">Current rate</span>
-                                        <input style="color: black" type="text" name="current_rate"  class="form-control" placeholder="Current rate">
+                                        <input style="color: black" type="text" name="current_rate"  class="form-control"
+											   placeholder="Current rate">
                                     </div>
                 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="income">
                                         <span class="details">Income</span>
-                                        <input style="color: black" type="number" name="income"  class="form-control" placeholder="Income">
+                                        <input style="color: black" type="number" name="income"  class="form-control" 
+											   placeholder="Income">
                                     </div>
                 
                 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="property_value">
                                         <span class="details">Property Value</span>
-                                        <input style="color: black" type="number" name="property_value"  class="form-control" placeholder="Property value">
+                                        <input style="color: black" type="number" name="property_value"  class="form-control"
+											   placeholder="Property value">
                                     </div>
                 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="property_type" >
                                         <span class="details">Property Type</span>
-                                        <input style="color: black" type="text" name="property_type" class="form-control" placeholder="Property Type">
+                                        <input style="color: black" type="text" name="property_type" class="form-control"
+											   placeholder="Property Type">
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="lender" >
                                         <span class="details">Lender</span>
@@ -243,7 +292,7 @@
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="credit_score">
                                         <span class="details">Credit Score</span>
-                                        <input style="color: black" type="text" name="credit_score"  class="form-control" placeholder="Credit Score">
+                                        <input style="color: black" type="text" name="credit_score" id="credit_score_value" class="form-control" placeholder="Credit Score">
                                     </div>
                 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="credit_rating" >
@@ -277,15 +326,25 @@
                                         <span class="details">Loan Balance</span>
                                         <input style="color: black" type="number" name="loan_balance" class="form-control" placeholder="Loan Balance">
                                     </div>
-                
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="rate_type" >
                                         <span class="details">Rate Type</span>
-                                        <input style="color: black" type="text" name="rate_type" class="form-control" placeholder="Rate Type">
-                                    </div>
+                                            <select name="rate_type" id="rt" class="form-control selection_style">
+                                                <option >--Select--</option>
+                                                <option >FIXED</option>
+                                                <option >ADJ</option>
+                                            </select>
+                                        </div>
+                                    
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="loan_type" >
-                                        <span class="details">Loan type</span>
-                                        <input style="color: black" type="text" id="lt" name="loan_type" class="form-control" placeholder="Loan type">
-                                    </div>
+                                        <span class="details">Loan Type</span>
+                                            <select name="loan_type" id="lt" class="form-control selection_style">
+                                                <option >--Select--</option>
+                                                <option >FHA</option>
+                                                <option >VA</option>
+                                            </select>
+                                        </div>
+
+                                    
                 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="purpose_of_loan" >
                                         <span class="details">Purpose of loan</span>
@@ -294,6 +353,14 @@
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="age" >
                                         <span class="details">Age</span>
                                         <input style="color: black" type="number" name="age" class="form-control" placeholder="Age">
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 form-group" style="display: none" id="age_18_to_64" >
+                                        <span class="details">Age 18 to 64</span>
+                                        <select name="age_18_to_64"  class="form-control selection_style">
+                                            <option >--Select--</option>
+                                            <option >Yes</option>
+                                            <option >No</option>
+                                        </select>
                                     </div>
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="transfer_by" >
                                         <span class="details">Transfer By</span>
@@ -346,6 +413,19 @@
                                             <option> No Response During Requested Call-Time</option>
                                         </select>
                                     </div>
+                                    <div class="col-md-4 col-lg-4 form-group" style="display: none" id="medicaid" >
+                                        <span class="details">Medi-care/Medic-aid/Va-Health-Care</span>
+                                            <select name="medicare_medicaid" class="form-control selection_style">
+                                                <option >--Select--</option>
+                                                <option >Yes</option>
+                                                <option>No</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 col-lg-4 form-group" style="display: none" id="annual_house">
+                                            <span class="details">Annual House Hold Income</span>
+                                            <input style="color: black" type="text" name="annual_house"  class="form-control"
+												   placeholder="Annual house hold">
+                                        </div>
 
 
                                     <div class="col-md-4 col-lg-4 form-group" style="display: none" id="loanofficername" >
@@ -453,314 +533,184 @@
                                         </select>
 										<select style="display:none" name="loanofficername" id="mtgr_loanofficername" class="form-control"> 
                         							<option value="">--Select--</option>
-                                                    <option value="1361">Aaron Edwards</option>
-                                
-                                                    <option value="806">Alex Coronado</option>
-                                
-                                                    <option value="1512">Alex Perez</option>
-                                
-                                                    <option value="891">Andrew Akbar</option>
-                                
-                                                    <option value="1346">Anthony Varda</option>
-                                
-                                                    <option value="1278">Antonio Elias</option>
-                                
-                                                    <option value="1226">Aria Esmaili</option>
-                                
-                                                    <option value="1501">Arthur Cuellar</option>
-                                
-                                                    <option value="338">Austin Downs</option>
-                                
-                                                    <option value="837">Austin Hirsch</option>
-                                
-                                                    <option value="651">Barry Baume</option>
-                                
-                                                    <option value="79">Bill Scatena</option>
-                                
-                                                    <option value="458">Brandon Downs</option>
-                                
-                                                    <option value="1237">Brandon Tallale</option>
-                                
-                                                    <option value="1440">Brett Sims</option>
-                                
-                                                    <option value="1347">Brian Quintana</option>
-                                
-                                                    <option value="994">Brock Hale</option>
-                                
-                                                    <option value="1503">Caleb Sommer</option>
-                                
-                                                    <option value="1502">Cedric Simmons</option>
-                                
-                                                    <option value="205">Chad Reynolds</option>
-                                
-                                                    <option value="1474">Chiara Nigro</option>
-                                
-                                                    <option value="724">Chris Stiller</option>
-                                
-                                                    <option value="986">Chris Beadles</option>
-                                
-                                                    <option value="1146">Chris Horn</option>
-                                
-                                                    <option value="1508">Chris Loughnane</option>
-                                
-                                                    <option value="1524">Chris Davis</option>
-                                
-                                                    <option value="1389">Chris Jameson</option>
-                                
-                                                    <option value="949">Christopher Navarro</option>
-                                
-                                                    <option value="1466">Cinder Sexton</option>
-                                
-                                                    <option value="1480">Cleveland Colter</option>
-                                
-                                                    <option value="1522">Clint Stroble</option>
-                                
-                                                    <option value="1124">Colin Sommer</option>
-                                
-                                                    <option value="1362">Courtney Leiby</option>
-                                
-                                                    <option value="1335">Damien Payne</option>
-                                
-                                                    <option value="1334">Daniel Guerra</option>
-                                
-                                                    <option value="1478">Darren Witherspoon</option>
-                                
-                                                    <option value="537">David Lovett</option>
-                                
-                                                    <option value="1408">Dillon Boirum</option>
-                                
-                                                    <option value="671">Dom Nolletti</option>
-                                
-                                                    <option value="1244">Dominick Kehayias</option>
-                                
-                                                    <option value="1163">Elizabeth Arrendondo-Mendoza</option>
-                                
-                                                    <option value="989">Emaan Annabi</option>
-                                
-                                                    <option value="1020">Eric Lee</option>
-                                
-                                                    <option value="1141">Eric Satterwhite</option>
-                                
-                                                    <option value="91">Eric Katz</option>
-                                
-                                                    <option value="1507">Frank Romero</option>
-                                
-                                                    <option value="1202">Garrett Wimer</option>
-                                
-                                                    <option value="877">Gene Galindo</option>
-                                
-                                                    <option value="1229">Giancarlo Silvestri</option>
-                                
-                                                    <option value="1409">Giguya Nzunga</option>
-                                
-                                                    <option value="1521">Grant Holzworth</option>
-                                
-                                                    <option value="771">Greg Franks</option>
-                                
-                                                    <option value="995">Hadi Serhan</option>
-                                
-                                                    <option value="906">Henry Jebori</option>
-                                
-                                                    <option value="1392">Ivette Erives</option>
-                                
-                                                    <option value="708">Jacob Hazouri</option>
-                                
-                                                    <option value="1375">Jacob Jalaf</option>
-                                
-                                                    <option value="1472">Jacob Wilson</option>
-                                
-                                                    <option value="886">James Lott</option>
-                                
-                                                    <option value="854">James Hansen</option>
-                                
-                                                    <option value="380">Jared Vogt</option>
-                                
-                                                    <option value="1461">Jason Soldati</option>
-                                
-                                                    <option value="1066">Jay Munoz</option>
-                                
-                                                    <option value="1352">JC Brock</option>
-                                
-                                                    <option value="135">Jennifer Katz</option>
-                                
-                                                    <option value="365">Jennifer Roe</option>
-                                
-                                                    <option value="1506">Jese DeWitt</option>
-                                
-                                                    <option value="1486">Jessica Maxon</option>
-                                
-                                                    <option value="1519">Johann Alfaro</option>
-                                
-                                                    <option value="539">John Heinrich</option>
-                                
-                                                    <option value="600">John Afzal</option>
-                                
-                                                    <option value="635">Jon Marshall</option>
-                                
-                                                    <option value="332">Jonathan Moss</option>
-                                
-                                                    <option value="769">Jonathan Hugger</option>
-                                
-                                                    <option value="1133">Jonathan Wolff</option>
-                                
-                                                    <option value="1404">Jonathan Upshaw</option>
-                                
-                                                    <option value="1499">Jordan Brown</option>
-                                
-                                                    <option value="1523">Jorge Alvarez</option>
-                                
-                                                    <option value="716">Jose Cardenas</option>
-                                
-                                                    <option value="1140">Joseph Doyle</option>
-                                
-                                                    <option value="1243">Joseph Gaskins</option>
-                                
-                                                    <option value="1248">Joseph Dahoui</option>
-                                
-                                                    <option value="1511">Josh Borba</option>
-                                
-                                                    <option value="709">Josiah Edson</option>
-                                
-                                                    <option value="895">Justin Wick</option>
-                                
-                                                    <option value="1459">Justin Brooks</option>
-                                
-                                                    <option value="1394">Kaishaun Scott</option>
-                                
-                                                    <option value="1364">Kara Childs</option>
-                                
-                                                    <option value="429">Keith Folding</option>
-                                
-                                                    <option value="136">Kelli Foster</option>
-                                
-                                                    <option value="1471">Kimmer Oreilly</option>
-                                
-                                                    <option value="910">Larry Minnefee</option>
-                                
-                                                    <option value="952">Larry Sifuentes</option>
-                                
-                                                    <option value="1393">Maritza Quintero</option>
-                                
-                                                    <option value="1372">Mark Zavala</option>
-                                
-                                                    <option value="549">Marquis Dobbs</option>
-                                
-                                                    <option value="496">Matt Owen</option>
-                                
-                                                    <option value="450">Matthew Saba</option>
-                                
-                                                    <option value="1473">Maxx Tio</option>
-                                
-                                                    <option value="1203">Megan Wynne</option>
-                                
-                                                    <option value="594">Michael Mackinder</option>
-                                
-                                                    <option value="222">Michael Potolicchio</option>
-                                
-                                                    <option value="985">Michael Kirkegaard</option>
-                                
-                                                    <option value="1460">Miles Gagg</option>
-                                
-                                                    <option value="368">Missed Call</option>
-                                
-                                                    <option value="1318">Mozzy Azarian</option>
-                                
-                                                    <option value="1422">Nadim Tanious</option>
-                                
-                                                    <option value="1279">Nicholas Mansour</option>
-                                
-                                                    <option value="587">Nick Maffei</option>
-                                
-                                                    <option value="759">Nick Martin</option>
-                                
-                                                    <option value="1520">Nicole Bischoff</option>
-                                
-                                                    <option value="1035">Nikolais Brown</option>
-                                
-                                                    <option value="1441">Pablo Perez</option>
-                                
-                                                    <option value="1094">Patrick Nguyen</option>
-                                
-                                                    <option value="550">Paul Potolicchio</option>
-                                
-                                                    <option value="92">Paul Franklin</option>
-                                
-                                                    <option value="1363">Peter Perez</option>
-                                
-                                                    <option value="1407">Preston Beck</option>
-                                
-                                                    <option value="819">Randall Baume</option>
-                                
-                                                    <option value="1398">Rey Sierra</option>
-                                
-                                                    <option value="1293">Rick Rozendaal</option>
-                                
-                                                    <option value="1312">Robert Mellody</option>
-                                
-                                                    <option value="1048">Rodolfo Soto</option>
-                                
-                                                    <option value="1021">Roma Danishyar</option>
-                                
-                                                    <option value="402">Ryan Brown</option>
-                                
-                                                    <option value="431">Ryan Sabouneh</option>
-                                
-                                                    <option value="1485">Ryan Sims</option>
-                                
-                                                    <option value="870">Ryan Post</option>
-                                
-                                                    <option value="1468">Ryan Weltz</option>
-                                
-                                                    <option value="1149">Sam Aljebori</option>
-                                
-                                                    <option value="889">Sam Margoles</option>
-                                
-                                                    <option value="878">Samantha Lepe</option>
-                                
-                                                    <option value="1500">Sarah Kubicki</option>
-                                
-                                                    <option value="1242">Sarah Aljebori</option>
-                                
-                                                    <option value="1479">Schyler Forrester</option>
-                                
-                                                    <option value="941">Scott Holt</option>
-                                
-                                                    <option value="1518">Shoaib Ayub</option>
-                                
-                                                    <option value="1505">Sina Tavakoli</option>
-                                
-                                                    <option value="1233">Steven Doyle</option>
-                                
-                                                    <option value="1276">Steven Sosna</option>
-                                
-                                                    <option value="1395">Taylor Clemons</option>
-                                
-                                                    <option value="730">Terry Williams</option>
-                                
-                                                    <option value="1369">Thomas Whitehurst</option>
-                                
-                                                    <option value="355">Tim Dibona</option>
-                                
-                                                    <option value="132">Tonya Flatt</option>
-                                
-                                                    <option value="1423">Travis Andrews</option>
-                                
-                                                    <option value="1169">Whitney Trick</option>
-                                
-                                                    <option value="991">Xavier Alcala</option>
-                                
-                                                    <option value="1475">Xavier Medina</option>
-                                
-                                                    <option value="1071">Yazan Alsharif</option>
-                                
-                                                    <option value="1208">Zalen Katz</option>
+                                                    <option value="aedwards@thefederalsavingsbank.com"> Aaron Edwards </option>
+                                                    <option value="acoronado@thefederalsavingsbank.com"> Alex Coronado </option>
+                                                    <option value="aperez@thefederalsavingsbank.com"> Alex Perez </option>
+                                                    <option value="aakbar@thefederalsavingsbank.com"> Andrew Akbar </option>
+                                                    <option value="avarda@thefederalsavingsbank.com"> Anthony Varda </option>
+                                                    <option value="aelias@thefederalsavingsbank.com"> Antonio Elias </option>
+                                                    <option value="aesmaili@thefederalsavingsbank.com"> Aria Esmaili </option>
+                                                    <option value="acuellar@thefederalsavingsbank.com"> Arthur Cuellar </option>
+                                                    <option value="adowns@thefederalsavingsbank.com"> Austin Downs </option>
+                                                    <option value="ahirsch@thefederalsavingsbank.com"> Austin Hirsch </option>
+                                                    <option value="bbaume@thefederalsavingsbank.com"> Barry Baume </option>
+                                                    <option value="bscatena@thefederalsavingsbank.com"> Bill Scatena </option>
+                                                    <option value="Bdowns@thefederalsavingsbank.com"> Brandon Downs </option>
+                                                    <option value="btallale@thefederalsavingsbank.com"> Brandon Tallale </option>
+                                                    <option value="bsims@thefederalsavingsbank.com"> Brett Sims </option>
+                                                    <option value="bquintana@thefederalsavingsbank.com"> Brian Quintana </option>
+                                                    <option value="bhale@thefederalsavingsbank.com"> Brock Hale </option>
+                                                    <option value="caleb.sommer@thefederalsavingsbank.com"> Caleb Sommer </option>
+                                                    <option value="csimmons@thefederalsavingsbank.com"> Cedric Simmons </option>
+                                                    <option value="creynolds@thefederalsavingsbank.com"> Chad Reynolds </option>
+                                                    <option value="cnigro@thefederalsavingsbank.com"> Chiara Nigro </option>
+                                                    <option value="cstiller@thefederalsavingsbank.com"> Chris Stiller </option>
+                                                    <option value="cbeadles@thefederalsavingsbank.com"> Chris Beadles </option>
+                                                    <option value="chorn@thefederalsavingsbank.com"> Chris Horn </option>
+                                                    <option value="cloghnane@thefederalsavingsbank.com"> Chris Loughnane </option>
+                                                    <option value="chris.davis@thefederalsavingsbank.com"> Chris Davis </option>
+                                                    <option value="cjameson@thefederalsavingsbank.com"> Chris Jameson </option>
+                                                    <option value="cnavarro@thefederalsavingsbank.com"> Christopher Navarro</option>
+                                                    <option value="csexton@thefederalsavingsbank.com"> Cinder Sexton </option>
+                                                    <option value="ccolter@thefederalsavingsbank.com"> Cleveland Colter </option>
+                                                    <option value="cstroble@thefederalsavingsbank.com"> Clint Stroble </option>
+                                                    <option value="csommer@thefederalsavingsbank.com"> Colin Sommer </option>
+                                                    <option value="codom@thefederalsavingsbank.com"> Cornell Odom </option>
+                                                    <option value="cleiby@thefederalsavingsbank.com"> Courtney Leiby </option>
+                                                    <option value="dpayne@thefederalsavingsbank.com"> Damien Payne </option>
+                                                    <option value="dguerra@thefederalsavingsbank.com"> Daniel Guerra </option>
+                                                    <option value="dwitherspoon@thefederalsavingsbank.com"> Darren Witherspoon
+                                                    </option>
+                                                    <option value="dlovett@thefederalsavingsbank.com"> David Lovett </option>
+                                                    <option value="dboirum@thefederalsavingsbank.com"> Dillon Boirum </option>
+                                                    <option value="dnolletti@thefederalsavingsbank.com"> Dom Nolletti </option>
+                                                    <option value="dkehayias@thefederalsavingsbank.com"> Dominick Kehayias</option>
+                                                    <option value="earredondomendoza@thefederalsavingsbank.com"> 
+														Elizabeth Arrendondo-Mendoza </option>
+                                                    <option value="eannabi@thefederalsavingsbank.com"> Emaan Annabi </option>
+                                                    <option value="elee@thefederalsavingsbank.com"> Eric Lee </option>
+                                                    <option value="esatterwhite@thefederalsavingsbank.com"> Eric Satterwhite
+                                                    </option>
+                                                    <option value="ekatz@thefederalsavingsbank.com"> Eric Katz </option>
+                                                    <option value="fromero@thefederalsavingsbank.com"> Frank Romero </option>
+                                                    <option value="gwimer@thefederalsavingsbank.com"> Garrett Wimer </option>
+                                                    <option value="ggalindo@thefederalsavingsbank.com"> Gene Galindo </option>
+                                                    <option value="gsilvestri@thefederalsavingsbank.com"> Giancarlo Silvestri
+                                                    </option>
+                                                    <option value="gnzunga@thefederalsavingsbank.com"> Giguya Nzunga </option>
+                                                    <option value="gholzworth@thefederalsavingsbank.com"> Grant Holzworth </option>
+                                                    <option value="gfranks@thefederalsavingsbank.com"> Greg Franks </option>
+                                                    <option value="hserhan@thefederalsavingsbank.com"> Hadi Serhan </option>
+                                                    <option value="hjebori@thefederalsavingsbank.com"> Henry Jebori </option>
+                                                    <option value="ierives@thefederalsavingsbank.com"> Ivette Erives </option>
+                                                    <option value="jhazouri@thefederalsavingsbank.com"> Jacob Hazouri </option>
+                                                    <option value="jjalaf@thefederalsavingsbank.com"> Jacob Jalaf </option>
+                                                    <option value="jacob.wilson@thefederalsavingsbank.com"> Jacob Wilson </option>
+                                                    <option value="jlott@thefederalsavingsbank.com"> James Lott </option>
+                                                    <option value="jhansen@thefederalsavingsbank.com"> James Hansen </option>
+                                                    <option value="jvogt@thefederalsavingsbank.com"> Jared Vogt </option>
+                                                    <option value="jsoldait@thefederalsavingsbank.com"> Jason Soldati </option>
+                                                    <option value="jmunoz@thefederalsavingsbank.com"> Jay Munoz </option>
+                                                    <option value="jcbrock@thefederalsavingsbank.com"> JC Brock </option>
+                                                    <option value="Jkatz@thefederalsavingsbank.com"> Jennifer Katz </option>
+                                                    <option value="jroe@thefederalsavingsbank.com"> Jennifer Roe </option>
+                                                    <option value="jdewitt@thefederalsavingsbank.com"> Jese DeWitt </option>
+                                                    <option value="jmaxon@thefederalsavingsbank.com"> Jessica Maxon </option>
+                                                    <option value="jalfaro@thefederalsavingsbank.com"> Johann Alfaro </option>
+                                                    <option value="jheinrich@thefederalsavingsbank.com"> John Heinrich </option>
+                                                    <option value="jafzal@thefederalsavingsbank.com"> John Afzal </option>
+                                                    <option value="jmarshall@thefederalsavingsbank.com"> Jon Marshall </option>
+                                                    <option value="jmoss@thefederalsavingsbank.com"> Jonathan Moss </option>
+                                                    <option value="jhugger@thefederalsavingsbank.com"> Jonathan Hugger </option>
+                                                    <option value="jwolff@thefederalsavingsbank.com"> Jonathan Wolff </option>
+                                                    <option value="jupshaw@thefederalsavingsbank.com"> Jonathan Upshaw </option>
+                                                    <option value="Jordan.brown@thefederalsavingsbank.com"> Jordan Brown </option>
+                                                    <option value="jalvarez@thefederalsavingsbank.com"> Jorge Alvarez </option>
+                                                    <option value="jcardenas@thefederalsavingsbank.com"> Jose Cardenas </option>
+                                                    <option value="jdoyle@thefederalsavingsbank.com"> Joseph Doyle </option>
+                                                    <option value="jgaskins@thefederalsavingsbank.com"> Joseph Gaskins </option>
+                                                    <option value="jdahoui@thefederalsavingsbank.com"> Joseph Dahoui </option>
+                                                    <option value="jborba@thefederalsavingsbank.com"> Josh Borba </option>
+                                                    <option value="jedson@thefederalsavingsbank.com"> Josiah Edson </option>
+                                                    <option value="jwick@thefederalsavingsbank.com"> Justin Wick </option>
+                                                    <option value="justin.brooks@thefederalsavingsbank.com"> Justin Brooks
+                                                    </option>
+                                                    <option value="kaishaun.scott@thefederalsavingsbank.com"> Kaishaun Scott
+                                                    </option>
+                                                    <option value="kchilds@thefederalsavingsbank.com"> Kara Childs </option>
+                                                    <option value="kfolding@thefederalsavingsbank.com"> Keith Folding </option>
+                                                    <option value="Kfoster@thefederalsavingsbank.com"> Kelli Foster </option>
+                                                    <option value="koreilly@thefederalsavingsbank.com"> Kimmer Oreilly </option>
+                                                    <option value="lminnefee@thefederalsavingsbank.com"> Larry Minnefee </option>
+                                                    <option value="lsifuentes@thefederalsavingsbank.com"> Larry Sifuentes </option>
+                                                    <option value="mquintero@thefederalsavingsbank.com"> Maritza Quintero </option>
+                                                    <option value="mzavala@thefederalsavingsbank.com"> Mark Zavala </option>
+                                                    <option value="mdobbs@thefederalsavingsbank.com"> Marquis Dobbs </option>
+                                                    <option value="mowen@thefederalsavingsbank.com"> Matt Owen </option>
+                                                    <option value="msaba@thefederalsavingsbank.com"> Matthew Saba </option>
+                                                    <option value="mtio@thefederalsavingsbank.com"> Maxx Tio </option>
+                                                    <option value="mwynne@thefederalsavingsbank.com"> Megan Wynne </option>
+                                                    <option value="mmackinder@thefederalsavingsbank.com"> Michael Mackinder
+                                                    </option>
+                                                    <option value="mpotolicchio@thefederalsavingsbank.com"> Michael Potolicchio
+                                                    </option>
+                                                    <option value="mkirkegaard@thefederalsavingsbank.com"> Michael Kirkegaard
+                                                    </option>
+                                                    <option value="mgagg@thefederalsavingsbank.com"> Miles Gagg </option>
+                                                    <option value="cfloyd@thefederalsavingsbank.com"> Missed Call Chris Floyd
+                                                    </option>
+                                                    <option value="mazarian@thefederalsavingsbank.com"> Mozzy Azarian </option>
+                                                    <option value="ntanious@thefederalsavingsbank.com"> Nadim Tanious </option>
+                                                    <option value="nmansour@thefederalsavingsbank.com"> Nicholas Mansour </option>
+                                                    <option value="nmaffei@thefederalsavingsbank.com"> Nick Maffei </option>
+                                                    <option value="nmartin@thefederalsavingsbank.com"> Nick Martin </option>
+                                                    <option value="nbischoff@thefederalsavingsbank.com"> Nicole Bischoff </option>
+                                                    <option value="nbrown@thefederalsavingsbank.com"> Nikolais Brown </option>
+                                                    <option value="pablo.perez@thefederalsavingsbank.com"> Pablo Perez </option>
+                                                    <option value="patrickn@thefederalsavingsbank.com"> Patrick Nguyen </option>
+                                                    <option value="ppotolicchio@thefederalsavingsbank.com"> Paul Potolicchio
+                                                    </option>
+                                                    <option value="pfranklin@thefederalsavingsbank.com"> Paul Franklin </option>
+                                                    <option value="pperez@thefederalsavingsbank.com"> Peter Perez </option>
+                                                    <option value="pbeck@thefederalsavingsbank.com"> Preston Beck </option>
+                                                    <option value="rbaume@thefederalsavingsbank.com"> Randall Baume </option>
+                                                    <option value="rsierra@thefederalsavingsbank.com"> Rey Sierra </option>
+                                                    <option value="rrozendaal@thefederalsavingsbank.com"> Rick Rozendaal </option>
+                                                    <option value="rmellody@thefederalsavingsbank.com"> Robert Mellody </option>
+                                                    <option value="rsoto@thefederalsavingsbank.com"> Rodolfo Soto </option>
+                                                    <option value="rdanishyar@thefederalsavingsbank.com"> Roma Danishyar </option>
+                                                    <option value="rbrown@thefederalsavingsbank.com"> Ryan Brown </option>
+                                                    <option value="Rsabouneh@thefederalsavingsbank.com"> Ryan Sabouneh </option>
+                                                    <option value="rsims@thefederalsavingsbank.com"> Ryan Sims </option>
+                                                    <option value="rpost@thefederalsavingsbank.com"> Ryan Post </option>
+                                                    <option value="rweltz@thefederalsavingsbank.com"> Ryan Weltz </option>
+                                                    <option value="saljebori@thefederalsaviingsbank.com"> Sam Aljebori </option>
+                                                    <option value="smargoles@thefederalsavingsbank.com"> Sam Margoles </option>
+                                                    <option value="slepe@thefederalsavingsbank.com"> Samantha Lepe </option>
+                                                    <option value="skubicki@thefederalsavingsbank.com"> Sarah Kubicki </option>
+                                                    <option value="sarah.aljebori@thefederalsavingsbank.com"> Sarah Aljebori
+                                                    </option>
+                                                    <option value="sforrester@thefederalsavingsbank.com"> Schyler Forrester
+                                                    </option>
+                                                    <option value="sholt@thefederalsavingsbank.com"> Scott Holt </option>
+                                                    <option value="sayub@thefederalsavingsbank.com"> Shoaib Ayub </option>
+                                                    <option value="stavakoli@thefederalsavingsbank.com"> Sina Tavakoli </option>
+                                                    <option value="sdoyle@thefederalsavingsbank.com"> Steven Doyle </option>
+                                                    <option value="ssosna@thefederalsavingsbank.com"> Steven Sosna </option>
+                                                    <option value="tclemons@thefederalsavingsbank.com"> Taylor Clemons </option>
+                                                    <option value="twilliams@thefederalsavingsbank.com"> Terry Williams </option>
+                                                    <option value="twhitehurst@thefederalsavingsbank.com"> Thomas Whitehurst
+                                                    </option>
+                                                    <option value="tdibona@thefederalsavingsbank.com"> Tim Dibona </option>
+                                                    <option value="Tflatt@thefederalsavingsbank.com"> Tonya Flatt </option>
+                                                    <option value="tandrews@thefederalsavingsbank.com"> Travis Andrews </option>
+                                                    <option value="wtrick@thefederalsavingsbank.com"> Whitney Trick </option>
+                                                    <option value="xalcala@thefederalsavingsbank.com"> Xavier Alcala </option>
+                                                    <option value="xmedina@thefederalsavingsbank.com"> Xavier Medina </option>
+                                                    <option value="yalsharif@thefederalsavingsbank.com"> Yazan Alsharif </option>
+                                                    <option value="zkatz@thefederalsavingsbank.com"> Zalen Katz </option>
                                 
                                             </select>
                                     </div>
-									<div class="col-md-4 col-lg-4 form-group" style="display: none" id="bankrupty" >
+                                    <div class="col-md-4 col-lg-4 form-group" style="display: none" id="bankrupty" >
                                         <span class="details">Bankrupty</span>
-                                        <input style="color: black" type="text" name="bankrupty" class="form-control" placeholder="Bankrupty">
+                                        <select name="bankrupty" id="bankr" class="form-control"> 
+											<option>YES</option>
+											<option>NO</option>
+											
+										</select>
                                     </div>
+									
 									<div class="col-md-4 col-lg-4 form-group" style="display: none" id="debt" >
                                         <span class="details">Debt</span>
                                         <input style="color: black" type="number" name="debt" class="form-control" placeholder="Debt">
@@ -787,11 +737,11 @@
                                     </div>
 									<div class="col-md-4 col-lg-4 form-group" style="display: none" id="employment" >
                                         <span class="details">Employment</span>
-                                        <select name="Employment" id="emp" class="form-control"> 
-											<option>unemployed</option>
-											<option>self-employed</option>
-											<option>employed</option> 
-											<option>retired/fixedincome</option> 
+                                        <select name="employment" id="emp_mtg_r" class="form-control"> 
+											<option value="Unemployed">Unemployed</option>
+											<option value="Self-Employed">Self-employed</option>
+											<option value="EMPLOYED">EMPLOYED</option> 
+											<option value="Retired/Fixedincome">retired/fixedincome</option> 
 										</select>
                                     </div>
 										
@@ -840,13 +790,14 @@
                     'StateCd':document.getElementById("st").value,
                     'LoanType':document.getElementById("lt").value,
                     'Rate':document.querySelector("input[name=interest_rate]").value,
-                    'RateType':document.querySelector("input[name=rate_type]").value,
+                    'RateType':document.getElementById("rt").value,
                     'LTV':document.querySelector("input[name=ltv]").value,
                     'Debt':document.querySelector("input[name=debt]").value,  
-                    'Employment':document.getElementById("emp").value,
+                    'Employment':document.getElementById("emp_mtg_r").value,
+                    'Credit':document.getElementById("credit_score_value").value,
                     'Agent':"<?php echo e(auth()->user()->name); ?>",
                     'Affiliate':"Touchstone",
-                    'Credit':document.getElementById("cr").value,
+                    
                      
                 } ,
                 success: function (response) {  
@@ -902,9 +853,16 @@
                 success:function (res){
                     $('#loader').hide();
                     $('#searchForm').show();
-                    $('#webform').show(); 
+					if(res.status==204){
+						$('#webform').hide();
+						$('#alreadyASaleLabel').show();
+					}
+					if(res.status==200){
+						$('#webform').show();
+						$('#alreadyASaleLabel').hide();	
+					}					
+
                     if(res.status==200){
-                        
                         document.getElementById('record_id').value = res.data.ID;
                         document.querySelector("input[name=first_name]").value = res.data.FirstName;
                         document.querySelector("input[name=last_name]").value = res.data.LastName;
@@ -944,12 +902,11 @@
 <script>
     function selectClient(val) {
         document.getElementById("phn").readOnly = true;
-
-    document.getElementById("submit").style.display = "block";
-	document.getElementById("employment").style = "display:none";
-	document.getElementById("bankrupty").style = "display:none";	
+		document.getElementById("submit").style.display = "block";
+		document.getElementById("employment").style = "display:none";
+		document.getElementById("bankrupty").style = "display:none";	
 		document.getElementById("debt").style = "display:none";
-	document.getElementById("agent").style = "display:none";	
+		document.getElementById("agent").style = "display:none";	
 		document.getElementById("lead_verification").style = "display:none";
 
 
@@ -980,7 +937,7 @@
         document.getElementById("property_value").style = "display:block";
         document.getElementById("company").style = "display:block";
         document.getElementById("credit_rating").style = "display:block";
-
+        document.getElementById("employment").style = "display:none";
         document.getElementById("mortgage_balance").style = "display:none";
         document.getElementById("loan_type").style = "display:none";
         document.getElementById("interest_rate").style = "display:none";
@@ -1001,6 +958,13 @@
         document.getElementById("recieving_rep_qms_361").style = "display:none";
         document.getElementById("recieving_rep").style = "display:none";
         document.getElementById("cash_amount").style = "display:block";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
 
@@ -1024,6 +988,7 @@
         document.getElementById("current_rate").style = "display:none";
         document.getElementById("income").style = "display:none";
         document.getElementById("property_value").style = "display:block";
+        document.getElementById("employment").style = "display:none";
         document.getElementById("company").style = "display:none";
         document.getElementById("credit_rating").style = "display:none";
         document.getElementById("mortgage_balance").style = "display:none";
@@ -1043,6 +1008,13 @@
         document.getElementById("cash_out").style = "display:block";
         document.getElementById("property_type").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
     }
@@ -1057,6 +1029,7 @@
         document.getElementById("zip").style = "display:block";
         document.getElementById("title").style = "display:none";
         document.getElementById("work_phone").style = "display:none";
+        document.getElementById("employment").style = "display:none";
         document.getElementById("email").style = "display:none";
         document.getElementById("city").style = "display:block";
 
@@ -1085,6 +1058,13 @@
         document.getElementById("cash_out").style = "display:none";
         document.getElementById("property_type").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
     }
@@ -1101,7 +1081,7 @@
         document.getElementById("work_phone").style = "display:none";
         document.getElementById("email").style = "display:block";
         document.getElementById("city").style = "display:block";
-
+        document.getElementById("employment").style = "display:none";
         document.getElementById("notes").style = "display:block";
         document.getElementById("cash_amount").style = "display:block";
         document.getElementById("current_amount").style = "display:none";
@@ -1127,10 +1107,164 @@
         document.getElementById("cash_out").style = "display:none";
         document.getElementById("property_type").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+    }
+    
+    else if (val == "PRO0105") {
+        document.getElementById("recieving_rep").style = "display:none";
+        document.getElementById("first_name").style = "display:block";
+        document.getElementById("last_name").style = "display:block";
+        document.getElementById("phone").style = "display:block";
+        document.getElementById("address").style = "display:block";
+        document.getElementById("state").style = "display:block";
+        document.getElementById("zip").style = "display:block";
+        document.getElementById("title").style = "display:none";
+        document.getElementById("work_phone").style = "display:none";
+        document.getElementById("email").style = "display:block";
+        document.getElementById("city").style = "display:block";
+        document.getElementById("debt").style = "display:block";	
+        document.getElementById("notes").style = "display:block";
+        document.getElementById("cash_amount").style = "display:none";
+        document.getElementById("current_amount").style = "display:none";
+        document.getElementById("current_rate").style = "display:none";
+        document.getElementById("income").style = "display:none";
+        document.getElementById("property_value").style = "display:none";
+        document.getElementById("company").style = "display:none";
+        document.getElementById("credit_rating").style = "display:none";
+        document.getElementById("mortgage_balance").style = "display:none";
+        document.getElementById("interest_rate").style = "display:none";
+        document.getElementById("loan_amount").style = "display:none";
+        document.getElementById("loan_type").style = "display:none";
+        document.getElementById("purpose_of_loan").style = "display:none";
+        document.getElementById("loanofficername").style = "display:none";
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("ltv").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("age").style = "display:none";
+        document.getElementById("transfer_by").style = "display:none";
+        document.getElementById("call_transfer_status").style = "display:none";
+        document.getElementById("monthly_payment").style = "display:none";
+        document.getElementById("late_payment").style = "display:none";
+        document.getElementById("rate").style = "display:none";
+        document.getElementById("cash_out").style = "display:none";
+        document.getElementById("property_type").style = "display:none";
+        document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
     }
-    
+    else if (val == "PRO0108") {
+        document.getElementById("recieving_rep").style = "display:none";
+        document.getElementById("first_name").style = "display:block";
+        document.getElementById("last_name").style = "display:block";
+        document.getElementById("phone").style = "display:block";
+        document.getElementById("address").style = "display:block";
+        document.getElementById("state").style = "display:block";
+        document.getElementById("zip").style = "display:block";
+        document.getElementById("title").style = "display:none";
+        document.getElementById("work_phone").style = "display:none";
+        document.getElementById("email").style = "display:block";
+        document.getElementById("city").style = "display:block";
+        document.getElementById("debt").style = "display:block";	
+        document.getElementById("notes").style = "display:block";
+        document.getElementById("cash_amount").style = "display:none";
+        document.getElementById("current_amount").style = "display:none";
+        document.getElementById("current_rate").style = "display:none";
+        document.getElementById("income").style = "display:none";
+        document.getElementById("property_value").style = "display:none";
+        document.getElementById("company").style = "display:none";
+        document.getElementById("credit_rating").style = "display:none";
+        document.getElementById("mortgage_balance").style = "display:none";
+        document.getElementById("interest_rate").style = "display:none";
+        document.getElementById("loan_amount").style = "display:none";
+        document.getElementById("loan_type").style = "display:none";
+        document.getElementById("purpose_of_loan").style = "display:none";
+        document.getElementById("loanofficername").style = "display:none";
+        document.getElementById("ltv").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("age").style = "display:none";
+        document.getElementById("transfer_by").style = "display:none";
+        document.getElementById("call_transfer_status").style = "display:none";
+        document.getElementById("monthly_payment").style = "display:none";
+        document.getElementById("late_payment").style = "display:none";
+        document.getElementById("rate").style = "display:none";
+        document.getElementById("cash_out").style = "display:none";
+        document.getElementById("property_type").style = "display:none";
+        document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+
+
+    }
+    else if (val == "PRO0107") {
+        document.getElementById("recieving_rep").style = "display:none";
+        document.getElementById("first_name").style = "display:block";
+        document.getElementById("last_name").style = "display:block";
+        document.getElementById("phone").style = "display:block";
+        document.getElementById("address").style = "display:block";
+        document.getElementById("state").style = "display:block";
+        document.getElementById("zip").style = "display:block";
+        document.getElementById("title").style = "display:none";
+        document.getElementById("work_phone").style = "display:none";
+        document.getElementById("email").style = "display:block";
+        document.getElementById("city").style = "display:block";
+        document.getElementById("debt").style = "display:none";	
+        document.getElementById("notes").style = "display:block";
+        document.getElementById("cash_amount").style = "display:none";
+        document.getElementById("current_amount").style = "display:none";
+        document.getElementById("current_rate").style = "display:none";
+        document.getElementById("income").style = "display:none";
+        document.getElementById("property_value").style = "display:none";
+        document.getElementById("company").style = "display:none";
+        document.getElementById("credit_rating").style = "display:none";
+        document.getElementById("mortgage_balance").style = "display:none";
+        document.getElementById("interest_rate").style = "display:none";
+        document.getElementById("loan_amount").style = "display:none";
+        document.getElementById("loan_type").style = "display:none";
+        document.getElementById("purpose_of_loan").style = "display:none";
+        document.getElementById("loanofficername").style = "display:none";
+        document.getElementById("ltv").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:block";
+        document.getElementById("medicaid").style = "display:block";
+        document.getElementById("annual_house").style = "display:block";
+        document.getElementById("transfer_by").style = "display:none";
+        document.getElementById("call_transfer_status").style = "display:none";
+        document.getElementById("monthly_payment").style = "display:none";
+        document.getElementById("late_payment").style = "display:none";
+        document.getElementById("rate").style = "display:none";
+        document.getElementById("cash_out").style = "display:none";
+        document.getElementById("property_type").style = "display:none";
+        document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+
+
+    }
     
     else if (val == "PRO0032" || val == "PRO0031" || val == "PRO0064") {
 
@@ -1144,6 +1278,8 @@
         document.getElementById("state").style = "display:block";
         document.getElementById("zip").style = "display:block";
         document.getElementById("property_value").style = "display:block";
+        document.getElementById("medicaid").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("credit_rating").style = "display:none";
         document.getElementById("current_rate").style = "display:none";
         document.getElementById("title").style = "display:none";
@@ -1151,6 +1287,7 @@
         document.getElementById("email").style = "display:none";
         document.getElementById("loanofficername").style = "display:block";
         document.getElementById("camp8_loanofficername").style = "display:block";
+        document.getElementById("age_18_to_64").style = "display:none";
 
 
         document.getElementById("notes").style = "display:none";
@@ -1195,15 +1332,25 @@
 
         document.getElementById("ltv").style = "display:none";
         document.getElementById("rate_type").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("age").style = "display:none";
         document.getElementById("transfer_by").style = "display:none";
         document.getElementById("call_transfer_status").style = "display:none";
         document.getElementById("monthly_payment").style = "display:none";
         document.getElementById("late_payment").style = "display:none";
+        document.getElementById("employment").style = "display:none";
         document.getElementById("rate").style = "display:none";
         document.getElementById("cash_out").style = "display:none";
         document.getElementById("property_type").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
 
@@ -1218,13 +1365,15 @@
         document.getElementById("zip").style = "display:block";
         document.getElementById("city").style = "display:block";
         document.getElementById("property_value").style = "display:block";
+        document.getElementById("age_18_to_64").style = "display:none";
         document.getElementById("credit_rating").style = "display:block";
         document.getElementById("loan_type").style = "display:block";
         document.getElementById("rate").style = "display:block";
         document.getElementById("current_rate").style = "display:none";
         document.getElementById("monthly_payment").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("late_payment").style = "display:none";
-
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("title").style = "display:none";
         document.getElementById("work_phone").style = "display:none";
         document.getElementById("email").style = "display:none";
@@ -1233,7 +1382,7 @@
         document.getElementById("cash_amount").style = "display:none";
         document.getElementById("current_amount").style = "display:none";
         document.getElementById("income").style = "display:none";
-
+        document.getElementById("employment").style = "display:none";
         document.getElementById("company").style = "display:none";
         document.getElementById("mortgage_balance").style = "display:none";
         document.getElementById("interest_rate").style = "display:none";
@@ -1248,6 +1397,13 @@
         document.getElementById("cash_out").style = "display:none";
         document.getElementById("property_type").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
 
@@ -1273,6 +1429,8 @@
         document.getElementById("state").style = "display:block";
         document.getElementById("zip").style = "display:block";
         document.getElementById("mortgage_balance").style = "display:block";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("property_value").style = "display:block";
         document.getElementById("cash_out").style = "display:block";
         document.getElementById("loan_amount").style = "display:block";
@@ -1287,7 +1445,7 @@
         document.getElementById("income").style = "display:block";
         document.getElementById("transfer_by").style = "display:block";
         document.getElementById("notes").style = "display:block";
-
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("loan_type").style = "display:none";
         document.getElementById("rate").style = "display:none";
         document.getElementById("current_rate").style = "display:none";
@@ -1305,6 +1463,72 @@
         document.getElementById("loanofficername").style = "display:none";
         document.getElementById("rate_type").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+    }
+
+else if (val=="PRO0111" || val=="PRO0113" || val=="PRO0127")
+{
+        if(val=="PRO0127"){
+           
+            document.getElementById("recieving_rep").style = "display:none";
+            document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        }else{
+            document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        }
+        document.getElementById("first_name").style = "display:block";
+        document.getElementById("last_name").style = "display:block";
+        document.getElementById("phone").style = "display:block";
+        document.getElementById("address").style = "display:block";
+        document.getElementById("city").style = "display:block";
+        document.getElementById("state").style = "display:block";        
+	    document.getElementById("dob").style = "display:none";
+		document.getElementById("employer").style = "display:none";
+        document.getElementById("zip").style = "display:block";
+        document.getElementById("mortgage_balance").style = "display:block";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
+        document.getElementById("property_value").style = "display:block";
+        document.getElementById("cash_out").style = "display:block";
+        document.getElementById("loan_amount").style = "display:block";
+        document.getElementById("ltv").style = "display:block";
+        document.getElementById("credit_rating").style = "display:block";
+        document.getElementById("interest_rate").style = "display:block";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("property_type").style = "display:block";
+        document.getElementById("monthly_payment").style = "display:block";
+        document.getElementById("late_payment").style = "display:block";
+        document.getElementById("age").style = "display:block";
+        document.getElementById("income").style = "display:block";
+        document.getElementById("transfer_by").style = "display:block";
+        document.getElementById("call_transfer_status").style = "display:none"
+        document.getElementById("notes").style = "display:block";
+        document.getElementById("loan_type").style = "display:none";
+        document.getElementById("rate").style = "display:none";
+        document.getElementById("current_rate").style = "display:none";
+        document.getElementById("title").style = "display:none";
+        document.getElementById("work_phone").style = "display:none";
+        document.getElementById("email").style = "display:none";
+        document.getElementById("cash_amount").style = "display:none";
+        document.getElementById("current_amount").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
+        document.getElementById("company").style = "display:none";
+        document.getElementById("purpose_of_loan").style = "display:none";
+        document.getElementById("loanofficername").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("dob").style = "display:none";
     }
      else if(val == "PRO0102" )
      {
@@ -1316,6 +1540,8 @@
          document.getElementById("state").style = "display:block";
          document.getElementById("zip").style = "display:block";
          document.getElementById("mortgage_balance").style = "display:block";
+         document.getElementById("age_18_to_64").style = "display:none";
+         document.getElementById("medicaid").style = "display:none";
          document.getElementById("property_value").style = "display:block";
          document.getElementById("cash_out").style = "display:block";
          document.getElementById("loan_amount").style = "display:block";
@@ -1337,6 +1563,7 @@
          document.getElementById("title").style = "display:none";
          document.getElementById("work_phone").style = "display:none";
          document.getElementById("email").style = "display:none"
+         document.getElementById("annual_house").style = "display:none";
          document.getElementById("cash_amount").style = "display:none";
          document.getElementById("current_amount").style = "display:none";
          document.getElementById("company").style = "display:none";
@@ -1344,6 +1571,14 @@
          document.getElementById("loanofficername").style = "display:none";
          document.getElementById("rate_type").style = "display:none";
          document.getElementById("recieving_rep_qms_361").style = "display:none"
+         document.getElementById("recieving_rep_lb_2414").style = "display:none";
+         document.getElementById("employment").style = "display:none";
+         document.getElementById("bankrupty").style = "display:none";
+         document.getElementById("debt_amt_1").style = "display:none";
+         document.getElementById("house_value").style = "display:none";
+         document.getElementById("debt_type").style = "display:none";
+         document.getElementById("employer").style = "display:none";
+         document.getElementById("dob").style = "display:none";
      }
     
     else if(val == "PRO0096"){
@@ -1359,6 +1594,8 @@
         document.getElementById("state").style = "display:block";
         document.getElementById("zip").style = "display:block";
         document.getElementById("mortgage_balance").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("property_value").style = "display:none";
         document.getElementById("cash_out").style = "display:none";
         document.getElementById("loan_amount").style = "display:none";
@@ -1368,6 +1605,7 @@
         document.getElementById("rate_type").style = "display:none";
         document.getElementById("property_type").style = "display:none";
         document.getElementById("monthly_payment").style = "display:block";
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("late_payment").style = "display:block";
         document.getElementById("age").style = "display:none";
         document.getElementById("income").style = "display:block";
@@ -1395,7 +1633,13 @@
 	     document.getElementById("debt").style = "display:block";			
 		document.getElementById("debt_type").style = "display:block";
 		document.getElementById("creditor").style = "display:block";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("employment").style = "display:none";
          document.getElementById("phn").readOnly = false;
+         document.getElementById("bankrupty").style = "display:none";
+         document.getElementById("house_value").style = "display:none";
+         document.getElementById("employer").style = "display:none";
+         document.getElementById("dob").style = "display:none";
             
         }
 
@@ -1410,7 +1654,10 @@
         document.getElementById("state").style = "display:block";
         document.getElementById("zip").style = "display:block";
         document.getElementById("mortgage_balance").style = "display:block";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("property_value").style = "display:block";
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("cash_out").style = "display:block";
         document.getElementById("loan_amount").style = "display:block";
         document.getElementById("ltv").style = "display:block";
@@ -1447,6 +1694,14 @@
         document.getElementById("loanofficername").style = "display:none";
 
         document.getElementById("rate_type").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
 
 
 
@@ -1463,10 +1718,13 @@
         document.getElementById("title").style = "display:none";
         document.getElementById("work_phone").style = "display:none";
         document.getElementById("email").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("city").style = "display:block";
         document.getElementById("notes").style = "display:none";
         document.getElementById("current_amount").style = "display:none";
         document.getElementById("current_rate").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("income").style = "display:none"; 
 
         document.getElementById("property_value").style = "display:block";
@@ -1487,7 +1745,13 @@
         document.getElementById("property_type").style = "display:none";
         document.getElementById("purpose_of_loan").style = "display:none";
         document.getElementById("cash_amount").style = "display:block";
-
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("employment").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
     }
 		
 		else if (val == "PRO0094" ) { 
@@ -1504,9 +1768,12 @@
         document.getElementById("ltv").style = "display:block";
         document.getElementById("credit_rating").style = "display:none";
         document.getElementById("interest_rate").style = "display:block";
+        document.getElementById("medicaid").style = "display:none";
         document.getElementById("rate_type").style = "display:block";
         document.getElementById("lt").style = "display:block";
         document.getElementById("property_type").style = "display:block";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
         document.getElementById("house_value").style = "display:block";
         document.getElementById("loan_balance").style = "display:block";
         document.getElementById("lender").style = "display:block";
@@ -1541,6 +1808,199 @@
         document.getElementById("company").style = "display:none";
         document.getElementById("recieving_rep_qms_361").style = "display:none";
 		document.getElementById("camp8_loanofficername").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+        
+    }
+    else if (val == "PRO0114" ) { 
+        document.getElementById("first_name").style = "display:block";
+        document.getElementById("last_name").style = "display:block";
+        document.getElementById("phone").style = "display:block";
+        document.getElementById("address").style = "display:block";
+        document.getElementById("city").style = "display:block";
+        document.getElementById("state").style = "display:block";
+        document.getElementById("zip").style = "display:block";
+        document.getElementById("mortgage_balance").style = "display:none";
+        document.getElementById("property_value").style = "display:none";
+        document.getElementById("loan_amount").style = "display:none";
+        document.getElementById("ltv").style = "display:none";
+        document.getElementById("credit_rating").style = "display:none";
+        document.getElementById("interest_rate").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("lt").style = "display:none";
+        document.getElementById("property_type").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("loan_balance").style = "display:none";
+        document.getElementById("lender").style = "display:none";
+        document.getElementById("notes").style = "display:none";
+        document.getElementById("rate").style = "display:none";
+        document.getElementById("purpose_of_loan").style = "display:none";
+        document.getElementById("mtgr_loanofficername").style = "display:none";         
+		//document.getElementById("mtg_loanofficername").style = "display:none"; 
+		document.getElementById("loanofficername").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("credit_score").style = "display:none";
+		document.getElementById("employment").style = "display:none";
+		document.getElementById("bankrupty").style = "display:none";		
+		document.getElementById("debt").style = "display:block";
+		document.getElementById("agent").style = "display:none";
+		document.getElementById("lead_verification").style = "display:none;color:white";
+
+        document.getElementById("cash_out").style = "display:none";
+        document.getElementById("monthly_payment").style = "display:none";
+        document.getElementById("late_payment").style = "display:none";
+        document.getElementById("age").style = "display:none";
+        document.getElementById("income").style = "display:none";
+        document.getElementById("transfer_by").style = "display:none";
+        document.getElementById("loan_type").style = "display:none";
+        document.getElementById("current_rate").style = "display:none";
+        document.getElementById("call_transfer_status").style = "display:none";
+        document.getElementById("title").style = "display:none";
+        document.getElementById("work_phone").style = "display:none";
+        document.getElementById("email").style = "display:block";
+        document.getElementById("cash_amount").style = "display:none";
+        document.getElementById("current_amount").style = "display:none";
+        document.getElementById("company").style = "display:none";
+        document.getElementById("recieving_rep_qms_361").style = "display:none";
+		document.getElementById("camp8_loanofficername").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+        
+    }
+    else if (val == "PRO0115" ) { 
+        document.getElementById("first_name").style = "display:block";
+        document.getElementById("last_name").style = "display:block";
+        document.getElementById("phone").style = "display:block";
+        document.getElementById("address").style = "display:block";
+        document.getElementById("city").style = "display:block";
+        document.getElementById("state").style = "display:block";
+        document.getElementById("zip").style = "display:block";
+        document.getElementById("mortgage_balance").style = "display:none";
+        document.getElementById("property_value").style = "display:none";
+        document.getElementById("loan_amount").style = "display:none";
+        document.getElementById("ltv").style = "display:none";
+        document.getElementById("credit_rating").style = "display:none";
+        document.getElementById("interest_rate").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("lt").style = "display:none";
+        document.getElementById("property_type").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("loan_balance").style = "display:none";
+        document.getElementById("lender").style = "display:none";
+        document.getElementById("notes").style = "display:none";
+        document.getElementById("rate").style = "display:none";
+        document.getElementById("purpose_of_loan").style = "display:none";
+        document.getElementById("mtgr_loanofficername").style = "display:none";         
+		//document.getElementById("mtg_loanofficername").style = "display:none"; 
+		document.getElementById("loanofficername").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("credit_score").style = "display:none";
+		document.getElementById("employment").style = "display:none";
+		document.getElementById("bankrupty").style = "display:none";		
+		document.getElementById("debt").style = "display:block";
+		document.getElementById("agent").style = "display:none";
+		document.getElementById("lead_verification").style = "display:none;color:white";
+
+        document.getElementById("cash_out").style = "display:none";
+        document.getElementById("monthly_payment").style = "display:none";
+        document.getElementById("late_payment").style = "display:none";
+        document.getElementById("age").style = "display:none";
+        document.getElementById("income").style = "display:none";
+        document.getElementById("transfer_by").style = "display:none";
+        document.getElementById("loan_type").style = "display:none";
+        document.getElementById("current_rate").style = "display:none";
+        document.getElementById("call_transfer_status").style = "display:none";
+        document.getElementById("title").style = "display:none";
+        document.getElementById("work_phone").style = "display:none";
+        document.getElementById("email").style = "display:block";
+        document.getElementById("cash_amount").style = "display:none";
+        document.getElementById("current_amount").style = "display:none";
+        document.getElementById("company").style = "display:none";
+        document.getElementById("recieving_rep_qms_361").style = "display:none";
+		document.getElementById("camp8_loanofficername").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+        
+    }
+    else if (val == "PRO0116" ) { 
+        document.getElementById("first_name").style = "display:block";
+        document.getElementById("last_name").style = "display:block";
+        document.getElementById("phone").style = "display:block";
+        document.getElementById("address").style = "display:block";
+        document.getElementById("city").style = "display:block";
+        document.getElementById("state").style = "display:block";
+        document.getElementById("zip").style = "display:block";
+        document.getElementById("mortgage_balance").style = "display:none";
+        document.getElementById("property_value").style = "display:none";
+        document.getElementById("loan_amount").style = "display:none";
+        document.getElementById("ltv").style = "display:none";
+        document.getElementById("credit_rating").style = "display:none";
+        document.getElementById("interest_rate").style = "display:none";
+        document.getElementById("medicaid").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("lt").style = "display:none";
+        document.getElementById("property_type").style = "display:none";
+        document.getElementById("age_18_to_64").style = "display:none";
+        document.getElementById("annual_house").style = "display:none";
+        document.getElementById("house_value").style = "display:none";
+        document.getElementById("loan_balance").style = "display:none";
+        document.getElementById("lender").style = "display:none";
+        document.getElementById("notes").style = "display:none";
+        document.getElementById("rate").style = "display:none";
+        document.getElementById("purpose_of_loan").style = "display:none";
+        document.getElementById("mtgr_loanofficername").style = "display:none";         
+		//document.getElementById("mtg_loanofficername").style = "display:none"; 
+		document.getElementById("loanofficername").style = "display:none";
+        document.getElementById("rate_type").style = "display:none";
+        document.getElementById("credit_score").style = "display:none";
+		document.getElementById("employment").style = "display:none";
+		document.getElementById("bankrupty").style = "display:none";		
+		document.getElementById("debt").style = "display:block";
+		document.getElementById("agent").style = "display:none";
+		document.getElementById("lead_verification").style = "display:none;color:white";
+
+        document.getElementById("cash_out").style = "display:none";
+        document.getElementById("monthly_payment").style = "display:none";
+        document.getElementById("late_payment").style = "display:none";
+        document.getElementById("age").style = "display:none";
+        document.getElementById("income").style = "display:none";
+        document.getElementById("transfer_by").style = "display:none";
+        document.getElementById("loan_type").style = "display:none";
+        document.getElementById("current_rate").style = "display:none";
+        document.getElementById("call_transfer_status").style = "display:none";
+        document.getElementById("title").style = "display:none";
+        document.getElementById("work_phone").style = "display:none";
+        document.getElementById("email").style = "display:block";
+        document.getElementById("cash_amount").style = "display:none";
+        document.getElementById("current_amount").style = "display:none";
+        document.getElementById("company").style = "display:none";
+        document.getElementById("recieving_rep_qms_361").style = "display:none";
+		document.getElementById("camp8_loanofficername").style = "display:none";
+        document.getElementById("recieving_rep_lb_2414").style = "display:none";
+        document.getElementById("bankrupty").style = "display:none";
+        document.getElementById("debt_amt_1").style = "display:none";
+        document.getElementById("debt_type").style = "display:none";
+        document.getElementById("employer").style = "display:none";
+        document.getElementById("dob").style = "display:none";
+        
     }
 }
 </script>

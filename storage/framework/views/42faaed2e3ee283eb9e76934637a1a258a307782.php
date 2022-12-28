@@ -27,7 +27,7 @@
                                 aria-expanded="<?php echo e(in_array($current_page, ['mortgage', 'mortgage-submission']) ? 'true' : 'false'); ?>"
                                 aria-controls="nav-mortgages">
                                 <i class="fa fa-home"></i>
-                                <span class="nav-link-text">Mortgages</span>
+                                <span class="nav-link-text">Debt</span>
                             </a>
                             <div class="collapse <?php echo e(in_array($current_page, ['mortgage', 'mortgage-submission']) ? 'show' : ''); ?>"
                                 id="nav-mortgages">
@@ -114,8 +114,35 @@
                             </div>
                         </li>
                     <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['campaigns.index', 'campaigns.create', 'campaigns.delete'])): ?>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo e(in_array($current_page, ['campaigns']) ? 'active' : ''); ?>"
+                                href="<?php echo e(route('campaigns.index')); ?>">
+                                <i class="fa fa-archive"></i> <span class="nav-link-text">Campaigns</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['clients.index', 'clients.create', 'clients.delete'])): ?>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo e(in_array($current_page, ['clients']) ? 'active' : ''); ?>"
+                                href="<?php echo e(route('clients.index')); ?>">
+                                <i class="fa fa-box"></i> <span class="nav-link-text">Clients</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
 
-
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['projects.index', 'projects.create', 'projects.delete'])): ?>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo e(in_array($current_page, ['projects']) ? 'active' : ''); ?>"
+                                href="<?php echo e(route('projects.index')); ?>">
+                                <i class="fa fa-list"></i> <span class="nav-link-text">Projects</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    
                     <!-- Discount school supply starts -->
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['dss.*', 'dss.index', 'dss.create', 'dss.edit', 'dss.delete'])): ?>
                         <li class="nav-item">
@@ -151,6 +178,32 @@
                         </li>
                     <?php endif; ?>
                     <!-- Discount school supply ends -->
+					 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['cmu-sales.import-form'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo e(in_array($current_page, ['cmu-sales.import-form']) ? 'active' : ''); ?>"
+                                href="<?php echo e(route('cmu-sales.import-form')); ?>">
+                                <i class="fa fa-phone"></i> <span
+                                    class="nav-link-text">CMU Sales</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['call-analytic-sales.import-form'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo e(in_array($current_page, ['call-analytic-sales.import-form']) ? 'active' : ''); ?>"
+                                href="<?php echo e(route('call-analytic-sales.import-form')); ?>">
+                                <i class="ni ni-chart-bar-32"></i> <span
+                                    class="nav-link-text">Call Analytics</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+					                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['eddy-sales.import-form'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo e(in_array($current_page, ['eddy-sales.import-form']) ? 'active' : ''); ?>"
+                                href="<?php echo e(route('eddy-sales.import-form')); ?>">
+                                <i class="ni ni-chart-bar-32"></i> <span class="nav-link-text">Eddy Sales</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['kb.*', 'kb.index', 'kb.create', 'kb.edit', 'kb.delete', 'kb_category.*',
                         'kb_category.index', 'kb_category.create', 'kb_category.edit', 'kb_category.delete'])): ?>
 
@@ -241,15 +294,8 @@
                         </li>
 
                     <?php endif; ?>
-                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['cmu-sales.import-form'])): ?>
-                    <li class="nav-item">
-                        <a class="nav-link <?php echo e(in_array($current_page, ['cmu-sales.import-form']) ? 'active' : ''); ?>"
-                            href="<?php echo e(route('cmu-sales.import-form')); ?>">
-                            <i class="ni ni-bullet-list-67"></i> <span
-                                class="nav-link-text"><?php echo e(__('labels.cmu-sales')); ?></span>
-                        </a>
-                    </li>
-                <?php endif; ?>
+                   
+
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['department.*', 'department.index', 'department.create', 'department.edit',
                         'department.delete'])): ?>
                         <li class="nav-item">

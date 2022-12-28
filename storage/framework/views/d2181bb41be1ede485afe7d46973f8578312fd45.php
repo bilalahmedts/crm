@@ -7,7 +7,7 @@
 
         <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
-        <title> <?php echo e($site->title); ?> | <?php echo e(setting('site_title')); ?></title>
+        <title> Touchstone CRM  </title>
 
         <!-- Favicon -->
         <link href="<?php echo e(asset('uploads/logo/'.setting('site_favicon')).'?'.time()); ?>" rel="icon" type="image/png">
@@ -238,8 +238,6 @@
 
         </script>
       <script src="<?php echo e(asset('admin')); ?>/vendor/datatables.net-select/js/dataTables.select.min.js"></script>
-
-
       <script src="<?php echo e(asset('admin')); ?>/vendor/select2/dist/js/select2.min.js"></script>
       <script src="<?php echo e(asset('admin')); ?>/vendor/pickr/pickr.min.js"></script>
 

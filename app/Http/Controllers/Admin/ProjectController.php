@@ -74,7 +74,9 @@ class ProjectController extends Controller
      */
     public function edit($id)
     {
-        //
+        $project = Project::with('client')->where('id',$id)->first();
+        $clients = \DB::table('clients')->get();
+        return view('admin.project.edit', compact('project','clients'));
     }
 
     /**
@@ -85,8 +87,13 @@ class ProjectController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    { 
+        \DB::table('projects')->where("id",$id)->update([
+            'name'=>$request->name, 
+            'hours'=>$request->hours,
+            'seats'=>$request->seats, 
+        ]); 
+        return redirect()->route('projects.index')->with('success',"Project update Successfully");
     }
 
     /**

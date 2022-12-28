@@ -35,8 +35,59 @@ class HomeController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
+        if(auth()->user()->hasRole('EDDY')){
+             
+            $res = DB::table('eddy_sales')
+            ->selectRaw("
+                Count(Case when type='Inbound' THEN 1 ELSE NULL END)   as Inbound,
+                Count(Case when type='Outbound' THEN 1 ELSE NULL END)  as Outbound,
+                Count(Case when type='EddyEdu' THEN 1 ELSE NULL END)   as EddyEdu,
+
+                Sum(Case when type='Inbound'  THEN billable_hours ELSE NULL END)   as InBillableHours,
+                AVG(Case when type='Inbound'  THEN connect_percentage ELSE NULL END)  as InConnectPercentage,
+                Sum(Case when type='Inbound'  THEN edu_transfer_rate ELSE NULL END)   as InEduTransferRate,
+                Avg(Case when type='Inbound'  THEN edu_conv_percentage_of_total_calls ELSE NULL END)   as InEduConvTotalCalls,
+                Sum(Case when type='Inbound'  THEN edu_transfers ELSE NULL END)   as InEduTransfers,
+                Sum(Case when type='Inbound'  THEN edu_conversions ELSE NULL END)   as InEduConversions,
+
+
+                Sum(Case when type='Outbound'  THEN billable_hours ELSE NULL END)   as OutBillableHours,
+                AVG(Case when type='Outbound'  THEN connect_percentage ELSE NULL END)  as OutConnectPercentage,
+                Sum(Case when type='Outbound'  THEN edu_transfer_rate ELSE NULL END)   as OutEduTransferRate,
+                Avg(Case when type='Outbound'  THEN edu_conv_percentage_of_total_calls ELSE NULL END)   as OutEduConvTotalCalls,
+                Sum(Case when type='Outbound'  THEN edu_transfers ELSE NULL END)   as OutEduTransfers,
+                Sum(Case when type='Outbound'  THEN edu_conversions ELSE NULL END)   as OutEduConversions,
+
+
+                Sum(Case when type='EddyEdu'  THEN billable_hours ELSE NULL END)   as EddyBillableHours,
+                Sum(Case when type='EddyEdu'  THEN forms ELSE NULL END)  as forms,
+                Sum(Case when type='EddyEdu'  THEN lts ELSE NULL END)   as lts,
+                Avg(Case when type='EddyEdu'  THEN conv_percentage ELSE NULL END)   as conv_percentage,
+                AVG(Case when type='EddyEdu'  THEN lt_percentage ELSE NULL END)   as lt_percentage,
+                Sum(Case when type='EddyEdu'  THEN wlph ELSE NULL END)   as wlph
+
+            ");
+
+            if ($request->f_date)
+                $res = $res->whereDate('sale_date',">=", $request->f_date);
+            if ($request->t_date)
+                $res = $res->whereDate('sale_date',"<=", $request->t_date);
+
+            $data['totals'] = $res->get();
+
+            $dates=''; $lastSevenDaysData=array();
+            for($i=0;$i<=6;$i++){ 
+                $data['date']=date('Y-m-d', strtotime("-$i days"));
+                $data['eddy']    =  DB::table('eddy_sales')->whereDate("sale_date","=",date('Y-m-d', strtotime("-$i days")))->where('type','EddyEdu')->count();
+                $data['inbound'] =  DB::table('eddy_sales')->whereDate("sale_date","=",date('Y-m-d', strtotime("-$i days")))->where('type','InBound')->count();
+                $data['outbound'] = DB::table('eddy_sales')->whereDate("sale_date","=",date('Y-m-d', strtotime("-$i days")))->where('type','OutBound')->count(); 
+                array_push($lastSevenDaysData,$data);
+            }
+            $data['lastSevenDaysData'] =$lastSevenDaysData;
+            return view('admin.eddydashboard',$data);
+        }
         return !auth()->user()->hasRole('Super Admin') ? $this->agentDashboard() : $this->adminDashboard();
     }
 

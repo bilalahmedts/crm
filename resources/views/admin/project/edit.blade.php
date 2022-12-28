@@ -25,14 +25,14 @@
                     </div>
 
                     <div class="card-body">
-                        <form method="post" action="{{ route('projects.update', $client->id) }}" id="my-form" autocomplete="off">
+                        <form method="post" action="{{ route('projects.update', $project->id) }}" id="my-form" autocomplete="off">
                             @csrf
                             @method('PUT')
 
                             <div class="pl-lg-4">
                                 <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-name">{{ __('labels.name') }}</label>
-                                    <input type="text" name="name" id="input-name" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('labels.name') }}" value="{{ old('name', $client->name) }}" required autofocus>
+                                    <input @if(auth()->user()->hasRole("Super Admin")) disabled="false" @else disabled="true" @endif type="text" name="name" id="input-name" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('labels.name') }}" value="{{ old('name', $project->name) }}" required autofocus>
 
                                     @if ($errors->has('name'))
                                         <span class="invalid-feedback" role="alert">
@@ -41,13 +41,34 @@
                                     @endif
                                 </div>
 
-                                <div class="form-group{{ $errors->has('project_id') ? ' has-danger' : '' }}">
-                                    <label class="form-control-label" for="input-name">Product ID</label>
-                                    <input type="text" disabled name="project_id" id="project_id" class="form-control {{ $errors->has('project_id') ? ' is-invalid' : '' }}" placeholder="Product ID" value="{{ old('project_id',$client->project_id) }}" required autofocus>
+                                <div class="form-group{{ $errors->has('project_code') ? ' has-danger' : '' }}">
+                                    <label class="form-control-label" for="input-name">Product Code</label>
+                                    <input type="text" disabled name="project_code" id="project_code" class="form-control {{ $errors->has('project_code') ? ' is-invalid' : '' }}" placeholder="Product ID" value="{{ old('project_code',$project->project_code) }}" required autofocus>
                 
-                                    @if ($errors->has('project_id'))
+                                    @if ($errors->has('project_code'))
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('project_id') }}</strong>
+                                            <strong>{{ $errors->first('project_code') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <div class="form-group{{ $errors->has('hours') ? ' has-danger' : '' }}">
+                                    <label class="form-control-label" for="input-name">Hours</label>
+                                    <input type="text" name="hours" id="hours" class="form-control {{ $errors->has('hours') ? ' is-invalid' : '' }}" placeholder="Product ID" value="{{ old('hours',$project->hours) }}" required autofocus>
+                
+                                    @if ($errors->has('hours')) 
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('hours') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="form-group{{ $errors->has('seats') ? ' has-danger' : '' }}">
+                                    <label class="form-control-label" for="input-name">Seats</label>
+                                    <input type="text" name="seats" id="seats" class="form-control {{ $errors->has('seats') ? ' is-invalid' : '' }}" placeholder="Product ID" value="{{ old('seats',$project->seats) }}" required autofocus>
+                
+                                    @if ($errors->has('seats'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('seats') }}</strong>
                                         </span>
                                     @endif
                                 </div>
@@ -56,19 +77,19 @@
 
 
                                 <div class="form-group{{ $errors->has('client') ? ' has-danger' : '' }}">
-                                    <label class="form-control-label" for="input-client">{{ __('labels.default_assigned_client') }}</label>
-                                    <select name="client_id" id="input-client" class="form-control" data-toggle="select">
-                                        <option value="" {{ old('client_id', $client->client_id) == '' ? 'selected' : '' }}>Select client</option>
+                                    <label class="form-control-label" for="input-client">Select Client</label>
+                                    <select @if(auth()->user()->hasRole("Super Admin")) disabled="false" @else disabled="true" @endif  name="client_id" id="input-client" class="form-control"  >
+                                        <option value=''>Select client</option>
                                         @foreach($clients as $client)
-                                            <option value="{{ $client->id }}" {{ old('client_id', $client->client_id)==$client->id ? 'selected' :'' }}>{{$client->name}}</option>
+                                            <option value="{{ $client->id }}" {{ old('client_code', $client->client_code)==$project->client->client_code ? 'selected' :'' }}>{{$client->name}}</option>
                                         @endforeach
                                     </select>
-                                    @if ($errors->has('client_id'))
+                                    {{-- @if ($errors->has('client_id'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('client_id') }}</strong>
                                         </span>
                                     @endif
-                                    <span class="help-text text-muted" style="font-size: .8rem; font-style: italic;">{{ __('labels.future_tickets_message') }}</span>
+                                    <span class="help-text text-muted" style="font-size: .8rem; font-style: italic;">{{ __('labels.future_tickets_message') }}</span> --}}
                                 </div>
 
                                 <div class="text-left">

@@ -39,6 +39,7 @@ class sendMortgageDataToSap extends Command
     {
         set_time_limit(0);$test =array();
         $clients = Client::where('campaign_id',3)->get(); $arrayData=array(); 
+        $projectCodes = Project::where('isFixed',1)->pluck('project_code');
         foreach($clients as $row){
               $sales = DB::table('sale_mortgages')
                 ->select('client_code as CardCode','project_code as ItemCode')
@@ -52,9 +53,10 @@ class sendMortgageDataToSap extends Command
                             created_at as DocDate
                         ")
                 ->where('client_code',$row->client_code) 
-                ->where('campaign_id',3)        
+                ->where('campaign_id',3) 
+                ->whereNotIn('project_code',$projectCodes)        
                 ->whereNull('sap_id')     
-                ->groupBy('user_id','created_at')->get();      
+                ->groupBy('user_id','created_at','project_code')->get();      
             $userIds=array();      
             foreach($sales as $sale){
                 if($sale->Quantity<=0){
@@ -97,7 +99,7 @@ class sendMortgageDataToSap extends Command
                 $result = curl_exec ($ch);
                 curl_close($ch);
                 $result = json_decode ($result);
-                // if($result->status == "Success"){
+                if($result->status == "Success"){
                     foreach($value as $rw){  
                         $ids =  DB::table("sale_mortgages")->where('user_id',$rw['SalesEmployee'])
                                 ->whereNull('sap_id')->where('client_status',"billable")->where('client_code',$row->client_code)
@@ -110,10 +112,9 @@ class sendMortgageDataToSap extends Command
                         ]);
                     }
                     
-                // }  
+                }  
             } 
-        } 
-        // return $arrayData;        
+        }// return $arrayData;        
         return response()->json(['status'=>200,'message'=>"success"]);
     }
 }
